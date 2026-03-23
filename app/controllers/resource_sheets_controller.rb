@@ -79,12 +79,19 @@ class ResourceSheetsController < ApplicationController
   end
 
   def behavioral_guide
+    @additional_questions = ResourceGuideQuestion.for_guide(:behavioral).ordered
   end
 
   def technical_guide
+    @additional_questions = ResourceGuideQuestion.for_guide(:technical).ordered
   end
 
   def interviewer_questions_guide
+    @additional_questions = ResourceGuideQuestion.for_guide(:interviewer_questions).ordered
+  end
+
+  def acquired_questions_guide
+    @additional_questions = ResourceGuideQuestion.for_guide(:acquired_questions).ordered
   end
 
   private

@@ -4,6 +4,7 @@
   <div class="page-header-content">
     <h1 class="page-title">Behavioral Interview Guide</h1>
     <div class="page-actions">
+      <%= link_to "Add Question", new_resource_guide_question_path(guide_type: "behavioral"), class: "btn btn-secondary" %>
       <%= link_to "Back to Resources", resource_sheets_path, class: "btn btn-secondary" %>
       <%= link_to "Print / Save PDF", "#", class: "btn btn-primary", onclick: "window.print(); return false;" %>
     </div>
@@ -15,59 +16,130 @@
 <section class="guide-section">
   <h2>Leadership & Ownership</h2>
 
-  <article class="guide-item">
-    <h3>Tell me about a time you took ownership of a problem outside your role.</h3>
-    <p><strong>What it means:</strong> They are checking initiative, accountability, and whether you step in without being asked.</p>
-    <p><strong>Strong response approach:</strong> Share the context, why ownership was needed, your specific actions, and measurable outcome.</p>
-    <p><strong>Good response pattern:</strong> “I noticed X risk, aligned Y stakeholders, executed Z plan, and improved metric A by B%.”</p>
-    <p><strong>Pitfall to avoid:</strong> Describing team work without clarifying your personal contribution.</p>
-  </article>
+  <details class="guide-item guide-question-toggle">
+    <summary class="guide-question-summary">
+      <span class="guide-question-title">Tell me about a time you took ownership of a problem outside your role.</span>
+    </summary>
+    <div class="guide-question-body">
+      <p><strong>What it means:</strong> They are checking initiative, accountability, and whether you step in without being asked.</p>
+      <p><strong>Strong response approach:</strong> Share the context, why ownership was needed, your specific actions, and measurable outcome.</p>
+      <p><strong>Good response pattern:</strong> “I noticed X risk, aligned Y stakeholders, executed Z plan, and improved metric A by B%.”</p>
+      <p><strong>Pitfall to avoid:</strong> Describing team work without clarifying your personal contribution.</p>
+    </div>
+  </details>
 
-  <article class="guide-item">
-    <h3>Describe a time you influenced without direct authority.</h3>
-    <p><strong>What it means:</strong> They want evidence you can drive outcomes through trust and communication.</p>
-    <p><strong>Strong response approach:</strong> Explain the resistance, your influence strategy, and the final decision/result.</p>
-    <p><strong>Good response pattern:</strong> “I framed tradeoffs in terms of business impact, addressed concerns, and secured cross-team buy-in.”</p>
-    <p><strong>Pitfall to avoid:</strong> Framing influence as pressure instead of partnership.</p>
-  </article>
+  <details class="guide-item guide-question-toggle">
+    <summary class="guide-question-summary">
+      <span class="guide-question-title">Describe a time you influenced without direct authority.</span>
+    </summary>
+    <div class="guide-question-body">
+      <p><strong>What it means:</strong> They want evidence you can drive outcomes through trust and communication.</p>
+      <p><strong>Strong response approach:</strong> Explain the resistance, your influence strategy, and the final decision/result.</p>
+      <p><strong>Good response pattern:</strong> “I framed tradeoffs in terms of business impact, addressed concerns, and secured cross-team buy-in.”</p>
+      <p><strong>Pitfall to avoid:</strong> Framing influence as pressure instead of partnership.</p>
+    </div>
+  </details>
 </section>
 
 <section class="guide-section">
   <h2>Conflict & Collaboration</h2>
 
-  <article class="guide-item">
-    <h3>Tell me about a disagreement with a teammate and how you resolved it.</h3>
-    <p><strong>What it means:</strong> They assess emotional maturity, conflict handling, and ability to maintain delivery.</p>
-    <p><strong>Strong response approach:</strong> Focus on listening, shared goals, data-informed decision making, and follow-through.</p>
-    <p><strong>Good response pattern:</strong> “We disagreed on approach, aligned on success criteria, tested both options, then chose the better result.”</p>
-    <p><strong>Pitfall to avoid:</strong> Casting the other person as the problem.</p>
-  </article>
+  <details class="guide-item guide-question-toggle">
+    <summary class="guide-question-summary">
+      <span class="guide-question-title">Tell me about a disagreement with a teammate and how you resolved it.</span>
+    </summary>
+    <div class="guide-question-body">
+      <p><strong>What it means:</strong> They assess emotional maturity, conflict handling, and ability to maintain delivery.</p>
+      <p><strong>Strong response approach:</strong> Focus on listening, shared goals, data-informed decision making, and follow-through.</p>
+      <p><strong>Good response pattern:</strong> “We disagreed on approach, aligned on success criteria, tested both options, then chose the better result.”</p>
+      <p><strong>Pitfall to avoid:</strong> Casting the other person as the problem.</p>
+    </div>
+  </details>
 
-  <article class="guide-item">
-    <h3>Describe a time you gave or received difficult feedback.</h3>
-    <p><strong>What it means:</strong> They’re looking for coachability and how you improve team performance.</p>
-    <p><strong>Strong response approach:</strong> Show clear behavior observed, impact, respectful conversation, and change over time.</p>
-    <p><strong>Good response pattern:</strong> “I shared specific examples, agreed on next steps, and saw consistent improvement over subsequent projects.”</p>
-    <p><strong>Pitfall to avoid:</strong> Being vague about behavior or outcomes.</p>
-  </article>
+  <details class="guide-item guide-question-toggle">
+    <summary class="guide-question-summary">
+      <span class="guide-question-title">Describe a time you gave or received difficult feedback.</span>
+    </summary>
+    <div class="guide-question-body">
+      <p><strong>What it means:</strong> They’re looking for coachability and how you improve team performance.</p>
+      <p><strong>Strong response approach:</strong> Show clear behavior observed, impact, respectful conversation, and change over time.</p>
+      <p><strong>Good response pattern:</strong> “I shared specific examples, agreed on next steps, and saw consistent improvement over subsequent projects.”</p>
+      <p><strong>Pitfall to avoid:</strong> Being vague about behavior or outcomes.</p>
+    </div>
+  </details>
 </section>
 
 <section class="guide-section">
   <h2>Adaptability & Impact</h2>
 
-  <article class="guide-item">
-    <h3>Tell me about a time priorities changed suddenly.</h3>
-    <p><strong>What it means:</strong> They test adaptability, prioritization, and calm execution under ambiguity.</p>
-    <p><strong>Strong response approach:</strong> Explain how you re-scoped, communicated tradeoffs, and protected key outcomes.</p>
-    <p><strong>Good response pattern:</strong> “I reassessed priorities with stakeholders, cut lower-value scope, and delivered the highest-impact milestone on time.”</p>
-    <p><strong>Pitfall to avoid:</strong> Saying “we just worked harder” without strategy.</p>
-  </article>
+  <details class="guide-item guide-question-toggle">
+    <summary class="guide-question-summary">
+      <span class="guide-question-title">Tell me about a time priorities changed suddenly.</span>
+    </summary>
+    <div class="guide-question-body">
+      <p><strong>What it means:</strong> They test adaptability, prioritization, and calm execution under ambiguity.</p>
+      <p><strong>Strong response approach:</strong> Explain how you re-scoped, communicated tradeoffs, and protected key outcomes.</p>
+      <p><strong>Good response pattern:</strong> “I reassessed priorities with stakeholders, cut lower-value scope, and delivered the highest-impact milestone on time.”</p>
+      <p><strong>Pitfall to avoid:</strong> Saying “we just worked harder” without strategy.</p>
+    </div>
+  </details>
 
-  <article class="guide-item">
-    <h3>What accomplishment are you most proud of?</h3>
-    <p><strong>What it means:</strong> They evaluate your standards, values, and definition of meaningful impact.</p>
-    <p><strong>Strong response approach:</strong> Highlight problem difficulty, your ownership, and a measurable result connected to users or business.</p>
-    <p><strong>Good response pattern:</strong> “This mattered because…, I led…, and it changed… by….”</p>
-    <p><strong>Pitfall to avoid:</strong> Picking a win with no clear impact.</p>
-  </article>
+  <details class="guide-item guide-question-toggle">
+    <summary class="guide-question-summary">
+      <span class="guide-question-title">What accomplishment are you most proud of?</span>
+    </summary>
+    <div class="guide-question-body">
+      <p><strong>What it means:</strong> They evaluate your standards, values, and definition of meaningful impact.</p>
+      <p><strong>Strong response approach:</strong> Highlight problem difficulty, your ownership, and a measurable result connected to users or business.</p>
+      <p><strong>Good response pattern:</strong> “This mattered because…, I led…, and it changed… by….”</p>
+      <p><strong>Pitfall to avoid:</strong> Picking a win with no clear impact.</p>
+    </div>
+  </details>
 </section>
+
+<% if @additional_questions.any? %>
+  <section class="guide-section">
+    <h2>Added Questions</h2>
+    <% @additional_questions.each do |entry| %>
+      <details class="guide-item guide-question-toggle">
+        <summary class="guide-question-summary">
+          <span class="guide-question-title"><%= entry.question %></span>
+        </summary>
+        <div class="guide-question-body">
+          <% if entry.section_title.present? %>
+            <p class="guide-section-subtitle"><strong>Section:</strong> <%= entry.section_title %></p>
+          <% end %>
+          <% if entry.meaning.present? %>
+            <div class="guide-rich-field">
+              <p class="guide-rich-label">What it means</p>
+              <div class="guide-rich-content"><%= simple_format(entry.meaning) %></div>
+            </div>
+          <% end %>
+          <% if entry.response_approach.present? %>
+            <div class="guide-rich-field">
+              <p class="guide-rich-label">Strong response approach</p>
+              <div class="guide-rich-content"><%= simple_format(entry.response_approach) %></div>
+            </div>
+          <% end %>
+          <% if entry.example_response.present? %>
+            <div class="guide-rich-field">
+              <p class="guide-rich-label">Good response pattern</p>
+              <div class="guide-rich-content"><%= simple_format(entry.example_response) %></div>
+            </div>
+          <% end %>
+          <% if entry.pitfall.present? %>
+            <div class="guide-rich-field">
+              <p class="guide-rich-label">Pitfall to avoid</p>
+              <div class="guide-rich-content"><%= simple_format(entry.pitfall) %></div>
+            </div>
+          <% end %>
+
+          <div class="form-actions guide-entry-actions">
+            <%= link_to "Edit", edit_resource_guide_question_path(entry), class: "btn btn-secondary btn-sm" %>
+            <%= button_to "Delete", resource_guide_question_path(entry), method: :delete, class: "btn btn-danger btn-sm", data: { confirm: "Delete this guide question?" } %>
+          </div>
+        </div>
+      </details>
+    <% end %>
+  </section>
+<% end %>
