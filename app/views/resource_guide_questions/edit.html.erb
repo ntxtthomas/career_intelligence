@@ -1,0 +1,14 @@
+<% content_for :title, "Edit Guide Question" %>
+
+<div class="page-header">
+  <div class="page-header-content">
+    <h1 class="page-title">Edit Guide Question</h1>
+    <div class="page-actions">
+      <%= link_to "Back", request.referer.presence || resource_sheets_path, class: "btn btn-secondary" %>
+    </div>
+  </div>
+</div>
+
+<div class="resource-sheet-form-page">
+  <%= render "form", resource_guide_question: @resource_guide_question %>
+</div>

@@ -4,6 +4,7 @@
   <div class="page-header-content">
     <h1 class="page-title">Technical Interview Guide</h1>
     <div class="page-actions">
+      <%= link_to "Add Question", new_resource_guide_question_path(guide_type: "technical"), class: "btn btn-secondary" %>
       <%= link_to "Back to Resources", resource_sheets_path, class: "btn btn-secondary" %>
       <%= link_to "Print / Save PDF", "#", class: "btn btn-primary", onclick: "window.print(); return false;" %>
     </div>
@@ -15,59 +16,130 @@
 <section class="guide-section">
   <h2>Architecture & Design</h2>
 
-  <article class="guide-item">
-    <h3>How would you design a scalable API for high-traffic usage?</h3>
-    <p><strong>What it means:</strong> They assess system thinking, tradeoff awareness, and ability to reason across layers.</p>
-    <p><strong>Strong response approach:</strong> Clarify requirements, define boundaries, discuss data model, caching, scaling, and observability.</p>
-    <p><strong>Good response pattern:</strong> “I’d start with constraints, pick a baseline architecture, identify bottlenecks, and layer in scaling controls.”</p>
-    <p><strong>Pitfall to avoid:</strong> Jumping into tools before clarifying assumptions.</p>
-  </article>
+  <details class="guide-item guide-question-toggle">
+    <summary class="guide-question-summary">
+      <span class="guide-question-title">How would you design a scalable API for high-traffic usage?</span>
+    </summary>
+    <div class="guide-question-body">
+      <p><strong>What it means:</strong> They assess system thinking, tradeoff awareness, and ability to reason across layers.</p>
+      <p><strong>Strong response approach:</strong> Clarify requirements, define boundaries, discuss data model, caching, scaling, and observability.</p>
+      <p><strong>Good response pattern:</strong> “I’d start with constraints, pick a baseline architecture, identify bottlenecks, and layer in scaling controls.”</p>
+      <p><strong>Pitfall to avoid:</strong> Jumping into tools before clarifying assumptions.</p>
+    </div>
+  </details>
 
-  <article class="guide-item">
-    <h3>How do you choose between consistency and availability?</h3>
-    <p><strong>What it means:</strong> They look for practical understanding of distributed tradeoffs and product impact.</p>
-    <p><strong>Strong response approach:</strong> Tie decision to user expectations, failure modes, and acceptable risk.</p>
-    <p><strong>Good response pattern:</strong> “For this workflow, stale reads are acceptable, but write correctness is critical, so I’d bias toward….”</p>
-    <p><strong>Pitfall to avoid:</strong> Reciting CAP theory without applying it to the use case.</p>
-  </article>
+  <details class="guide-item guide-question-toggle">
+    <summary class="guide-question-summary">
+      <span class="guide-question-title">How do you choose between consistency and availability?</span>
+    </summary>
+    <div class="guide-question-body">
+      <p><strong>What it means:</strong> They look for practical understanding of distributed tradeoffs and product impact.</p>
+      <p><strong>Strong response approach:</strong> Tie decision to user expectations, failure modes, and acceptable risk.</p>
+      <p><strong>Good response pattern:</strong> “For this workflow, stale reads are acceptable, but write correctness is critical, so I’d bias toward….”</p>
+      <p><strong>Pitfall to avoid:</strong> Reciting CAP theory without applying it to the use case.</p>
+    </div>
+  </details>
 </section>
 
 <section class="guide-section">
   <h2>Debugging & Reliability</h2>
 
-  <article class="guide-item">
-    <h3>Walk me through how you debug a production issue.</h3>
-    <p><strong>What it means:</strong> They evaluate incident mindset, prioritization, and communication under pressure.</p>
-    <p><strong>Strong response approach:</strong> Triage impact, establish timeline, inspect logs/metrics, isolate variables, test hypothesis, prevent recurrence.</p>
-    <p><strong>Good response pattern:</strong> “Stabilize first, diagnose second, then document and add safeguards.”</p>
-    <p><strong>Pitfall to avoid:</strong> Over-indexing on deep debugging before containing user impact.</p>
-  </article>
+  <details class="guide-item guide-question-toggle">
+    <summary class="guide-question-summary">
+      <span class="guide-question-title">Walk me through how you debug a production issue.</span>
+    </summary>
+    <div class="guide-question-body">
+      <p><strong>What it means:</strong> They evaluate incident mindset, prioritization, and communication under pressure.</p>
+      <p><strong>Strong response approach:</strong> Triage impact, establish timeline, inspect logs/metrics, isolate variables, test hypothesis, prevent recurrence.</p>
+      <p><strong>Good response pattern:</strong> “Stabilize first, diagnose second, then document and add safeguards.”</p>
+      <p><strong>Pitfall to avoid:</strong> Over-indexing on deep debugging before containing user impact.</p>
+    </div>
+  </details>
 
-  <article class="guide-item">
-    <h3>How do you ensure code quality when shipping quickly?</h3>
-    <p><strong>What it means:</strong> They’re testing delivery balance: speed, quality, and long-term maintainability.</p>
-    <p><strong>Strong response approach:</strong> Explain guardrails: test strategy, code review standards, staged rollout, and rollback plans.</p>
-    <p><strong>Good response pattern:</strong> “I adjust test depth by risk, keep reviews focused, and use gradual release for uncertainty.”</p>
-    <p><strong>Pitfall to avoid:</strong> Treating quality as equivalent to “more tests only.”</p>
-  </article>
+  <details class="guide-item guide-question-toggle">
+    <summary class="guide-question-summary">
+      <span class="guide-question-title">How do you ensure code quality when shipping quickly?</span>
+    </summary>
+    <div class="guide-question-body">
+      <p><strong>What it means:</strong> They’re testing delivery balance: speed, quality, and long-term maintainability.</p>
+      <p><strong>Strong response approach:</strong> Explain guardrails: test strategy, code review standards, staged rollout, and rollback plans.</p>
+      <p><strong>Good response pattern:</strong> “I adjust test depth by risk, keep reviews focused, and use gradual release for uncertainty.”</p>
+      <p><strong>Pitfall to avoid:</strong> Treating quality as equivalent to “more tests only.”</p>
+    </div>
+  </details>
 </section>
 
 <section class="guide-section">
   <h2>Tradeoffs & Communication</h2>
 
-  <article class="guide-item">
-    <h3>Describe a major technical tradeoff you made.</h3>
-    <p><strong>What it means:</strong> They want evidence of judgment, not perfection.</p>
-    <p><strong>Strong response approach:</strong> Explain options considered, decision criteria, chosen path, and observed outcomes.</p>
-    <p><strong>Good response pattern:</strong> “I chose simpler now with a clear migration path because timeline and risk profile required it.”</p>
-    <p><strong>Pitfall to avoid:</strong> Presenting one option as obviously correct with no downside.</p>
-  </article>
+  <details class="guide-item guide-question-toggle">
+    <summary class="guide-question-summary">
+      <span class="guide-question-title">Describe a major technical tradeoff you made.</span>
+    </summary>
+    <div class="guide-question-body">
+      <p><strong>What it means:</strong> They want evidence of judgment, not perfection.</p>
+      <p><strong>Strong response approach:</strong> Explain options considered, decision criteria, chosen path, and observed outcomes.</p>
+      <p><strong>Good response pattern:</strong> “I chose simpler now with a clear migration path because timeline and risk profile required it.”</p>
+      <p><strong>Pitfall to avoid:</strong> Presenting one option as obviously correct with no downside.</p>
+    </div>
+  </details>
 
-  <article class="guide-item">
-    <h3>How do you explain a complex technical issue to non-technical stakeholders?</h3>
-    <p><strong>What it means:</strong> They assess communication range and business alignment.</p>
-    <p><strong>Strong response approach:</strong> Anchor to impact, use plain language, present options with risks, and recommend a path.</p>
-    <p><strong>Good response pattern:</strong> “Here’s what users feel, what caused it, what choices we have, and my recommendation.”</p>
-    <p><strong>Pitfall to avoid:</strong> Using jargon-heavy explanations that hide decision clarity.</p>
-  </article>
+  <details class="guide-item guide-question-toggle">
+    <summary class="guide-question-summary">
+      <span class="guide-question-title">How do you explain a complex technical issue to non-technical stakeholders?</span>
+    </summary>
+    <div class="guide-question-body">
+      <p><strong>What it means:</strong> They assess communication range and business alignment.</p>
+      <p><strong>Strong response approach:</strong> Anchor to impact, use plain language, present options with risks, and recommend a path.</p>
+      <p><strong>Good response pattern:</strong> “Here’s what users feel, what caused it, what choices we have, and my recommendation.”</p>
+      <p><strong>Pitfall to avoid:</strong> Using jargon-heavy explanations that hide decision clarity.</p>
+    </div>
+  </details>
 </section>
+
+<% if @additional_questions.any? %>
+  <section class="guide-section">
+    <h2>Added Questions</h2>
+    <% @additional_questions.each do |entry| %>
+      <details class="guide-item guide-question-toggle">
+        <summary class="guide-question-summary">
+          <span class="guide-question-title"><%= entry.question %></span>
+        </summary>
+        <div class="guide-question-body">
+          <% if entry.section_title.present? %>
+            <p class="guide-section-subtitle"><strong>Section:</strong> <%= entry.section_title %></p>
+          <% end %>
+          <% if entry.meaning.present? %>
+            <div class="guide-rich-field">
+              <p class="guide-rich-label">What it means</p>
+              <div class="guide-rich-content"><%= simple_format(entry.meaning) %></div>
+            </div>
+          <% end %>
+          <% if entry.response_approach.present? %>
+            <div class="guide-rich-field">
+              <p class="guide-rich-label">Strong response approach</p>
+              <div class="guide-rich-content"><%= simple_format(entry.response_approach) %></div>
+            </div>
+          <% end %>
+          <% if entry.example_response.present? %>
+            <div class="guide-rich-field">
+              <p class="guide-rich-label">Good response pattern</p>
+              <div class="guide-rich-content"><%= simple_format(entry.example_response) %></div>
+            </div>
+          <% end %>
+          <% if entry.pitfall.present? %>
+            <div class="guide-rich-field">
+              <p class="guide-rich-label">Pitfall to avoid</p>
+              <div class="guide-rich-content"><%= simple_format(entry.pitfall) %></div>
+            </div>
+          <% end %>
+
+          <div class="form-actions guide-entry-actions">
+            <%= link_to "Edit", edit_resource_guide_question_path(entry), class: "btn btn-secondary btn-sm" %>
+            <%= button_to "Delete", resource_guide_question_path(entry), method: :delete, class: "btn btn-danger btn-sm", data: { confirm: "Delete this guide question?" } %>
+          </div>
+        </div>
+      </details>
+    <% end %>
+  </section>
+<% end %>

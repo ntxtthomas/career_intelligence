@@ -4,6 +4,7 @@
   <div class="page-header-content">
     <h1 class="page-title">Questions to Ask Interviewers</h1>
     <div class="page-actions">
+      <%= link_to "Add Question", new_resource_guide_question_path(guide_type: "interviewer_questions"), class: "btn btn-secondary" %>
       <%= link_to "Back to Resources", resource_sheets_path, class: "btn btn-secondary" %>
       <%= link_to "Print / Save PDF", "#", class: "btn btn-primary", onclick: "window.print(); return false;" %>
     </div>
@@ -15,75 +16,176 @@
 <section class="guide-section">
   <h2>Recruiter / Intro Screen</h2>
 
-  <article class="guide-item">
-    <h3>What does success look like in the first 90 days for this role?</h3>
-    <p><strong>Why this is strong:</strong> Signals ownership mindset and helps you calibrate ramp expectations.</p>
-  </article>
+  <details class="guide-item guide-question-toggle">
+    <summary class="guide-question-summary">
+      <span class="guide-question-title">What does success look like in the first 90 days for this role?</span>
+    </summary>
+    <div class="guide-question-body">
+      <p><strong>Why this is strong:</strong> Signals ownership mindset and helps you calibrate ramp expectations.</p>
+    </div>
+  </details>
 
-  <article class="guide-item">
-    <h3>How has this role evolved in the last 12 months?</h3>
-    <p><strong>Why this is strong:</strong> Reveals whether scope is growing strategically or reacting to churn.</p>
-  </article>
+  <details class="guide-item guide-question-toggle">
+    <summary class="guide-question-summary">
+      <span class="guide-question-title">How has this role evolved in the last 12 months?</span>
+    </summary>
+    <div class="guide-question-body">
+      <p><strong>Why this is strong:</strong> Reveals whether scope is growing strategically or reacting to churn.</p>
+    </div>
+  </details>
 
-  <article class="guide-item">
-    <h3>What are the top reasons candidates decline offers here?</h3>
-    <p><strong>Why this is strong:</strong> Surfaces potential fit risks early and invites transparent discussion.</p>
-  </article>
+  <details class="guide-item guide-question-toggle">
+    <summary class="guide-question-summary">
+      <span class="guide-question-title">What are the top reasons candidates decline offers here?</span>
+    </summary>
+    <div class="guide-question-body">
+      <p><strong>Why this is strong:</strong> Surfaces potential fit risks early and invites transparent discussion.</p>
+    </div>
+  </details>
 </section>
 
 <section class="guide-section">
   <h2>Hiring Manager</h2>
 
-  <article class="guide-item">
-    <h3>What are the biggest team priorities this quarter, and where would this role contribute first?</h3>
-    <p><strong>Why this is strong:</strong> Connects your potential impact to real, current business priorities.</p>
-  </article>
+  <details class="guide-item guide-question-toggle">
+    <summary class="guide-question-summary">
+      <span class="guide-question-title">What are the biggest team priorities this quarter, and where would this role contribute first?</span>
+    </summary>
+    <div class="guide-question-body">
+      <p><strong>Why this is strong:</strong> Connects your potential impact to real, current business priorities.</p>
+    </div>
+  </details>
 
-  <article class="guide-item">
-    <h3>How do you balance delivery speed with quality and technical debt?</h3>
-    <p><strong>Why this is strong:</strong> Exposes decision culture and engineering standards in practice.</p>
-  </article>
+  <details class="guide-item guide-question-toggle">
+    <summary class="guide-question-summary">
+      <span class="guide-question-title">How do you balance delivery speed with quality and technical debt?</span>
+    </summary>
+    <div class="guide-question-body">
+      <p><strong>Why this is strong:</strong> Exposes decision culture and engineering standards in practice.</p>
+    </div>
+  </details>
 
-  <article class="guide-item">
-    <h3>What’s a recent decision your team changed course on, and why?</h3>
-    <p><strong>Why this is strong:</strong> Shows how the team learns, adapts, and handles uncertainty.</p>
-  </article>
+  <details class="guide-item guide-question-toggle">
+    <summary class="guide-question-summary">
+      <span class="guide-question-title">What’s a recent decision your team changed course on, and why?</span>
+    </summary>
+    <div class="guide-question-body">
+      <p><strong>Why this is strong:</strong> Shows how the team learns, adapts, and handles uncertainty.</p>
+    </div>
+  </details>
 </section>
 
 <section class="guide-section">
   <h2>Panel / Cross-Functional</h2>
 
-  <article class="guide-item">
-    <h3>Where do cross-team handoffs usually break down, and what improves them?</h3>
-    <p><strong>Why this is strong:</strong> Identifies collaboration friction and your ability to navigate it.</p>
-  </article>
+  <details class="guide-item guide-question-toggle">
+    <summary class="guide-question-summary">
+      <span class="guide-question-title">Where do cross-team handoffs usually break down, and what improves them?</span>
+    </summary>
+    <div class="guide-question-body">
+      <p><strong>Why this is strong:</strong> Identifies collaboration friction and your ability to navigate it.</p>
+    </div>
+  </details>
 
-  <article class="guide-item">
-    <h3>How are product, engineering, and design tradeoffs resolved when priorities conflict?</h3>
-    <p><strong>Why this is strong:</strong> Reveals decision rights and partnership maturity.</p>
-  </article>
+  <details class="guide-item guide-question-toggle">
+    <summary class="guide-question-summary">
+      <span class="guide-question-title">How are product, engineering, and design tradeoffs resolved when priorities conflict?</span>
+    </summary>
+    <div class="guide-question-body">
+      <p><strong>Why this is strong:</strong> Reveals decision rights and partnership maturity.</p>
+    </div>
+  </details>
 
-  <article class="guide-item">
-    <h3>What behaviors make someone especially effective on this team?</h3>
-    <p><strong>Why this is strong:</strong> Gives concrete culture signals beyond generic values statements.</p>
-  </article>
+  <details class="guide-item guide-question-toggle">
+    <summary class="guide-question-summary">
+      <span class="guide-question-title">What behaviors make someone especially effective on this team?</span>
+    </summary>
+    <div class="guide-question-body">
+      <p><strong>Why this is strong:</strong> Gives concrete culture signals beyond generic values statements.</p>
+    </div>
+  </details>
 </section>
 
 <section class="guide-section">
   <h2>Final Round / Close</h2>
 
-  <article class="guide-item">
-    <h3>What concerns, if any, do you still have about my fit?</h3>
-    <p><strong>Why this is strong:</strong> Creates space to address objections directly and demonstrates confidence.</p>
-  </article>
+  <details class="guide-item guide-question-toggle">
+    <summary class="guide-question-summary">
+      <span class="guide-question-title">What concerns, if any, do you still have about my fit?</span>
+    </summary>
+    <div class="guide-question-body">
+      <p><strong>Why this is strong:</strong> Creates space to address objections directly and demonstrates confidence.</p>
+    </div>
+  </details>
 
-  <article class="guide-item">
-    <h3>If I joined, what would make you say in six months that this was a great hire?</h3>
-    <p><strong>Why this is strong:</strong> Clarifies practical performance expectations and stakeholder priorities.</p>
-  </article>
+  <details class="guide-item guide-question-toggle">
+    <summary class="guide-question-summary">
+      <span class="guide-question-title">If I joined, what would make you say in six months that this was a great hire?</span>
+    </summary>
+    <div class="guide-question-body">
+      <p><strong>Why this is strong:</strong> Clarifies practical performance expectations and stakeholder priorities.</p>
+    </div>
+  </details>
 
-  <article class="guide-item">
-    <h3>What are the next major inflection points for the company and this team?</h3>
-    <p><strong>Why this is strong:</strong> Helps you evaluate growth trajectory and timing risk.</p>
-  </article>
+  <details class="guide-item guide-question-toggle">
+    <summary class="guide-question-summary">
+      <span class="guide-question-title">What are the next major inflection points for the company and this team?</span>
+    </summary>
+    <div class="guide-question-body">
+      <p><strong>Why this is strong:</strong> Helps you evaluate growth trajectory and timing risk.</p>
+    </div>
+  </details>
 </section>
+
+<% if @additional_questions.any? %>
+  <section class="guide-section">
+    <h2>Added Questions</h2>
+    <% @additional_questions.each do |entry| %>
+      <details class="guide-item guide-question-toggle">
+        <summary class="guide-question-summary">
+          <span class="guide-question-title"><%= entry.question %></span>
+        </summary>
+        <div class="guide-question-body">
+          <% if entry.section_title.present? %>
+            <p class="guide-section-subtitle"><strong>Section:</strong> <%= entry.section_title %></p>
+          <% end %>
+          <% if entry.why_this_is_strong.present? %>
+            <div class="guide-rich-field">
+              <p class="guide-rich-label">Why this is strong</p>
+              <div class="guide-rich-content"><%= simple_format(entry.why_this_is_strong) %></div>
+            </div>
+          <% end %>
+          <% if entry.meaning.present? %>
+            <div class="guide-rich-field">
+              <p class="guide-rich-label">What it means</p>
+              <div class="guide-rich-content"><%= simple_format(entry.meaning) %></div>
+            </div>
+          <% end %>
+          <% if entry.response_approach.present? %>
+            <div class="guide-rich-field">
+              <p class="guide-rich-label">Strong response approach</p>
+              <div class="guide-rich-content"><%= simple_format(entry.response_approach) %></div>
+            </div>
+          <% end %>
+          <% if entry.example_response.present? %>
+            <div class="guide-rich-field">
+              <p class="guide-rich-label">Good response pattern</p>
+              <div class="guide-rich-content"><%= simple_format(entry.example_response) %></div>
+            </div>
+          <% end %>
+          <% if entry.pitfall.present? %>
+            <div class="guide-rich-field">
+              <p class="guide-rich-label">Pitfall to avoid</p>
+              <div class="guide-rich-content"><%= simple_format(entry.pitfall) %></div>
+            </div>
+          <% end %>
+
+          <div class="form-actions guide-entry-actions">
+            <%= link_to "Edit", edit_resource_guide_question_path(entry), class: "btn btn-secondary btn-sm" %>
+            <%= button_to "Delete", resource_guide_question_path(entry), method: :delete, class: "btn btn-danger btn-sm", data: { confirm: "Delete this guide question?" } %>
+          </div>
+        </div>
+      </details>
+    <% end %>
+  </section>
+<% end %>

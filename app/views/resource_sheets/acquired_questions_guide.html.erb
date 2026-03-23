@@ -1,0 +1,76 @@
+<% content_for :title, "Acquired Questions" %>
+
+<div class="page-header">
+  <div class="page-header-content">
+    <h1 class="page-title">Acquired Questions</h1>
+    <div class="page-actions">
+      <%= link_to "Add Question", new_resource_guide_question_path(guide_type: "acquired_questions"), class: "btn btn-secondary" %>
+      <%= link_to "Back to Resources", resource_sheets_path, class: "btn btn-secondary" %>
+      <%= link_to "Print / Save PDF", "#", class: "btn btn-primary", onclick: "window.print(); return false;" %>
+    </div>
+  </div>
+</div>
+
+<p class="guide-intro">Questions and challenges gathered from real interview experiences so you can rehearse stronger answers before the next round.</p>
+
+<% if @additional_questions.any? %>
+  <% grouped_entries = @additional_questions.group_by { |entry| entry.section_title.presence || "General" } %>
+
+  <% grouped_entries.each do |section_title, entries| %>
+    <section class="guide-section">
+      <h2><%= section_title %></h2>
+
+      <% entries.each do |entry| %>
+        <details class="guide-item guide-question-toggle">
+          <summary class="guide-question-summary">
+            <span class="guide-question-title"><%= entry.question %></span>
+          </summary>
+          <div class="guide-question-body">
+            <% if entry.meaning.present? %>
+              <div class="guide-rich-field">
+                <p class="guide-rich-label">What it means</p>
+                <div class="guide-rich-content"><%= simple_format(entry.meaning) %></div>
+              </div>
+            <% end %>
+            <% if entry.response_approach.present? %>
+              <div class="guide-rich-field">
+                <p class="guide-rich-label">Strong response approach</p>
+                <div class="guide-rich-content"><%= simple_format(entry.response_approach) %></div>
+              </div>
+            <% end %>
+            <% if entry.example_response.present? %>
+              <div class="guide-rich-field">
+                <p class="guide-rich-label">Good response pattern</p>
+                <div class="guide-rich-content"><%= simple_format(entry.example_response) %></div>
+              </div>
+            <% end %>
+            <% if entry.pitfall.present? %>
+              <div class="guide-rich-field">
+                <p class="guide-rich-label">Pitfall to avoid</p>
+                <div class="guide-rich-content"><%= simple_format(entry.pitfall) %></div>
+              </div>
+            <% end %>
+            <% if entry.why_this_is_strong.present? %>
+              <div class="guide-rich-field">
+                <p class="guide-rich-label">Why this is strong</p>
+                <div class="guide-rich-content"><%= simple_format(entry.why_this_is_strong) %></div>
+              </div>
+            <% end %>
+
+            <div class="form-actions guide-entry-actions">
+              <%= link_to "Edit", edit_resource_guide_question_path(entry), class: "btn btn-secondary btn-sm" %>
+              <%= button_to "Delete", resource_guide_question_path(entry), method: :delete, class: "btn btn-danger btn-sm", data: { confirm: "Delete this guide question?" } %>
+            </div>
+          </div>
+        </details>
+      <% end %>
+    </section>
+  <% end %>
+<% else %>
+  <section class="guide-section">
+    <div class="guide-item">
+      <h3>No acquired questions yet</h3>
+      <p>Add your first interview-learned question to start building this prep set.</p>
+    </div>
+  </section>
+<% end %>

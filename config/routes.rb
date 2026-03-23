@@ -10,6 +10,8 @@ Rails.application.routes.draw do
   get "resources/guides/behavioral" => "resource_sheets#behavioral_guide", as: :behavioral_guide
   get "resources/guides/technical" => "resource_sheets#technical_guide", as: :technical_guide
   get "resources/guides/interviewer-questions" => "resource_sheets#interviewer_questions_guide", as: :interviewer_questions_guide
+  get "resources/guides/acquired-questions" => "resource_sheets#acquired_questions_guide", as: :acquired_questions_guide
+  resources :resource_guide_questions, except: %i[index show]
   resources :contacts
   resources :companies
   resources :star_stories

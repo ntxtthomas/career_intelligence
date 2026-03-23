@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_10_120000) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_23_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -185,6 +185,20 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_10_120000) do
     t.index ["opportunity_id", "technology_id"], name: "index_opp_tech_on_opp_and_tech", unique: true
     t.index ["opportunity_id"], name: "index_opportunity_technologies_on_opportunity_id"
     t.index ["technology_id"], name: "index_opportunity_technologies_on_technology_id"
+  end
+
+  create_table "resource_guide_questions", force: :cascade do |t|
+    t.string "guide_type", null: false
+    t.string "section_title"
+    t.text "question", null: false
+    t.text "meaning"
+    t.text "response_approach"
+    t.text "example_response"
+    t.text "pitfall"
+    t.text "why_this_is_strong"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["guide_type"], name: "index_resource_guide_questions_on_guide_type"
   end
 
   create_table "resource_sheets", force: :cascade do |t|
