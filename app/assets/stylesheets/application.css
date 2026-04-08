@@ -10,7 +10,7 @@
  */
 
 /* CSS Variables for Light/Dark Theme */
-@import url("https://cdn.jsdelivr.net/npm/trix@2.1.17/dist/trix.css");
+@import url("https://cdn.jsdelivr.net/npm/trix@2.1.18/dist/trix.css");
 
 :root {
   /* Light theme colors (default) */
