@@ -1,6 +1,7 @@
 class DashboardController < ApplicationController
   def index
     @total_resumes = Opportunity.where.not(application_date: nil).count
+    @total_open_applications = Opportunity.where(status: %w[applied interviewing]).count
     @total_assessed = Opportunity.count
 
     # Role-based focus insights

@@ -10,7 +10,7 @@
  */
 
 /* CSS Variables for Light/Dark Theme */
-@import url("https://cdn.jsdelivr.net/npm/trix@2.1.17/dist/trix.css");
+@import url("https://cdn.jsdelivr.net/npm/trix@2.1.18/dist/trix.css");
 
 :root {
   /* Light theme colors (default) */
@@ -277,6 +277,14 @@ th a:hover {
 
 .card-submitted .card-number {
   color: #0d6efd;
+}
+
+.card-open-applications {
+  border-left-color: #fd7e14;
+}
+
+.card-open-applications .card-number {
+  color: #fd7e14;
 }
 
 .card-responses {
