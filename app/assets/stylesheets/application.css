@@ -279,6 +279,14 @@ th a:hover {
   color: #0d6efd;
 }
 
+.card-open-applications {
+  border-left-color: #fd7e14;
+}
+
+.card-open-applications .card-number {
+  color: #fd7e14;
+}
+
 .card-responses {
   border-left-color: #fd7e14;
 }
