@@ -91,7 +91,7 @@ jobs:
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/job_tracker_test
           # REDIS_URL: redis://localhost:6379/0
         run: |
-          bin/rails db:prepare
+          bin/rails db:create db:schema:load
           bundle exec rspec
 
       - name: Keep screenshots from failed system tests
