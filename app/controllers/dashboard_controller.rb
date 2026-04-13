@@ -1,20 +1,22 @@
 class DashboardController < ApplicationController
   def index
-    @total_resumes = Opportunity.where.not(application_date: nil).count
-    @total_open_applications = Opportunity.where(status: %w[applied interviewing]).count
-    @total_assessed = Opportunity.count
+    opportunities = current_or_demo_user.opportunities
+
+    @total_resumes = opportunities.where.not(application_date: nil).count
+    @total_open_applications = opportunities.where(status: %w[applied interviewing]).count
+    @total_assessed = opportunities.count
 
     # Role-based focus insights
-    focus_analyzer = RoleFocusAnalyzer.new(Opportunity.all)
+    focus_analyzer = RoleFocusAnalyzer.new(opportunities)
     @focus_insights = focus_analyzer.generate_insights(limit: 4)
     @all_role_insights = focus_analyzer.generate_all_role_insights(limit_per_role: 3)
 
     # Get primary role for main widget
-    role_distribution = Opportunity.group(:role_type).count.sort_by { |_role, count| -count }.to_h
+    role_distribution = opportunities.group(:role_type).count.sort_by { |_role, count| -count }.to_h
     @primary_role = role_distribution.max_by { |_role, count| count }&.first
 
     # Source breakdown
-    @source_data = Opportunity.where.not(source: [ nil, "" ])
+    @source_data = opportunities.where.not(source: [ nil, "" ])
                               .group(:source)
                               .count
                               .sort_by { |_, count| -count }
@@ -47,7 +49,7 @@ class DashboardController < ApplicationController
         current_week_start = week_start
       end
 
-      count = Opportunity.where(application_date: week_start..week_end).count
+      count = current_or_demo_user.opportunities.where(application_date: week_start..week_end).count
 
       weeks << {
         label: "#{week_start.strftime('%b %d')} - #{week_end.strftime('%b %d')}",

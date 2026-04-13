@@ -1,4 +1,6 @@
 class CoreNarrative < ApplicationRecord
+  belongs_to :user
+
   # Enums
   enum :narrative_type, {
     about_me: "about_me",

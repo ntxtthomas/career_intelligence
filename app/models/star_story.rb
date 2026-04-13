@@ -1,5 +1,7 @@
 class StarStory < ApplicationRecord
   # Associations
+  belongs_to :user
+
   has_many :star_story_opportunities, dependent: :destroy
   has_many :opportunities, through: :star_story_opportunities
 

@@ -2,11 +2,11 @@ class ResourceGuideQuestionsController < ApplicationController
   before_action :set_resource_guide_question, only: %i[edit update destroy]
 
   def new
-    @resource_guide_question = ResourceGuideQuestion.new(guide_type: params[:guide_type])
+    @resource_guide_question = current_or_demo_user.resource_guide_questions.new(guide_type: params[:guide_type])
   end
 
   def create
-    @resource_guide_question = ResourceGuideQuestion.new(resource_guide_question_params)
+    @resource_guide_question = current_or_demo_user.resource_guide_questions.new(resource_guide_question_params)
 
     if @resource_guide_question.save
       redirect_to guide_path_for(@resource_guide_question.guide_type), notice: "Guide question was successfully created."
@@ -35,7 +35,7 @@ class ResourceGuideQuestionsController < ApplicationController
   private
 
   def set_resource_guide_question
-    @resource_guide_question = ResourceGuideQuestion.find(params.expect(:id))
+    @resource_guide_question = current_or_demo_user.resource_guide_questions.find(params.expect(:id))
   end
 
   def resource_guide_question_params

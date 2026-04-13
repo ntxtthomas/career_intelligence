@@ -2,7 +2,7 @@ class StarStoriesController < ApplicationController
   before_action :set_star_story, only: [ :show, :edit, :update, :destroy ]
 
   def index
-    @star_stories = StarStory.all.order(created_at: :desc)
+    @star_stories = current_or_demo_user.star_stories.order(created_at: :desc)
 
     respond_to do |format|
       format.html
@@ -16,14 +16,14 @@ class StarStoriesController < ApplicationController
   end
 
   def new
-    @star_story = StarStory.new
+    @star_story = current_or_demo_user.star_stories.new
   end
 
   def create
     params_hash = star_story_params
     process_skills_param(params_hash)
 
-    @star_story = StarStory.new(params_hash)
+    @star_story = current_or_demo_user.star_stories.new(params_hash)
 
     if @star_story.save
       redirect_to @star_story, notice: "STAR story was successfully created."
@@ -57,7 +57,7 @@ class StarStoriesController < ApplicationController
   private
 
   def set_star_story
-    @star_story = StarStory.find(params[:id])
+    @star_story = current_or_demo_user.star_stories.find(params[:id])
   end
 
   def star_story_params
