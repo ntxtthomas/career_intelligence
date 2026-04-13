@@ -21,7 +21,7 @@ default: &default
 
 development:
   <<: *default
-  database: job_tracker_development
+  database: career_intelligence_development
   username: terrythomas
   host: localhost
 
@@ -29,7 +29,7 @@ development:
   # To create additional roles in PostgreSQL see `$ createuser --help`.
   # When left blank, PostgreSQL will use the default role. This is
   # the same name as the operating system user running Rails.
-  #username: job_tracker
+  #username: career_intelligence
 
   # The password associated with the PostgreSQL role (username).
   #password:
@@ -57,7 +57,7 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: job_tracker_test
+  database: career_intelligence_test
   username: postgres
   password: postgres
   host: localhost
@@ -92,13 +92,13 @@ production:
     port: <%= ENV["DATABASE_PORT"] %>
   cache:
     <<: *primary_production
-    database: job_tracker_production_cache
+    database: career_intelligence_production_cache
     migrations_paths: db/cache_migrate
   queue:
     <<: *primary_production
-    database: job_tracker_production_queue
+    database: career_intelligence_production_queue
     migrations_paths: db/queue_migrate
   cable:
     <<: *primary_production
-    database: job_tracker_production_cable
+    database: career_intelligence_production_cable
     migrations_paths: db/cable_migrate
