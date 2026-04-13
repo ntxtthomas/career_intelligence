@@ -1302,3 +1302,158 @@ div[style*="color: red"],
     cursor: default;
   }
 }
+
+/* ===== Sign-In Page ===== */
+
+.sign-in-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+}
+
+.sign-in-card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 1rem;
+  box-shadow: 0 4px 24px var(--card-shadow);
+  padding: 3rem 2.5rem;
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+}
+
+.sign-in-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  color: var(--text-primary);
+}
+
+.sign-in-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+}
+
+.sign-in-field {
+  text-align: left;
+  margin-bottom: 1.25rem;
+}
+
+.sign-in-field label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 0.4rem;
+}
+
+.sign-in-field input[type="email"],
+.sign-in-field input[type="password"] {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid var(--input-border);
+  border-radius: 0.5rem;
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+}
+
+.sign-in-field input[type="email"]:focus,
+.sign-in-field input[type="password"]:focus {
+  outline: none;
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+}
+
+@media (prefers-color-scheme: dark) {
+  .sign-in-field input[type="email"]:focus,
+  .sign-in-field input[type="password"]:focus {
+    box-shadow: 0 0 0 3px rgba(110, 168, 254, 0.2);
+  }
+}
+
+.sign-in-remember {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.sign-in-remember label {
+  cursor: pointer;
+}
+
+.sign-in-actions {
+  margin-bottom: 1.25rem;
+}
+
+.btn-sign-in {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: #0d6efd;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-sign-in:hover {
+  background-color: #0b5ed7;
+}
+
+.sign-in-divider {
+  display: flex;
+  align-items: center;
+  margin: 1.25rem 0;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.sign-in-divider::before,
+.sign-in-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: var(--border-color);
+}
+
+.sign-in-divider span {
+  padding: 0 1rem;
+}
+
+.btn-guest {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.btn-guest:hover {
+  background-color: var(--border-color);
+}
+
+.sign-in-guest-note {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.5rem;
+}

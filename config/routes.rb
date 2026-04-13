@@ -27,5 +27,11 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Defines the root path route ("/")
-  root "dashboard#index"
+  # Signed-in users land on the dashboard; visitors see the sign-in page
+  authenticated :user do
+    root "dashboard#index", as: :authenticated_root
+  end
+  devise_scope :user do
+    root "devise/sessions#new"
+  end
 end

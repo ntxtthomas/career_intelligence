@@ -1,26 +1,37 @@
-<h2>Log in</h2>
+<div class="sign-in-wrapper">
+  <div class="sign-in-card">
+    <h1 class="sign-in-title">Career Intelligence</h1>
+    <p class="sign-in-subtitle">Job search tracking, interview prep & career strategy</p>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <p><%= f.label :email %></p>
-    <p><%= f.email_field :email, autofocus: true, autocomplete: "email" %></p>
-  </div>
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <div class="sign-in-field">
+        <%= f.label :email %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Email address" %>
+      </div>
 
-  <div class="field">
-    <p><%= f.label :password %></p>
-    <p><%= f.password_field :password, autocomplete: "current-password" %></p>
-  </div>
+      <div class="sign-in-field">
+        <%= f.label :password %>
+        <%= f.password_field :password, autocomplete: "current-password", placeholder: "Password" %>
+      </div>
 
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <p><%= f.check_box :remember_me, checked: true %></p>
-      <p><%= f.label :remember_me %></p>
+      <% if devise_mapping.rememberable? %>
+        <div class="sign-in-remember">
+          <%= f.check_box :remember_me, checked: true %>
+          <%= f.label :remember_me %>
+        </div>
+      <% end %>
+
+      <div class="sign-in-actions">
+        <%= f.submit "Sign In", class: "btn-sign-in" %>
+      </div>
+    <% end %>
+
+    <div class="sign-in-divider">
+      <span>or</span>
     </div>
-  <% end %>
 
-  <div class="actions">
-    <%= f.submit "Log in" %>
+    <%= link_to "Continue as Guest", dashboard_path, class: "btn-guest" %>
+
+    <p class="sign-in-guest-note">Browse in read-only demo mode</p>
   </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>
