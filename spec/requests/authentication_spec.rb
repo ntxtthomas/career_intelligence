@@ -62,20 +62,22 @@ RSpec.describe "Authentication", type: :request do
   end
 
   describe "data scoping" do
-    let!(:owner_company) { Company.create!(name: "Owner Co", company_type: "Product", user: user) }
-    let!(:demo_company) { Company.create!(name: "Demo Co", company_type: "Product", user: demo_user) }
+    let!(:owner_company) { Company.create!(name: "OwnerCorp99", company_type: "Product", user: user) }
+    let!(:demo_company) { Company.create!(name: "DemoCorp99", company_type: "Product", user: demo_user) }
 
     it "shows demo data to unauthenticated visitors" do
       get companies_path
-      expect(response.body).to include("Demo Co")
-      expect(response.body).not_to include("Owner Co")
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include("DemoCorp99")
+      expect(response.body).not_to include("OwnerCorp99")
     end
 
     it "shows owner data to authenticated user" do
       sign_in user
       get companies_path
-      expect(response.body).to include("Owner Co")
-      expect(response.body).not_to include("Demo Co")
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include("OwnerCorp99")
+      expect(response.body).not_to include("DemoCorp99")
     end
   end
 end
