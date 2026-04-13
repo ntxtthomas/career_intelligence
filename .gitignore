@@ -44,5 +44,4 @@ config/.env*
 
 # Engineering files
 /app/docs/*
-/wiki/*
-/career_intelligence/wiki/*
+wiki/
