@@ -3,7 +3,7 @@ class OpportunitiesController < ApplicationController
 
   # GET /opportunities or /opportunities.json
   def index
-    @opportunities = Opportunity.includes(:company, :technologies)
+    @opportunities = current_or_demo_user.opportunities.includes(:company, :technologies)
 
     if params[:company_query].present?
       company_query = "%#{params[:company_query].strip}%"
@@ -60,12 +60,12 @@ class OpportunitiesController < ApplicationController
   # GET /opportunities/new
   def new
     @opportunity = Opportunity.new
-    @companies = Company.all.order(:name)
+    @companies = current_or_demo_user.companies.order(:name)
   end
 
   # GET /opportunities/1/edit
   def edit
-    @companies = Company.all.order(:name)
+    @companies = current_or_demo_user.companies.order(:name)
   end
 
   # POST /opportunities or /opportunities.json
@@ -77,21 +77,21 @@ class OpportunitiesController < ApplicationController
         format.html { redirect_to @opportunity, notice: "Opportunity was successfully created." }
         format.json { render :show, status: :created, location: @opportunity }
       else
-        @companies = Company.all.order(:name)
+        @companies = current_or_demo_user.companies.order(:name)
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @opportunity.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # PATCH/PUT /opportunities/1 or /opportunities/1.json
+  # PATCH/PUT /opportunities/1 or /opportunities.json
   def update
     respond_to do |format|
       if @opportunity.update(opportunity_params)
         format.html { redirect_to @opportunity, notice: "Opportunity was successfully updated.", status: :see_other }
         format.json { render :show, status: :ok, location: @opportunity }
       else
-        @companies = Company.all.order(:name)
+        @companies = current_or_demo_user.companies.order(:name)
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @opportunity.errors, status: :unprocessable_entity }
       end
@@ -111,7 +111,7 @@ class OpportunitiesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_opportunity
-      @opportunity = Opportunity.find(params.expect(:id))
+      @opportunity = current_or_demo_user.opportunities.find(params.expect(:id))
     end
 
     # Only allow a list of trusted parameters through.

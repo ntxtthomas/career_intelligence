@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_23_120000) do
+ActiveRecord::Schema[8.0].define(version: 2026_04_13_130042) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -83,10 +83,12 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_23_120000) do
     t.integer "tech_disruption_risk"
     t.integer "personal_upside_score"
     t.integer "career_risk_score"
+    t.bigint "user_id", null: false
     t.index "lower((name)::text)", name: "index_companies_on_lower_name", unique: true
     t.index ["funding_stage"], name: "index_companies_on_funding_stage"
     t.index ["growth_signal"], name: "index_companies_on_growth_signal"
     t.index ["industry"], name: "index_companies_on_industry"
+    t.index ["user_id"], name: "index_companies_on_user_id"
   end
 
   create_table "contacts", force: :cascade do |t|
@@ -111,8 +113,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_23_120000) do
     t.date "last_updated"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
     t.index ["narrative_type", "role_target"], name: "index_core_narratives_on_narrative_type_and_role_target"
     t.index ["narrative_type"], name: "index_core_narratives_on_narrative_type"
+    t.index ["user_id"], name: "index_core_narratives_on_user_id"
   end
 
   create_table "interview_sessions", force: :cascade do |t|
@@ -198,7 +202,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_23_120000) do
     t.text "why_this_is_strong"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
     t.index ["guide_type"], name: "index_resource_guide_questions_on_guide_type"
+    t.index ["user_id"], name: "index_resource_guide_questions_on_user_id"
   end
 
   create_table "resource_sheets", force: :cascade do |t|
@@ -221,11 +227,13 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_23_120000) do
     t.text "notes_bullets"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
     t.index ["active"], name: "index_resource_sheets_on_active"
     t.index ["company_id"], name: "index_resource_sheets_on_company_id"
     t.index ["opportunity_id"], name: "index_resource_sheets_on_opportunity_id"
     t.index ["resource_type"], name: "index_resource_sheets_on_resource_type"
     t.index ["role_type"], name: "index_resource_sheets_on_role_type"
+    t.index ["user_id"], name: "index_resource_sheets_on_user_id"
   end
 
   create_table "star_stories", force: :cascade do |t|
@@ -243,9 +251,11 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_23_120000) do
     t.text "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
     t.index ["category"], name: "index_star_stories_on_category"
     t.index ["skills"], name: "index_star_stories_on_skills", using: :gin
     t.index ["strength_score"], name: "index_star_stories_on_strength_score"
+    t.index ["user_id"], name: "index_star_stories_on_user_id"
   end
 
   create_table "star_story_opportunities", force: :cascade do |t|
@@ -266,16 +276,35 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_23_120000) do
     t.index ["name"], name: "index_technologies_on_name", unique: true
   end
 
+  create_table "users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.boolean "demo", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["demo"], name: "index_users_on_demo"
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "companies", "users"
   add_foreign_key "contacts", "companies"
+  add_foreign_key "core_narratives", "users"
   add_foreign_key "interview_sessions", "contacts"
   add_foreign_key "interview_sessions", "opportunities"
   add_foreign_key "opportunities", "companies"
   add_foreign_key "opportunity_technologies", "opportunities"
   add_foreign_key "opportunity_technologies", "technologies"
+  add_foreign_key "resource_guide_questions", "users"
   add_foreign_key "resource_sheets", "companies"
   add_foreign_key "resource_sheets", "opportunities"
+  add_foreign_key "resource_sheets", "users"
+  add_foreign_key "star_stories", "users"
   add_foreign_key "star_story_opportunities", "opportunities"
   add_foreign_key "star_story_opportunities", "star_stories"
 end

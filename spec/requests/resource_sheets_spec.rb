@@ -1,13 +1,18 @@
 require "rails_helper"
 
 RSpec.describe "ResourceSheets", type: :request do
+  let(:user) { create(:user) }
+
+  before { sign_in user }
+
   let!(:company) do
     Company.create!(
       name: "Prep Corp",
       industry: "Technology",
       location: "Remote",
       website: "https://prep.example",
-      company_type: "Product"
+      company_type: "Product",
+      user: user
     )
   end
 
@@ -28,6 +33,7 @@ RSpec.describe "ResourceSheets", type: :request do
       role_type: "software_engineer",
       company: company,
       opportunity: opportunity,
+      user: user,
       version_label: "v1",
       active: true,
       about_me_content: "About me summary",

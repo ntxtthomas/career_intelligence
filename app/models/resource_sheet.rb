@@ -1,4 +1,5 @@
 class ResourceSheet < ApplicationRecord
+  belongs_to :user
   belongs_to :company, optional: true
   belongs_to :opportunity, optional: true
 

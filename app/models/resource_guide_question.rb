@@ -1,4 +1,6 @@
 class ResourceGuideQuestion < ApplicationRecord
+  belongs_to :user
+
   enum :guide_type, {
     behavioral: "behavioral",
     technical: "technical",

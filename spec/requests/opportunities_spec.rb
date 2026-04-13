@@ -1,13 +1,18 @@
 require "rails_helper"
 
 RSpec.describe "Opportunities", type: :request do
+  let(:user) { create(:user) }
+
+  before { sign_in user }
+
   let!(:company) do
     Company.create!(
       name: "FilterCo",
       industry: "Technology",
       location: "Remote",
       website: "https://filterco.example",
-      company_type: "Product"
+      company_type: "Product",
+      user: user
     )
   end
 

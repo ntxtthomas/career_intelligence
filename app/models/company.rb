@@ -1,4 +1,6 @@
 class Company < ApplicationRecord
+  belongs_to :user
+
   has_many :contacts, dependent: :destroy
   has_many :opportunities, dependent: :destroy
   has_many :resource_sheets, dependent: :nullify

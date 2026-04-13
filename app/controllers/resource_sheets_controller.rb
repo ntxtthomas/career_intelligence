@@ -3,7 +3,7 @@ class ResourceSheetsController < ApplicationController
   before_action :load_form_collections, only: %i[new create edit update]
 
   def index
-    @resource_sheets = ResourceSheet.includes(:company, :opportunity)
+    @resource_sheets = current_or_demo_user.resource_sheets.includes(:company, :opportunity)
 
     if params[:sort].present?
       sort_column = params[:sort]
@@ -28,14 +28,14 @@ class ResourceSheetsController < ApplicationController
   end
 
   def new
-    @resource_sheet = ResourceSheet.new(resource_type: :interview_prep)
+    @resource_sheet = current_or_demo_user.resource_sheets.new(resource_type: :interview_prep)
   end
 
   def edit
   end
 
   def create
-    @resource_sheet = ResourceSheet.new(resource_sheet_params)
+    @resource_sheet = current_or_demo_user.resource_sheets.new(resource_sheet_params)
 
     if @resource_sheet.save
       redirect_to @resource_sheet, notice: "Resource was successfully created."
@@ -58,14 +58,14 @@ class ResourceSheetsController < ApplicationController
   end
 
   def generate_from_opportunity
-    opportunity = Opportunity.includes(:company).find_by(id: params[:opportunity_id])
+    opportunity = current_or_demo_user.opportunities.includes(:company).find_by(id: params[:opportunity_id])
 
     unless opportunity
       redirect_to opportunities_path, alert: "Opportunity not found."
       return
     end
 
-    resource_sheet = ResourceSheet.create!(
+    resource_sheet = current_or_demo_user.resource_sheets.create!(
       title: "#{opportunity.position_title} Interview Prep",
       resource_type: :interview_prep,
       role_type: opportunity.role_type,
@@ -79,30 +79,30 @@ class ResourceSheetsController < ApplicationController
   end
 
   def behavioral_guide
-    @additional_questions = ResourceGuideQuestion.for_guide(:behavioral).ordered
+    @additional_questions = current_or_demo_user.resource_guide_questions.for_guide(:behavioral).ordered
   end
 
   def technical_guide
-    @additional_questions = ResourceGuideQuestion.for_guide(:technical).ordered
+    @additional_questions = current_or_demo_user.resource_guide_questions.for_guide(:technical).ordered
   end
 
   def interviewer_questions_guide
-    @additional_questions = ResourceGuideQuestion.for_guide(:interviewer_questions).ordered
+    @additional_questions = current_or_demo_user.resource_guide_questions.for_guide(:interviewer_questions).ordered
   end
 
   def acquired_questions_guide
-    @additional_questions = ResourceGuideQuestion.for_guide(:acquired_questions).ordered
+    @additional_questions = current_or_demo_user.resource_guide_questions.for_guide(:acquired_questions).ordered
   end
 
   private
 
   def set_resource_sheet
-    @resource_sheet = ResourceSheet.find(params.expect(:id))
+    @resource_sheet = current_or_demo_user.resource_sheets.find(params.expect(:id))
   end
 
   def load_form_collections
-    @companies = Company.order(:name)
-    @opportunities = Opportunity.includes(:company).references(:company).order("companies.name ASC, opportunities.position_title ASC")
+    @companies = current_or_demo_user.companies.order(:name)
+    @opportunities = current_or_demo_user.opportunities.includes(:company).references(:company).order("companies.name ASC, opportunities.position_title ASC")
     @role_type_options = Opportunity::ROLE_TYPES.map { |key, value| [ value, key ] }
     @resource_type_options = ResourceSheet::RESOURCE_TYPES.map { |key, label| [ label, key ] }
 

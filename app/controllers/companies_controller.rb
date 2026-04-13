@@ -3,7 +3,7 @@ class CompaniesController < ApplicationController
 
   # GET /companies or /companies.json
   def index
-    @companies = Company.includes(:opportunities)
+    @companies = current_or_demo_user.companies.includes(:opportunities)
     @technologies = Technology.order(:name)
 
     # Filter by technology if provided
@@ -34,7 +34,7 @@ class CompaniesController < ApplicationController
 
   # GET /companies/new
   def new
-    @company = Company.new
+    @company = current_or_demo_user.companies.new
   end
 
   # GET /companies/1/edit
@@ -43,7 +43,7 @@ class CompaniesController < ApplicationController
 
   # POST /companies or /companies.json
   def create
-    @company = Company.new(company_params)
+    @company = current_or_demo_user.companies.new(company_params)
 
     # Handle known_tech_stack_list from checkboxes
     if params[:company] && params[:company][:known_tech_stack_list].present?
@@ -94,7 +94,7 @@ class CompaniesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_company
-      @company = Company.find(params.expect(:id))
+      @company = current_or_demo_user.companies.find(params.expect(:id))
     end
 
     # Only allow a list of trusted parameters through.

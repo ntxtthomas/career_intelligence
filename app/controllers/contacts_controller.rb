@@ -3,7 +3,7 @@ class ContactsController < ApplicationController
 
   # GET /contacts or /contacts.json
   def index
-    @contacts = Contact.includes(:company)
+    @contacts = current_or_demo_user.contacts.includes(:company)
 
     # Handle sorting
     if params[:sort].present?
@@ -29,6 +29,7 @@ class ContactsController < ApplicationController
   # GET /contacts/new
   def new
     @contact = Contact.new
+    @companies = current_or_demo_user.companies.order(:name)
   end
 
   # GET /contacts/1/edit
@@ -76,7 +77,7 @@ class ContactsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_contact
-      @contact = Contact.find(params.expect(:id))
+      @contact = current_or_demo_user.contacts.find(params.expect(:id))
     end
 
     # Only allow a list of trusted parameters through.

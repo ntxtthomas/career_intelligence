@@ -4,6 +4,7 @@ class InterviewSessionsController < ApplicationController
 
   def index
     @interview_sessions = InterviewSession.includes(opportunity: :company, contact: :company)
+                                          .where(opportunities: { company_id: current_or_demo_user.company_ids })
 
     if params[:sort].present?
       sort_column = params[:sort]
@@ -72,13 +73,15 @@ class InterviewSessionsController < ApplicationController
   private
 
   def set_interview_session
-    @interview_session = InterviewSession.find(params[:id])
+    @interview_session = InterviewSession.joins(opportunity: :company)
+                                         .where(companies: { user_id: current_or_demo_user.id })
+                                         .find(params[:id])
   end
 
   def load_form_collections
-    @companies = Company.order(:name)
-    @opportunities = Opportunity.includes(:company).references(:company).order("companies.name ASC, opportunities.position_title ASC")
-    @contacts = Contact.includes(:company).references(:company).order("companies.name ASC, contacts.name ASC")
+    @companies = current_or_demo_user.companies.order(:name)
+    @opportunities = current_or_demo_user.opportunities.includes(:company).references(:company).order("companies.name ASC, opportunities.position_title ASC")
+    @contacts = current_or_demo_user.contacts.includes(:company).references(:company).order("companies.name ASC, contacts.name ASC")
 
     @opportunity_select_options = @opportunities.map do |opportunity|
       [ "#{opportunity.company.name} — #{opportunity.position_title}", opportunity.id ]
