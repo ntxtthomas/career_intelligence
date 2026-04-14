@@ -59,6 +59,12 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--text-primary);
 }
 
+h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
 p {
   color: var(--text-secondary);
 }
@@ -228,7 +234,6 @@ th a:hover {
 
 .card-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
 }
@@ -715,18 +720,31 @@ div[style*="color: red"],
 /* Table Enhancements */
 .table-container {
   overflow-x: auto;
+  overflow-y: auto;
+  max-height: 60vh;
   margin: 1rem 0;
 }
 
-.resource-sheets-table-container {
-  max-height: 480px;
-  overflow-y: auto;
+@media (min-width: 768px) {
+  .table-container {
+    max-height: 70vh;
+  }
 }
 
-.resource-sheets-table-container thead th {
+@media (min-width: 1024px) {
+  .table-container {
+    max-height: 80vh;
+  }
+}
+
+.table-container thead th {
   position: sticky;
   top: 0;
   z-index: 2;
+}
+
+.resource-sheets-table-container {
+  /* Inherits sticky header from .table-container */
 }
 
 .table-cell-wrap {

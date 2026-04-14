@@ -9,14 +9,14 @@
   </div>
 </div>
 
-<div id="contacts">
+<div id="contacts" class="table-container">
   <table>
     <thead>
       <tr>
         <th><%= sortable_link :name %></th>
         <th><%= sortable_link :title %></th>
-        <th><%= sortable_link :email %></th>
-        <th><%= sortable_link :phone %></th>
+        <th class="hidden md:table-cell"><%= sortable_link :email %></th>
+        <th class="hidden md:table-cell"><%= sortable_link :phone %></th>
         <th><%= sortable_link :company %></th>
       </tr>
     </thead>

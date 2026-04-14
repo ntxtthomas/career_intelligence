@@ -1,5 +1,5 @@
 <tr id="<%= dom_id opportunity %>" class="clickable-row" data-href="<%= opportunity_path(opportunity) %>">
-  <td>
+  <td class="hidden md:table-cell">
     <%
       badge_color = case opportunity.role_type
       when "software_engineer"
@@ -38,8 +38,8 @@
   <td><%= opportunity.position_title %></td>
   <td><%= opportunity.application_date %></td>
   <td><%= opportunity.status.present? && opportunity.status != "select" ? opportunity.status : "" %></td>
-  <td><%= opportunity.source.present? ? opportunity.source.humanize : "" %></td>
-  <td>
+  <td class="hidden md:table-cell"><%= opportunity.source.present? ? opportunity.source.humanize : "" %></td>
+  <td class="hidden md:table-cell">
     <% tech_sources = opportunity.technologies.map { |t| { name: t.name, category: t.category, source: :opportunity } } %>
     <% if opportunity.other_tech_stack.present? %>
       <% tech_sources << { name: opportunity.other_tech_stack.truncate(20), category: "Other", source: :other } %>
@@ -82,9 +82,9 @@
       <span style="color: #999;">N/A</span>
     <% end %>
   </td>
-  <td><%= opportunity.salary_range %></td>
-  <td><%= opportunity.bus_factor %></td>
-  <td><%= opportunity.chatgpt_match %></td>
-  <td><%= opportunity.jobright_match %></td>
-  <td><%= opportunity.linkedin_match %></td>
+  <td class="hidden md:table-cell"><%= opportunity.salary_range %></td>
+  <td class="hidden md:table-cell"><%= opportunity.bus_factor %></td>
+  <td class="hidden md:table-cell"><%= opportunity.chatgpt_match %></td>
+  <td class="hidden md:table-cell"><%= opportunity.jobright_match %></td>
+  <td class="hidden md:table-cell"><%= opportunity.linkedin_match %></td>
 </tr>
