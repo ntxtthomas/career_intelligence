@@ -49,6 +49,9 @@ gem "thruster", require: false
 # Shim to load environment variables from .env into ENV in development.
 gem "dotenv-rails", "~> 3.2"
 
+# Tailwind CSS integration for Rails [https://github.com/rails/tailwindcss-rails]
+gem 'tailwindcss-rails', '~> 4.4'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
