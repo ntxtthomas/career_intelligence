@@ -1,7 +1,7 @@
 <tr id="<%= dom_id contact %>" class="clickable-row" data-href="<%= contact_path(contact) %>">
   <td><%= contact.name %></td>
   <td><%= contact.title %></td>
-  <td><%= contact.email %></td>
-  <td><%= contact.phone %></td>
+  <td class="hidden md:table-cell"><%= contact.email %></td>
+  <td class="hidden md:table-cell"><%= contact.phone %></td>
   <td><%= contact.company.name if contact.company %></td>
 </tr>

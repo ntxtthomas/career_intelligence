@@ -11,8 +11,8 @@
 
   <%= yield :head %>
 
-  <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-  <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+  <%= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+  <meta name="theme-color" content="#1a1a2e">
 
   <link rel="icon" href="/icon.png" type="image/png">
   <link rel="icon" href="/icon.svg" type="image/svg+xml">
@@ -20,27 +20,58 @@
 
   <%# Includes all stylesheet files in app/assets/stylesheets %>
   <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+  <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
   <%= javascript_importmap_tags %>
 </head>
 
 <body>
   <% unless controller_name == "sessions" && action_name == "new" %>
-  <nav class="main-nav">
-    <div class="nav-container">
-      <%= link_to "Dashboard", dashboard_path, class: "nav-link nav-link-bold" %>
-      <%= link_to "Companies", companies_path, class: "nav-link" %>
-      <%= link_to "Contacts", contacts_path, class: "nav-link" %>
-      <%= link_to "Opportunities", opportunities_path, class: "nav-link" %>
-      <%= link_to "Interviews", interview_sessions_path, class: "nav-link" %>
-      <%= link_to "Resources", resource_sheets_path, class: "nav-link" %>
-      <%= link_to "STAR", star_stories_path, class: "nav-link" %>
-      <span class="nav-auth">
-        <% if user_signed_in? %>
-          <%= link_to "Sign out", destroy_user_session_path, data: { turbo_method: :delete }, class: "nav-link nav-link-auth" %>
-        <% else %>
-          <%= link_to "Sign in", new_user_session_path, class: "nav-link nav-link-auth" %>
-        <% end %>
-      </span>
+  <nav class="bg-[var(--bg-secondary)] border-b border-[var(--border-color)] sticky top-0 z-50" data-controller="nav">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="flex items-center justify-between h-14">
+        <!-- Logo / Brand -->
+        <%= link_to "Dashboard", dashboard_path, class: "text-blue-500 dark:text-blue-400 font-bold text-lg no-underline hover:text-blue-700 dark:hover:text-blue-300 shrink-0" %>
+
+        <!-- Desktop links -->
+        <div class="hidden md:flex items-center gap-1">
+          <%= link_to "Companies", companies_path, class: "text-blue-500 dark:text-blue-400 no-underline hover:text-blue-700 dark:hover:text-blue-300 px-3 py-2 rounded-md text-sm" %>
+          <%= link_to "Contacts", contacts_path, class: "text-blue-500 dark:text-blue-400 no-underline hover:text-blue-700 dark:hover:text-blue-300 px-3 py-2 rounded-md text-sm" %>
+          <%= link_to "Opportunities", opportunities_path, class: "text-blue-500 dark:text-blue-400 no-underline hover:text-blue-700 dark:hover:text-blue-300 px-3 py-2 rounded-md text-sm" %>
+          <%= link_to "Interviews", interview_sessions_path, class: "text-blue-500 dark:text-blue-400 no-underline hover:text-blue-700 dark:hover:text-blue-300 px-3 py-2 rounded-md text-sm" %>
+          <%= link_to "Resources", resource_sheets_path, class: "text-blue-500 dark:text-blue-400 no-underline hover:text-blue-700 dark:hover:text-blue-300 px-3 py-2 rounded-md text-sm" %>
+          <%= link_to "STAR", star_stories_path, class: "text-blue-500 dark:text-blue-400 no-underline hover:text-blue-700 dark:hover:text-blue-300 px-3 py-2 rounded-md text-sm" %>
+          <% if user_signed_in? %>
+            <%= link_to "Sign out", destroy_user_session_path, data: { turbo_method: :delete }, class: "text-red-500 dark:text-red-400 no-underline hover:text-red-700 dark:hover:text-red-300 px-3 py-2 rounded-md text-sm ml-2" %>
+          <% else %>
+            <%= link_to "Sign in", new_user_session_path, class: "text-blue-500 dark:text-blue-400 no-underline hover:text-blue-700 dark:hover:text-blue-300 px-3 py-2 rounded-md text-sm ml-2" %>
+          <% end %>
+        </div>
+
+        <!-- Hamburger button (mobile) -->
+        <button data-action="nav#toggle" class="md:hidden p-2 rounded-md text-[var(--text-secondary)] hover:bg-[var(--bg-tertiary)]" aria-label="Toggle menu">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Mobile menu -->
+      <div class="hidden md:hidden pb-3" data-nav-target="menu">
+        <div class="flex flex-col gap-1">
+          <%= link_to "Companies", companies_path, class: "text-blue-500 dark:text-blue-400 no-underline hover:bg-[var(--bg-tertiary)] px-3 py-2 rounded-md text-sm", data: { action: "nav#close" } %>
+          <%= link_to "Contacts", contacts_path, class: "text-blue-500 dark:text-blue-400 no-underline hover:bg-[var(--bg-tertiary)] px-3 py-2 rounded-md text-sm", data: { action: "nav#close" } %>
+          <%= link_to "Opportunities", opportunities_path, class: "text-blue-500 dark:text-blue-400 no-underline hover:bg-[var(--bg-tertiary)] px-3 py-2 rounded-md text-sm", data: { action: "nav#close" } %>
+          <%= link_to "Interviews", interview_sessions_path, class: "text-blue-500 dark:text-blue-400 no-underline hover:bg-[var(--bg-tertiary)] px-3 py-2 rounded-md text-sm", data: { action: "nav#close" } %>
+          <%= link_to "Resources", resource_sheets_path, class: "text-blue-500 dark:text-blue-400 no-underline hover:bg-[var(--bg-tertiary)] px-3 py-2 rounded-md text-sm", data: { action: "nav#close" } %>
+          <%= link_to "STAR", star_stories_path, class: "text-blue-500 dark:text-blue-400 no-underline hover:bg-[var(--bg-tertiary)] px-3 py-2 rounded-md text-sm", data: { action: "nav#close" } %>
+          <hr class="border-[var(--border-color)] my-1">
+          <% if user_signed_in? %>
+            <%= link_to "Sign out", destroy_user_session_path, data: { turbo_method: :delete, action: "nav#close" }, class: "text-red-500 dark:text-red-400 no-underline hover:bg-[var(--bg-tertiary)] px-3 py-2 rounded-md text-sm" %>
+          <% else %>
+            <%= link_to "Sign in", new_user_session_path, class: "text-blue-500 dark:text-blue-400 no-underline hover:bg-[var(--bg-tertiary)] px-3 py-2 rounded-md text-sm", data: { action: "nav#close" } %>
+          <% end %>
+        </div>
+      </div>
     </div>
   </nav>
   <% end %>

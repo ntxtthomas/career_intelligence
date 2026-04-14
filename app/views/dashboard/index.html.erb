@@ -2,151 +2,129 @@
 
 <h1>Career Intelligence Dashboard</h1>
 
-<!-- Upper Section: Main Stats, Focus Insights, Source, Weekly Apps -->
-<div style="display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem;">
-  <!-- Left Column: Total Applications & Assessed Opportunities -->
-  <div style="display: flex; flex-direction: column; gap: 1rem; flex: 0 0 280px; min-width: 280px;">
-    <div class="dashboard-cards" style="flex: 1;">
-      <div class="card card-submitted">
-        <div class="card-header">
-          <h3>Total Applications Submitted</h3>
-          <div class="card-icon">📋</div>
-        </div>
-        <div class="card-body">
-          <div class="card-number"><%= @total_resumes %></div>
-          <p class="card-subtitle">Total applications sent</p>
-        </div>
-      </div>
+<!-- Row 1: KPI Stats -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+  <div class="card card-submitted">
+    <div class="card-header justify-center text-center">
+      <h3>Total Applications Submitted</h3>
     </div>
-
-    <div class="dashboard-cards" style="flex: 1;">
-      <div class="card card-open-applications">
-        <div class="card-header">
-          <h3>Total Open Applications</h3>
-          <div class="card-icon">🚀</div>
-        </div>
-        <div class="card-body">
-          <div class="card-number"><%= @total_open_applications %></div>
-          <p class="card-subtitle">Current Applications in Flight</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="dashboard-cards" style="flex: 1;">
-      <div class="card card-assessed">
-        <div class="card-header">
-          <h3>Assessed Opportunities</h3>
-          <div class="card-icon">🎯</div>
-        </div>
-        <div class="card-body">
-          <div class="card-number"><%= @total_assessed %></div>
-          <p class="card-subtitle">Total opportunities tracked</p>
-        </div>
-      </div>
+    <div class="card-body">
+      <div class="card-number"><%= @total_resumes %></div>
+      <p class="card-subtitle">Total applications sent</p>
     </div>
   </div>
 
-  <!-- Middle Column: Top 4 Tech Skills & Source Distribution -->
-  <div style="display: flex; flex-direction: column; gap: 1rem; flex: 1; min-width: 400px;">
-    <% if @focus_insights.any? %>
-      <div class="dashboard-cards" style="flex: 1;">
-        <div class="card">
-          <div class="card-header">
-            <h3>🎯 Top 4 Tech Skills to Focus On</h3>
-            <div class="card-icon">📚</div>
+  <div class="card card-open-applications">
+    <div class="card-header justify-center text-center">
+      <h3>Total Open Applications</h3>
+    </div>
+    <div class="card-body">
+      <div class="card-number"><%= @total_open_applications %></div>
+      <p class="card-subtitle">Current Applications in Flight</p>
+    </div>
+  </div>
+
+  <div class="card card-assessed">
+    <div class="card-header justify-center text-center">
+      <h3>Assessed Opportunities</h3>
+    </div>
+    <div class="card-body">
+      <div class="card-number"><%= @total_assessed %></div>
+      <p class="card-subtitle">Total opportunities tracked</p>
+    </div>
+  </div>
+</div>
+
+<!-- Row 2: Applications by Week -->
+<div class="card mb-6">
+  <div class="card-header justify-between">
+    <h3>Applications by Week</h3>
+    <div class="card-icon">📅</div>
+  </div>
+  <div class="card-body">
+    <div class="flex flex-wrap gap-3">
+      <% @weekly_data.each do |week| %>
+        <% card_class = week[:meets_requirement] ? "card card-week card-week-success clickable-week-card flex-1 min-w-[140px]" : "card card-week card-week-warning clickable-week-card flex-1 min-w-[140px]" %>
+        <%= link_to opportunities_path(start_date: week[:start_date], end_date: week[:end_date]), class: card_class, style: "text-decoration: none; color: inherit;" do %>
+          <div class="card-header justify-center text-center">
+            <h3><%= week[:label] %></h3>
           </div>
           <div class="card-body">
-            <div style="padding: 10px 0;">
-              <% @focus_insights.each_with_index do |insight, index| %>
-                <div style="margin-bottom: 20px; padding: 15px; background-color: <%= index == 0 ? 'rgba(111, 66, 193, 0.05)' : 'var(--bg-primary, #fff)' %>; border-left: 4px solid <%= index == 0 ? '#6f42c1' : '#dee2e6' %>; border-radius: 4px;">
-                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                    <div>
-                      <span style="font-weight: bold; font-size: 16px; color: var(--text-primary, #333);"><%= index + 1 %>. <%= insight[:name] %></span>
-                      <% if index == 0 %>
-                        <span style="background-color: #6f42c1; color: white; padding: 2px 8px; border-radius: 3px; font-size: 11px; margin-left: 8px; font-weight: bold;">TOP PRIORITY</span>
-                      <% end %>
-                    </div>
-                    <% if insight[:percentage].present? %>
-                      <span style="font-size: 20px; font-weight: bold; color: #6f42c1;"><%= insight[:percentage] %>%</span>
-                    <% end %>
-                  </div>
-                  <div style="font-size: 14px; color: var(--text-secondary, #666); margin-bottom: 5px;">
-                    <%= insight[:insight] %>
-                  </div>
-                  <% if insight[:count].present? %>
-                    <div style="font-size: 12px; color: var(--text-tertiary, #999);">
-                      Appears in <strong><%= insight[:count] %></strong> of your tracked opportunities
-                    </div>
+            <div class="card-number"><%= week[:count] %></div>
+            <p class="card-subtitle">applications</p>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<!-- Row 3: Tech Skills + Source Distribution -->
+<div class="grid grid-cols-1 lg:grid-cols-5 gap-4 mb-6">
+  <% if @focus_insights.any? %>
+    <div class="card lg:col-span-3">
+      <div class="card-header justify-between">
+        <h3>🎯 Top 4 Tech Skills to Focus On</h3>
+        <div class="card-icon">📚</div>
+      </div>
+      <div class="card-body">
+        <div class="py-2.5">
+          <% @focus_insights.each_with_index do |insight, index| %>
+            <div class="mb-5 p-4 rounded <%= index == 0 ? 'bg-purple-500/5 border-l-4 border-purple-600' : 'bg-[var(--bg-primary)] border-l-4 border-gray-300' %>">
+              <div class="flex flex-wrap justify-between items-center mb-2 gap-2">
+                <div>
+                  <span class="font-bold text-base text-[var(--text-primary)]"><%= index + 1 %>. <%= insight[:name] %></span>
+                  <% if index == 0 %>
+                    <span class="bg-purple-600 text-white px-2 py-0.5 rounded text-[11px] ml-2 font-bold">TOP PRIORITY</span>
                   <% end %>
                 </div>
-              <% end %>
-            </div>
-          </div>
-        </div>
-      </div>
-    <% end %>
-
-    <% if @source_data.any? %>
-      <div class="dashboard-cards" style="flex: 0;">
-        <div class="card">
-          <div class="card-header">
-            <h3>Source Distribution</h3>
-            <div class="card-icon">🔍</div>
-          </div>
-          <div class="card-body">
-            <div class="tech-stack-chart">
-              <% max_count_source = @source_data.values.max %>
-              <% @source_data.first(6).each do |source, count| %>
-                <div class="chart-bar-container" style="margin-bottom: 8px;">
-                  <div class="chart-label" style="min-width: 100px; font-size: 13px;"><%= source&.humanize %></div>
-                  <div class="chart-bar-wrapper">
-                    <div class="chart-bar" style="width: <%= (count.to_f / max_count_source * 100).round(1) %>%;">
-                      <span class="chart-count"><%= count %></span>
-                    </div>
-                  </div>
+                <% if insight[:percentage].present? %>
+                  <span class="text-xl font-bold text-purple-600"><%= insight[:percentage] %>%</span>
+                <% end %>
+              </div>
+              <div class="text-sm text-[var(--text-secondary)] mb-1">
+                <%= insight[:insight] %>
+              </div>
+              <% if insight[:count].present? %>
+                <div class="text-xs text-[var(--text-muted)]">
+                  Appears in <strong><%= insight[:count] %></strong> of your tracked opportunities
                 </div>
               <% end %>
             </div>
-          </div>
-        </div>
-      </div>
-    <% end %>
-  </div>
-
-  <!-- Right Column: Applications by Week -->
-  <div style="display: flex; flex-direction: column; gap: 1rem; flex: 0 0 320px; min-width: 320px;">
-    <div class="dashboard-cards" style="flex: 1;">
-      <div class="card">
-        <div class="card-header">
-          <h3>Applications by Week</h3>
-          <div class="card-icon">📅</div>
-        </div>
-        <div class="card-body">
-          <div class="dashboard-cards weekly-cards" style="margin: 0;">
-            <% @weekly_data.each_with_index do |week, index| %>
-              <% card_class = week[:meets_requirement] ? "card card-week card-week-success clickable-week-card" : "card card-week card-week-warning clickable-week-card" %>
-              <%= link_to opportunities_path(start_date: week[:start_date], end_date: week[:end_date]), class: card_class, style: "text-decoration: none; color: inherit;" do %>
-                <div class="card-header">
-                  <h3><%= week[:label] %></h3>
-                  <div class="card-icon">📅</div>
-                </div>
-                <div class="card-body">
-                  <div class="card-number"><%= week[:count] %></div>
-                  <p class="card-subtitle">applications</p>
-                </div>
-              <% end %>
-            <% end %>
-          </div>
+          <% end %>
         </div>
       </div>
     </div>
-  </div>
+  <% end %>
+
+  <% if @source_data.any? %>
+    <div class="card lg:col-span-2">
+      <div class="card-header justify-between">
+        <h3>Source Distribution</h3>
+        <div class="card-icon">🔍</div>
+      </div>
+      <div class="card-body">
+        <div class="tech-stack-chart">
+          <% max_count_source = @source_data.values.max %>
+          <% @source_data.first(6).each do |source, count| %>
+            <div class="chart-bar-container mb-2">
+              <div class="chart-label min-w-[100px] text-[13px]"><%= source&.humanize %></div>
+              <div class="chart-bar-wrapper">
+                <div class="chart-bar" style="width: <%= (count.to_f / max_count_source * 100).round(1) %>%;">
+                  <span class="chart-count"><%= count %></span>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
 </div>
 
 <!-- Lower Section: Individual Role Focus Widgets -->
 <% if @all_role_insights.any? %>
   <%
-    # Define role badge colors
     role_colors = {
       "software_engineer" => "#6c757d",
       "sales_engineer" => "#28a745",
@@ -158,29 +136,29 @@
     }
   %>
   
-  <div style="margin-top: 3rem;">
-    <h2 style="margin-bottom: 1.5rem; color: var(--text-primary);">Focus Areas by Role Type</h2>
-    <div class="dashboard-cards" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+  <div class="mt-12">
+    <h1 class="mb-6 text-[var(--text-primary)]">Focus Areas by Role Type</h1>
+    <div class="role-focus-grid">
       <% @all_role_insights.each do |role_type, data| %>
-        <% next if role_type == @primary_role %> <!-- Skip primary role as it's shown above -->
+        <% next if role_type == @primary_role %>
         <% badge_color = role_colors[role_type] || "#6c757d" %>
         
         <div class="card" style="border-left-color: <%= badge_color %>;">
-          <div class="card-header">
+          <div class="card-header justify-between">
             <div>
-              <h3 style="margin-bottom: 0.5rem;"><%= data[:label] %></h3>
-              <p style="margin: 0; font-size: 12px; color: var(--text-muted);"><%= data[:count] %> <%= data[:count] == 1 ? 'opportunity' : 'opportunities' %></p>
+              <h3 class="mb-2"><%= data[:label] %></h3>
+              <p class="m-0 text-xs text-[var(--text-muted)]"><%= data[:count] %> <%= data[:count] == 1 ? 'opportunity' : 'opportunities' %></p>
             </div>
             <div class="card-icon">💼</div>
           </div>
-          <div class="card-body" style="text-align: left;">
-            <div style="padding: 5px 0;">
+          <div class="card-body text-left">
+            <div class="py-1">
               <% data[:insights].each_with_index do |insight, index| %>
-                <div style="margin-bottom: 15px; padding-bottom: 15px; <%= index < data[:insights].length - 1 ? 'border-bottom: 1px solid var(--border-color);' : '' %>">
-                  <div style="font-weight: 600; font-size: 14px; color: var(--text-primary); margin-bottom: 4px;">
+                <div class="mb-4 pb-4 <%= index < data[:insights].length - 1 ? 'border-b border-[var(--border-color)]' : '' %>">
+                  <div class="font-semibold text-sm text-[var(--text-primary)] mb-1">
                     <%= index + 1 %>. <%= insight[:name] %>
                   </div>
-                  <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.4;">
+                  <div class="text-xs text-[var(--text-secondary)] leading-relaxed">
                     <%= insight[:insight] %>
                   </div>
                 </div>

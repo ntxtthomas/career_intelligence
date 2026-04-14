@@ -1,1 +1,22 @@
 @import "tailwindcss";
+
+@layer components {
+  /* Role focus grid */
+  .role-focus-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .role-focus-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .role-focus-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+}

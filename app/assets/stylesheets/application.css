@@ -59,6 +59,12 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--text-primary);
 }
 
+h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
 p {
   color: var(--text-secondary);
 }
@@ -228,7 +234,6 @@ th a:hover {
 
 .card-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
 }
@@ -409,50 +414,7 @@ th a:hover {
   font-size: 0.9rem;
 }
 
-/* Navigation styles */
-.main-nav {
-  background-color: var(--bg-secondary);
-  padding: 1rem;
-  border-bottom: 1px solid var(--border-color);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
-
-.nav-container {
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.nav-link {
-  text-decoration: none;
-  color: #007bff;
-  transition: color 0.2s ease;
-  padding: 0.5rem 1rem;
-  text-align: center;
-  flex: 1;
-}
-
-.nav-link:hover {
-  color: #0056b3;
-}
-
-.nav-link-bold {
-  font-weight: bold;
-}
-
-@media (prefers-color-scheme: dark) {
-  .nav-link {
-    color: #6ea8fe;
-  }
-  
-  .nav-link:hover {
-    color: #9ec5fe;
-  }
-}
+/* Navigation now handled by Tailwind in layout — see application.html.erb */
 
 /* Form inputs dark theme support */
 input[type="text"],
@@ -758,18 +720,31 @@ div[style*="color: red"],
 /* Table Enhancements */
 .table-container {
   overflow-x: auto;
+  overflow-y: auto;
+  max-height: 60vh;
   margin: 1rem 0;
 }
 
-.resource-sheets-table-container {
-  max-height: 480px;
-  overflow-y: auto;
+@media (min-width: 768px) {
+  .table-container {
+    max-height: 70vh;
+  }
 }
 
-.resource-sheets-table-container thead th {
+@media (min-width: 1024px) {
+  .table-container {
+    max-height: 80vh;
+  }
+}
+
+.table-container thead th {
   position: sticky;
   top: 0;
   z-index: 2;
+}
+
+.resource-sheets-table-container {
+  /* Inherits sticky header from .table-container */
 }
 
 .table-cell-wrap {
@@ -1138,7 +1113,7 @@ div[style*="color: red"],
 /* Print Styles for PDF Export */
 @media print {
   /* Hide navigation and UI elements */
-  .main-nav,
+  nav,
   .page-actions,
   .form-actions,
   .btn,

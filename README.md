@@ -22,27 +22,29 @@ A Rails 8 application for tracking, analyzing, and strategizing a job search. Bu
 - **Resource Sheets & Interview Guides** — Auto-generated prep sheets from opportunities, plus behavioral, technical, interviewer, and acquired question guides
 - **CSV Exports** — Export opportunities, interview sessions, and STAR stories for external analysis
 - **Demo Mode** — Read-only access for unauthenticated visitors to explore the app without an account
+- **PWA Support** — Installable as a mobile app with service worker caching, web app manifest, and offline-ready static assets
+- **Responsive Design** — Mobile-friendly layouts with adaptive dashboard grid, responsive table column visibility, and sticky table headers
 - **CI/CD Pipeline** — Brakeman security scanning, RuboCop linting, importmap audit, and RSpec test suite via GitHub Actions
 
 ---
 
 ## Tech Stack
 
-| Layer           | Technology                                     |
-| --------------- | ---------------------------------------------- |
-| Framework       | Ruby on Rails 8.0.3                            |
-| Language        | Ruby 3.4.6                                     |
-| Database        | PostgreSQL                                     |
-| Authentication  | Devise 5.0                                     |
-| Frontend        | Hotwire (Turbo + Stimulus), Importmap          |
-| Asset Pipeline  | Propshaft                                      |
-| Background Jobs | Solid Queue                                    |
-| Caching         | Solid Cache                                    |
-| WebSockets      | Solid Cable                                    |
-| Testing         | RSpec, Shoulda Matchers, Factory Bot, Capybara |
-| Security        | Brakeman                                       |
-| Linting         | RuboCop (Rails Omakase)                        |
-| Deployment      | Docker, Kamal, Thruster                        |
+| Layer           | Technology                                            |
+| --------------- | ----------------------------------------------------- |
+| Framework       | Ruby on Rails 8.0.3                                   |
+| Language        | Ruby 3.4.6                                            |
+| Database        | PostgreSQL                                            |
+| Authentication  | Devise 5.0                                            |
+| Frontend        | Hotwire (Turbo + Stimulus), Importmap, Tailwind CSS 4 |
+| Asset Pipeline  | Propshaft                                             |
+| Background Jobs | Solid Queue                                           |
+| Caching         | Solid Cache                                           |
+| WebSockets      | Solid Cable                                           |
+| Testing         | RSpec, Shoulda Matchers, Factory Bot, Capybara        |
+| Security        | Brakeman                                              |
+| Linting         | RuboCop (Rails Omakase)                               |
+| Deployment      | Docker, Kamal, Thruster                               |
 
 ---
 
@@ -138,7 +140,8 @@ app/
 
 A summary of planned enhancements — see the [Roadmap wiki page](../../wiki/Roadmap-&-Future-Enhancements) for details.
 
-- [ ] PWA for mobile access
+- [x] PWA for mobile access
+- [x] Responsive design for smaller screens
 - [ ] Improved sign-in page UI
 - [ ] Dockerized deployment
 - [ ] Public deployment (URL TBD)

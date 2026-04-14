@@ -20,10 +20,10 @@
 					<th><%= sortable_link :contact, "Contact" %></th>
 					<th><%= sortable_link :stage, "Stage" %></th>
 					<th><%= sortable_link :scheduled_at, "Scheduled" %></th>
-					<th><%= sortable_link :format, "Format" %></th>
-					<th><%= sortable_link :status, "Status" %></th>
-					<th><%= sortable_link :overall_signal, "Signal" %></th>
-					<th><%= sortable_link :confidence_score, "Confidence" %></th>
+					<th class="hidden md:table-cell"><%= sortable_link :format, "Format" %></th>
+					<th class="hidden md:table-cell"><%= sortable_link :status, "Status" %></th>
+					<th class="hidden md:table-cell"><%= sortable_link :overall_signal, "Signal" %></th>
+					<th class="hidden md:table-cell"><%= sortable_link :confidence_score, "Confidence" %></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -34,10 +34,10 @@
 						<td><%= interview_session.contact&.name || "—" %></td>
 						<td><%= interview_session.stage.humanize %></td>
 						<td><%= interview_session.scheduled_at&.strftime("%b %d, %Y %I:%M %p") || "—" %></td>
-						<td><%= interview_session.format.humanize %></td>
-						<td><%= interview_session.status.humanize %></td>
-						<td><%= interview_session.overall_signal&.humanize || "—" %></td>
-						<td><%= interview_session.confidence_score.nil? ? "—" : interview_session.confidence_score %></td>
+						<td class="hidden md:table-cell"><%= interview_session.format.humanize %></td>
+						<td class="hidden md:table-cell"><%= interview_session.status.humanize %></td>
+						<td class="hidden md:table-cell"><%= interview_session.overall_signal&.humanize || "—" %></td>
+						<td class="hidden md:table-cell"><%= interview_session.confidence_score.nil? ? "—" : interview_session.confidence_score %></td>
 					</tr>
 				<% end %>
 			</tbody>

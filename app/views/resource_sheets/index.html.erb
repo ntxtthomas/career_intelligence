@@ -15,26 +15,26 @@
       <thead>
         <tr>
           <th><%= sortable_link :title, "Title" %></th>
-          <th><%= sortable_link :resource_type, "Type" %></th>
+          <th class="hidden md:table-cell"><%= sortable_link :resource_type, "Type" %></th>
           <th><%= sortable_link :role_type, "Role" %></th>
           <th><%= sortable_link :company, "Company" %></th>
           <th><%= sortable_link :opportunity, "Opportunity" %></th>
-          <th><%= sortable_link :version_label, "Version" %></th>
-          <th><%= sortable_link :active, "Active" %></th>
-          <th><%= sortable_link :updated_at, "Updated" %></th>
+          <th class="hidden md:table-cell"><%= sortable_link :version_label, "Version" %></th>
+          <th class="hidden md:table-cell"><%= sortable_link :active, "Active" %></th>
+          <th class="hidden md:table-cell"><%= sortable_link :updated_at, "Updated" %></th>
         </tr>
       </thead>
       <tbody>
         <% @resource_sheets.each do |resource_sheet| %>
           <tr id="<%= dom_id resource_sheet %>" class="clickable-row" data-href="<%= resource_sheet_path(resource_sheet) %>">
             <td><%= resource_sheet.title %></td>
-            <td><%= resource_sheet.resource_type.humanize %></td>
+            <td class="hidden md:table-cell"><%= resource_sheet.resource_type.humanize %></td>
             <td><%= resource_sheet.role_type.present? ? Opportunity::ROLE_TYPES[resource_sheet.role_type] : "—" %></td>
             <td><%= resource_sheet.company&.name || "—" %></td>
             <td><%= resource_sheet.opportunity&.position_title || "—" %></td>
-            <td><%= resource_sheet.version_label.presence || "—" %></td>
-            <td><%= resource_sheet.active ? "Yes" : "No" %></td>
-            <td><%= resource_sheet.updated_at.strftime("%b %d, %Y") %></td>
+            <td class="hidden md:table-cell"><%= resource_sheet.version_label.presence || "—" %></td>
+            <td class="hidden md:table-cell"><%= resource_sheet.active ? "Yes" : "No" %></td>
+            <td class="hidden md:table-cell"><%= resource_sheet.updated_at.strftime("%b %d, %Y") %></td>
           </tr>
         <% end %>
       </tbody>
