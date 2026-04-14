@@ -6,22 +6,34 @@
   </div>
 </div>
 
-<div class="card" style="margin-bottom: 20px;">
-  <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap; width: 100%;">
-    <%= form_with url: companies_path, method: :get, local: true, style: "display: flex; gap: 10px; align-items: center; flex-wrap: wrap;" do |f| %>
-      <label for="technology_filter" class="form-label" style="margin: 0;">Filter by technology:</label>
-      <%= f.select :technology, 
-          options_from_collection_for_select(@technologies, :name, :name, @selected_technology),
-          { include_blank: "All Technologies" },
-          id: "technology_filter",
-          class: "form-select",
-          style: "width: auto; min-width: 200px;" %>
-      <%= f.submit "Filter", class: "btn btn-primary" %>
-      <% if @selected_technology.present? %>
-        <%= link_to "Clear", companies_path, class: "btn btn-secondary" %>
+<div class="card opportunities-filters-card">
+  <div class="opportunities-toolbar">
+    <div class="opportunities-filter-group">
+      <%= form_with url: companies_path, method: :get, local: true, class: "opportunities-filter-form" do |f| %>
+        <%= hidden_field_tag :company_query, params[:company_query] %>
+        <label for="technology_filter" class="form-label opportunities-status-label"></label>
+        <%= f.select :technology, 
+            options_from_collection_for_select(@technologies, :name, :name, @selected_technology),
+            { include_blank: "All Technologies" },
+            id: "technology_filter",
+            class: "form-select opportunities-status-select" %>
+        <%= f.submit "Filter", class: "btn btn-primary" %>
+        <% if @selected_technology.present? %>
+          <%= link_to "Clear", companies_path(company_query: params[:company_query]), class: "btn btn-secondary" %>
+        <% end %>
       <% end %>
-    <% end %>
-    <div style="margin-left: auto; display: flex; gap: 10px;">
+      |
+      <%= form_with url: companies_path, method: :get, local: true, class: "opportunities-filter-form" do |f| %>
+        <%= hidden_field_tag :technology, params[:technology] %>
+        <%= f.text_field :company_query, value: params[:company_query], placeholder: "Search company", class: "form-input opportunities-company-input" %>
+        <%= f.submit "Search", class: "btn btn-primary" %>
+        <% if params[:company_query].present? %>
+          <%= link_to "Clear", companies_path(technology: params[:technology]), class: "btn btn-secondary" %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="opportunities-actions">
       <%= link_to "+", new_company_path, class: "btn btn-primary btn-lg" %>
     </div>
   </div>

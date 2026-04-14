@@ -6,6 +6,12 @@ class CompaniesController < ApplicationController
     @companies = current_or_demo_user.companies.includes(:opportunities)
     @technologies = Technology.order(:name)
 
+    # Filter by company name search
+    if params[:company_query].present?
+      company_query = "%#{params[:company_query].strip}%"
+      @companies = @companies.where("companies.name ILIKE ?", company_query)
+    end
+
     # Filter by technology if provided
     if params[:technology].present?
       tech = Technology.find_by(name: params[:technology])
