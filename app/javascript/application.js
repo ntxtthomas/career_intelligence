@@ -4,6 +4,11 @@ import "trix";
 import "@rails/actiontext";
 import "controllers";
 
+// Register service worker for PWA support
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/service-worker.js");
+}
+
 // Make table rows clickable - works with Turbo navigation
 function initializeClickableRows() {
   const clickableRows = document.querySelectorAll(".clickable-row");
