@@ -409,50 +409,7 @@ th a:hover {
   font-size: 0.9rem;
 }
 
-/* Navigation styles */
-.main-nav {
-  background-color: var(--bg-secondary);
-  padding: 1rem;
-  border-bottom: 1px solid var(--border-color);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
-
-.nav-container {
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.nav-link {
-  text-decoration: none;
-  color: #007bff;
-  transition: color 0.2s ease;
-  padding: 0.5rem 1rem;
-  text-align: center;
-  flex: 1;
-}
-
-.nav-link:hover {
-  color: #0056b3;
-}
-
-.nav-link-bold {
-  font-weight: bold;
-}
-
-@media (prefers-color-scheme: dark) {
-  .nav-link {
-    color: #6ea8fe;
-  }
-  
-  .nav-link:hover {
-    color: #9ec5fe;
-  }
-}
+/* Navigation now handled by Tailwind in layout — see application.html.erb */
 
 /* Form inputs dark theme support */
 input[type="text"],
@@ -1138,7 +1095,7 @@ div[style*="color: red"],
 /* Print Styles for PDF Export */
 @media print {
   /* Hide navigation and UI elements */
-  .main-nav,
+  nav,
   .page-actions,
   .form-actions,
   .btn,
