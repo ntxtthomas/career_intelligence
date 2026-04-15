@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+# Deployment helper scripts for Career Intelligence on AWS
+# No secrets stored here — values come from AWS Parameter Store or environment
+#
+# Usage: source bin/deploy (loads functions into your shell)
+#   then call individual functions as needed
+
+set -euo pipefail
+
+# === Configuration (no secrets) ===
+AWS_REGION="us-east-1"
+AWS_ACCOUNT_ID="202986214088"
+ECR_REPO="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/career_intelligence"
+EC2_HOST="3.231.207.46"
+EC2_USER="ec2-user"
+SSH_KEY="~/.ssh/career-intel-key.pem"
+RDS_HOST="career-intel-db.ctdpbp3ytlgz.us-east-1.rds.amazonaws.com"
+DB_USER="career_intel"
+DB_NAME="career_intelligence_production"
+
+# === Local Commands ===
+
+deploy_ssh() {
+  echo "Connecting to EC2..."
+  ssh -i $SSH_KEY ${EC2_USER}@${EC2_HOST}
+}
+
+deploy_build_and_push() {
+  echo "Authenticating with ECR..."
+  aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+
+  echo "Building image..."
+  docker build -t career_intelligence .
+
+  echo "Tagging..."
+  docker tag career_intelligence:latest ${ECR_REPO}:latest
+
+  echo "Pushing to ECR..."
+  docker push ${ECR_REPO}:latest
+
+  echo "Done. SSH in and run: deploy_pull_and_restart"
+}
+
+# === EC2 Commands (run after SSH) ===
+
+deploy_pull_and_restart() {
+  echo "Authenticating with ECR..."
+  aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 202986214088.dkr.ecr.us-east-1.amazonaws.com
+
+  echo "Pulling latest image..."
+  docker pull 202986214088.dkr.ecr.us-east-1.amazonaws.com/career_intelligence:latest
+
+  echo "Stopping old container..."
+  docker stop career_intelligence 2>/dev/null || true
+  docker rm career_intelligence 2>/dev/null || true
+
+  echo "Starting new container..."
+  echo ">>> You must provide DATABASE_PASSWORD and RAILS_MASTER_KEY <<<"
+  echo "Run this manually:"
+  cat <<'EOF'
+docker run -d \
+  --name career_intelligence \
+  -p 80:80 \
+  -e RAILS_ENV=production \
+  -e RAILS_MASTER_KEY=<from config/master.key> \
+  -e DATABASE_NAME=career_intelligence_production \
+  -e DATABASE_HOST=career-intel-db.ctdpbp3ytlgz.us-east-1.rds.amazonaws.com \
+  -e DATABASE_PORT=5432 \
+  -e DATABASE_USER=career_intel \
+  -e 'DATABASE_PASSWORD=<from Parameter Store>' \
+  -e PGSSLMODE=require \
+  202986214088.dkr.ecr.us-east-1.amazonaws.com/career_intelligence:latest
+EOF
+}
+
+deploy_psql() {
+  echo "Connecting to RDS (will prompt for password)..."
+  psql -h career-intel-db.ctdpbp3ytlgz.us-east-1.rds.amazonaws.com -U career_intel -d career_intelligence_production
+}
+
+deploy_logs() {
+  docker logs -f career_intelligence
+}
+
+deploy_status() {
+  docker ps
+}
+
+echo "Deploy functions loaded. Available commands:"
+echo "  deploy_ssh              - SSH into EC2"
+echo "  deploy_build_and_push   - Build Docker image and push to ECR"
+echo "  deploy_pull_and_restart - (on EC2) Pull latest and show run command"
+echo "  deploy_psql             - (on EC2) Connect to RDS via psql"
+echo "  deploy_logs             - (on EC2) Tail container logs"
+echo "  deploy_status           - (on EC2) Show running containers"
