@@ -10,7 +10,7 @@
   <div style="display: flex; flex-direction: column;">
     <h3 style="margin: 0 0 1rem 0;">Opportunities (<%= @company.opportunities.count %>)</h3>
     <% if @company.opportunities.any? %>
-      <div style="display: flex; flex-direction: column; gap: 10px;">
+      <div style="display: flex; flex-direction: column; gap: 10px; flex: 1;">
         <% @company.opportunities.each do |opportunity| %>
           <div style="padding: 12px; border: 1px solid #ddd; border-radius: 4px; background-color: var(--bg-secondary, #f8f9fa); cursor: pointer; transition: all 0.2s ease; min-height: 100px; display: flex; flex-direction: column; justify-content: center;" onmouseover="this.style.backgroundColor='#e9ecef'" onmouseout="this.style.backgroundColor='var(--bg-secondary, #f8f9fa)'" onclick="window.location.href='<%= opportunity_path(opportunity) %>'">
             <div style="display: flex; justify-content: space-between; align-items: start;">
@@ -33,7 +33,7 @@
         <% end %>
       </div>
     <% else %>
-      <div style="padding: 12px; border: 1px solid #ddd; border-radius: 4px; background-color: var(--bg-secondary, #f8f9fa); text-align: center; color: #666; min-height: 100px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+      <div style="padding: 12px; border: 1px solid #ddd; border-radius: 4px; background-color: var(--bg-secondary, #f8f9fa); text-align: center; color: #666; min-height: 100px; display: flex; flex-direction: column; justify-content: center; align-items: center; flex: 1;">
         <p>No opportunities found</p>
         <%= link_to "Add opportunity", new_opportunity_path(company_id: @company.id), style: "color: #0d6efd; text-decoration: none;" %>
       </div>
@@ -44,7 +44,7 @@
   <div style="display: flex; flex-direction: column;">
     <h3 style="margin: 0 0 1rem 0;">Contacts (<%= @company.contacts.count %>)</h3>
     <% if @company.contacts.any? %>
-      <div style="display: flex; flex-direction: column; gap: 10px;">
+      <div style="display: flex; flex-direction: column; gap: 10px; flex: 1;">
         <% @company.contacts.each do |contact| %>
           <div style="padding: 12px; border: 1px solid #ddd; border-radius: 4px; background-color: var(--bg-secondary, #f8f9fa); cursor: pointer; transition: all 0.2s ease; min-height: 100px; display: flex; flex-direction: column; justify-content: center;" onmouseover="this.style.backgroundColor='#e9ecef'" onmouseout="this.style.backgroundColor='var(--bg-secondary, #f8f9fa)'" onclick="window.location.href='<%= contact_path(contact) %>'">
             <div style="display: flex; justify-content: space-between; align-items: start;">
@@ -71,7 +71,7 @@
         <% end %>
       </div>
     <% else %>
-      <div style="padding: 12px; border: 1px solid #ddd; border-radius: 4px; background-color: var(--bg-secondary, #f8f9fa); text-align: center; color: #666; min-height: 100px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+      <div style="padding: 12px; border: 1px solid #ddd; border-radius: 4px; background-color: var(--bg-secondary, #f8f9fa); text-align: center; color: #666; min-height: 100px; display: flex; flex-direction: column; justify-content: center; align-items: center; flex: 1;">
         <p>No contacts found</p>
         <%= link_to "Add contact", new_contact_path(company_id: @company.id), style: "color: #0d6efd; text-decoration: none;" %>
       </div>

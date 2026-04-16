@@ -3,7 +3,7 @@
 <div class="page-header">
   <div class="page-header-content">
     <div>
-      <h1 class="page-title"><%= @resource_sheet.title %></h1>
+      <h1 class="page-title" style="padding-top: 1.5rem;"><%= @resource_sheet.title %></h1>
       <p style="margin: 0.5rem 0 0 0; color: var(--text-muted); font-size: 0.95rem;">
         <strong>Type:</strong> <%= @resource_sheet.resource_type.humanize %> |
         <strong>Role:</strong> <%= @resource_sheet.role_type.present? ? Opportunity::ROLE_TYPES[@resource_sheet.role_type] : "—" %> |
