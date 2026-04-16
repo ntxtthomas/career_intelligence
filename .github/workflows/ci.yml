@@ -4,6 +4,7 @@ on:
   pull_request:
   push:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   scan_ruby:
@@ -105,7 +106,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: github.event_name == 'workflow_dispatch'
     needs: [scan_ruby, scan_js, lint, test]
 
     steps:
@@ -133,49 +134,65 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
-      - name: Deploy to EC2
+      - name: Deploy to EC2 via SSM
         env:
-          EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
-          EC2_HOST: ${{ secrets.EC2_HOST }}
+          INSTANCE_ID: ${{ secrets.EC2_INSTANCE_ID }}
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
           DATABASE_PASSWORD: ${{ secrets.PRODUCTION_DATABASE_PASSWORD }}
         run: |
-          echo "$EC2_SSH_KEY" > /tmp/ec2_key.pem
-          chmod 600 /tmp/ec2_key.pem
+          COMMAND_ID=$(aws ssm send-command \
+            --instance-ids "$INSTANCE_ID" \
+            --document-name "AWS-RunShellScript" \
+            --parameters "commands=[
+              'set -e',
+              'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ECR_REGISTRY}',
+              'docker pull ${ECR_REGISTRY}/career_intelligence:latest',
+              'docker stop career_intelligence 2>/dev/null || true',
+              'docker rm career_intelligence 2>/dev/null || true',
+              'docker run -d --name career_intelligence --restart unless-stopped -p 80:80 -e RAILS_ENV=production -e RAILS_MASTER_KEY=${RAILS_MASTER_KEY} -e DATABASE_NAME=career_intelligence_production -e DATABASE_HOST=career-intel-db.ctdpbp3ytlgz.us-east-1.rds.amazonaws.com -e DATABASE_PORT=5432 -e DATABASE_USER=career_intel -e DATABASE_PASSWORD=${DATABASE_PASSWORD} -e PGSSLMODE=require ${ECR_REGISTRY}/career_intelligence:latest',
+              'sleep 5',
+              'docker ps | grep career_intelligence',
+              'echo Deployment complete!'
+            ]" \
+            --region us-east-1 \
+            --query 'Command.CommandId' \
+            --output text)
 
-          ssh -o StrictHostKeyChecking=no -i /tmp/ec2_key.pem ec2-user@$EC2_HOST << DEPLOY_SCRIPT
-            set -e
+          echo "SSM Command ID: $COMMAND_ID"
 
-            # Authenticate with ECR
-            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ECR_REGISTRY}
+          # Wait for command to complete
+          for i in $(seq 1 30); do
+            STATUS=$(aws ssm get-command-invocation \
+              --command-id "$COMMAND_ID" \
+              --instance-id "$INSTANCE_ID" \
+              --region us-east-1 \
+              --query 'Status' \
+              --output text 2>/dev/null || echo "InProgress")
 
-            # Pull latest image
-            docker pull ${ECR_REGISTRY}/career_intelligence:latest
+            if [ "$STATUS" = "Success" ]; then
+              echo "Deploy succeeded!"
+              aws ssm get-command-invocation \
+                --command-id "$COMMAND_ID" \
+                --instance-id "$INSTANCE_ID" \
+                --region us-east-1 \
+                --query 'StandardOutputContent' \
+                --output text
+              exit 0
+            elif [ "$STATUS" = "Failed" ] || [ "$STATUS" = "Cancelled" ] || [ "$STATUS" = "TimedOut" ]; then
+              echo "Deploy failed with status: $STATUS"
+              aws ssm get-command-invocation \
+                --command-id "$COMMAND_ID" \
+                --instance-id "$INSTANCE_ID" \
+                --region us-east-1 \
+                --query 'StandardErrorContent' \
+                --output text
+              exit 1
+            fi
 
-            # Stop and remove old container
-            docker stop career_intelligence 2>/dev/null || true
-            docker rm career_intelligence 2>/dev/null || true
+            echo "Waiting... ($STATUS)"
+            sleep 10
+          done
 
-            # Start new container
-            docker run -d \
-              --name career_intelligence \
-              --restart unless-stopped \
-              -p 80:80 \
-              -e RAILS_ENV=production \
-              -e RAILS_MASTER_KEY=${RAILS_MASTER_KEY} \
-              -e DATABASE_NAME=career_intelligence_production \
-              -e DATABASE_HOST=career-intel-db.ctdpbp3ytlgz.us-east-1.rds.amazonaws.com \
-              -e DATABASE_PORT=5432 \
-              -e DATABASE_USER=career_intel \
-              -e DATABASE_PASSWORD=${DATABASE_PASSWORD} \
-              -e PGSSLMODE=require \
-              ${ECR_REGISTRY}/career_intelligence:latest
-
-            # Wait for container to start and verify health
-            sleep 5
-            docker ps | grep career_intelligence
-            echo "Deployment complete!"
-          DEPLOY_SCRIPT
-
-          rm -f /tmp/ec2_key.pem
+          echo "Timed out waiting for deployment"
+          exit 1
