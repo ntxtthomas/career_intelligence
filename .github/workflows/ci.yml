@@ -141,25 +141,50 @@ jobs:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
           DATABASE_PASSWORD: ${{ secrets.PRODUCTION_DATABASE_PASSWORD }}
         run: |
+          # Build deploy script with all variables baked in
+          cat > /tmp/deploy.sh << 'SCRIPT_END'
+          #!/bin/bash
+          set -e
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin __ECR_REGISTRY__
+          docker pull __ECR_REGISTRY__/career_intelligence:latest
+          docker stop career_intelligence 2>/dev/null || true
+          docker rm career_intelligence 2>/dev/null || true
+          docker run -d \
+            --name career_intelligence \
+            --restart unless-stopped \
+            -p 80:80 \
+            -e RAILS_ENV=production \
+            -e RAILS_MASTER_KEY=__RAILS_MASTER_KEY__ \
+            -e DATABASE_NAME=career_intelligence_production \
+            -e DATABASE_HOST=career-intel-db.ctdpbp3ytlgz.us-east-1.rds.amazonaws.com \
+            -e DATABASE_PORT=5432 \
+            -e DATABASE_USER=career_intel \
+            -e DATABASE_PASSWORD=__DATABASE_PASSWORD__ \
+            -e PGSSLMODE=require \
+            __ECR_REGISTRY__/career_intelligence:latest
+          sleep 5
+          docker ps | grep career_intelligence
+          echo "Deployment complete!"
+          SCRIPT_END
+
+          # Replace placeholders with actual values
+          sed -i "s|__ECR_REGISTRY__|${ECR_REGISTRY}|g" /tmp/deploy.sh
+          sed -i "s|__RAILS_MASTER_KEY__|${RAILS_MASTER_KEY}|g" /tmp/deploy.sh
+          sed -i "s|__DATABASE_PASSWORD__|${DATABASE_PASSWORD}|g" /tmp/deploy.sh
+
+          # Base64 encode and send via SSM
+          ENCODED=$(base64 -w 0 /tmp/deploy.sh)
+
           COMMAND_ID=$(aws ssm send-command \
             --instance-ids "$INSTANCE_ID" \
             --document-name "AWS-RunShellScript" \
-            --parameters "commands=[
-              'set -e',
-              'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ECR_REGISTRY}',
-              'docker pull ${ECR_REGISTRY}/career_intelligence:latest',
-              'docker stop career_intelligence 2>/dev/null || true',
-              'docker rm career_intelligence 2>/dev/null || true',
-              'docker run -d --name career_intelligence --restart unless-stopped -p 80:80 -e RAILS_ENV=production -e RAILS_MASTER_KEY=${RAILS_MASTER_KEY} -e DATABASE_NAME=career_intelligence_production -e DATABASE_HOST=career-intel-db.ctdpbp3ytlgz.us-east-1.rds.amazonaws.com -e DATABASE_PORT=5432 -e DATABASE_USER=career_intel -e DATABASE_PASSWORD=${DATABASE_PASSWORD} -e PGSSLMODE=require ${ECR_REGISTRY}/career_intelligence:latest',
-              'sleep 5',
-              'docker ps | grep career_intelligence',
-              'echo Deployment complete!'
-            ]" \
+            --parameters "{\"commands\":[\"echo $ENCODED | base64 -d > /tmp/deploy.sh && chmod +x /tmp/deploy.sh && /tmp/deploy.sh && rm -f /tmp/deploy.sh\"]}" \
             --region us-east-1 \
             --query 'Command.CommandId' \
             --output text)
 
           echo "SSM Command ID: $COMMAND_ID"
+          rm -f /tmp/deploy.sh
 
           # Wait for command to complete
           for i in $(seq 1 30); do
