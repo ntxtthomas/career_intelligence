@@ -2,6 +2,8 @@
 
 A Rails 8 application for tracking, analyzing, and strategizing a job search. Built to centralize opportunity tracking, interview preparation, technology demand analysis, and career narrative development — turning raw job search activity into actionable intelligence.
 
+**Live:** [https://mycareerintel.com](https://mycareerintel.com)
+
 > **Portfolio context:** This project demonstrates AI-assisted rapid development workflow — building a working, data-driven solution to a real automation need using modern Rails conventions.
 
 ![Dashboard Screenshot](app/assets/images/dashboard-screenshot.png)
@@ -44,7 +46,7 @@ A Rails 8 application for tracking, analyzing, and strategizing a job search. Bu
 | Testing         | RSpec, Shoulda Matchers, Factory Bot, Capybara        |
 | Security        | Brakeman                                              |
 | Linting         | RuboCop (Rails Omakase)                               |
-| Deployment      | Docker, Kamal, Thruster                               |
+| Deployment      | Docker, AWS (EC2, RDS, ALB, ECR, Route 53, ACM, SSM)  |
 
 ---
 
@@ -111,12 +113,13 @@ bundle exec rspec
 
 The CI pipeline also runs on every PR and push to `main`:
 
-| Job         | Description                              |
-| ----------- | ---------------------------------------- |
-| `scan_ruby` | Brakeman security analysis               |
-| `scan_js`   | Importmap dependency audit               |
-| `lint`      | RuboCop style enforcement                |
-| `test`      | Full RSpec suite with PostgreSQL service |
+| Job         | Description                                                              |
+| ----------- | ------------------------------------------------------------------------ |
+| `scan_ruby` | Brakeman security analysis                                               |
+| `scan_js`   | Importmap dependency audit                                               |
+| `lint`      | RuboCop style enforcement                                                |
+| `test`      | Full RSpec suite with PostgreSQL service                                 |
+| `deploy`    | Build & push Docker image to ECR, deploy to EC2 via SSM (manual trigger) |
 
 ---
 
@@ -142,10 +145,10 @@ A summary of planned enhancements — see the [Roadmap wiki page](../../wiki/Roa
 
 - [x] PWA for mobile access
 - [x] Responsive design for smaller screens
+- [x] Dockerized deployment (AWS EC2 + Docker)
+- [x] Public deployment — [mycareerintel.com](https://mycareerintel.com)
+- [x] Enhanced GitHub Actions CI/CD (SSM deploy with manual trigger)
 - [ ] Improved sign-in page UI
-- [ ] Dockerized deployment
-- [ ] Public deployment (URL TBD)
-- [ ] Enhanced GitHub Actions CI/CD
 - [ ] RAG/VectorDB for refined data analysis
 - [ ] Wins tracking system
 - [ ] GraphQL endpoint
