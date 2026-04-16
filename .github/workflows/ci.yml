@@ -141,50 +141,56 @@ jobs:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
           DATABASE_PASSWORD: ${{ secrets.PRODUCTION_DATABASE_PASSWORD }}
         run: |
-          # Build deploy script with all variables baked in
-          cat > /tmp/deploy.sh << 'SCRIPT_END'
-          #!/bin/bash
-          set -e
-          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin __ECR_REGISTRY__
-          docker pull __ECR_REGISTRY__/career_intelligence:latest
-          docker stop career_intelligence 2>/dev/null || true
-          docker rm career_intelligence 2>/dev/null || true
-          docker run -d \
-            --name career_intelligence \
-            --restart unless-stopped \
-            -p 80:80 \
-            -e RAILS_ENV=production \
-            -e RAILS_MASTER_KEY=__RAILS_MASTER_KEY__ \
-            -e DATABASE_NAME=career_intelligence_production \
-            -e DATABASE_HOST=career-intel-db.ctdpbp3ytlgz.us-east-1.rds.amazonaws.com \
-            -e DATABASE_PORT=5432 \
-            -e DATABASE_USER=career_intel \
-            -e DATABASE_PASSWORD=__DATABASE_PASSWORD__ \
-            -e PGSSLMODE=require \
-            __ECR_REGISTRY__/career_intelligence:latest
-          sleep 5
-          docker ps | grep career_intelligence
-          echo "Deployment complete!"
-          SCRIPT_END
+          # Build deploy script via Python (avoids all shell/sed quoting issues)
+          ENCODED=$(python3 << 'PYEOF'
+          import os, base64
 
-          # Replace placeholders with actual values
-          sed -i "s|__ECR_REGISTRY__|${ECR_REGISTRY}|g" /tmp/deploy.sh
-          sed -i "s|__RAILS_MASTER_KEY__|${RAILS_MASTER_KEY}|g" /tmp/deploy.sh
-          sed -i "s|__DATABASE_PASSWORD__|${DATABASE_PASSWORD}|g" /tmp/deploy.sh
+          ecr = os.environ["ECR_REGISTRY"]
+          key = os.environ["RAILS_MASTER_KEY"]
+          pw = os.environ["DATABASE_PASSWORD"]
 
-          # Base64 encode and send via SSM
-          ENCODED=$(base64 -w 0 /tmp/deploy.sh)
+          env_lines = [
+              "RAILS_ENV=production",
+              "RAILS_MASTER_KEY=" + key,
+              "DATABASE_NAME=career_intelligence_production",
+              "DATABASE_HOST=career-intel-db.ctdpbp3ytlgz.us-east-1.rds.amazonaws.com",
+              "DATABASE_PORT=5432",
+              "DATABASE_USER=career_intel",
+              "DATABASE_PASSWORD=" + pw,
+              "PGSSLMODE=require",
+          ]
+
+          script_lines = [
+              "#!/bin/bash",
+              "set -e",
+              "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin " + ecr,
+              "docker pull " + ecr + "/career_intelligence:latest",
+              "docker stop career_intelligence 2>/dev/null || true",
+              "docker rm career_intelligence 2>/dev/null || true",
+              "cat > /tmp/deploy.env << 'ENVEOF'",
+          ] + env_lines + [
+              "ENVEOF",
+              "docker run -d --name career_intelligence --restart unless-stopped -p 80:80 --env-file /tmp/deploy.env " + ecr + "/career_intelligence:latest",
+              "sleep 5",
+              "docker ps | grep career_intelligence",
+              "rm -f /tmp/deploy.env",
+              "echo Deployment complete!",
+          ]
+
+          script = "\n".join(script_lines) + "\n"
+          print(base64.b64encode(script.encode()).decode())
+          PYEOF
+          )
 
           COMMAND_ID=$(aws ssm send-command \
             --instance-ids "$INSTANCE_ID" \
             --document-name "AWS-RunShellScript" \
-            --parameters "{\"commands\":[\"echo $ENCODED | base64 -d > /tmp/deploy.sh && chmod +x /tmp/deploy.sh && /tmp/deploy.sh && rm -f /tmp/deploy.sh\"]}" \
+            --parameters "{\"commands\":[\"echo $ENCODED | base64 -d > /tmp/deploy.sh && bash /tmp/deploy.sh && rm -f /tmp/deploy.sh\"]}" \
             --region us-east-1 \
             --query 'Command.CommandId' \
             --output text)
 
           echo "SSM Command ID: $COMMAND_ID"
-          rm -f /tmp/deploy.sh
 
           # Wait for command to complete
           for i in $(seq 1 30); do
