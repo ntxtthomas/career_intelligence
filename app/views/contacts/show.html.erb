@@ -1,7 +1,7 @@
 <%= render "contact_details", contact: @contact %>
 
-<div style="margin-top: 2rem; display: flex; gap: 0.5rem; align-items: center;">
-  <%= link_to "Edit this contact", edit_contact_path(@contact), style: "background-color: #0d6efd; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; transition: all 0.2s ease; text-decoration: none; display: inline-block;", onmouseover: "this.style.backgroundColor='#0b5ed7'", onmouseout: "this.style.backgroundColor='#0d6efd'", onmousedown: "this.style.transform='scale(0.95)'", onmouseup: "this.style.transform='scale(1)'" %>
-  <%= link_to "Back to contacts", contacts_path, style: "background-color: #6c757d; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; transition: all 0.2s ease; text-decoration: none; display: inline-block;", onmouseover: "this.style.backgroundColor='#5a6268'", onmouseout: "this.style.backgroundColor='#6c757d'", onmousedown: "this.style.transform='scale(0.95)'", onmouseup: "this.style.transform='scale(1)'" %>
-  <%= button_to "Destroy this contact", @contact, method: :delete, style: "margin: 0; background-color: #dc3545; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; transition: all 0.2s ease;", data: { confirm: "Are you sure?" }, onmouseover: "this.style.backgroundColor='#c82333'", onmouseout: "this.style.backgroundColor='#dc3545'", onmousedown: "this.style.transform='scale(0.95)'", onmouseup: "this.style.transform='scale(1)'" %>
+<div class="form-actions">
+  <%= link_to "Edit this contact", edit_contact_path(@contact), class: "btn btn-primary" %>
+  <%= link_to "Back to contacts", contacts_path, class: "btn btn-secondary" %>
+  <%= button_to "Destroy this contact", @contact, method: :delete, class: "btn btn-danger", data: { confirm: "Are you sure?" } %>
 </div>
