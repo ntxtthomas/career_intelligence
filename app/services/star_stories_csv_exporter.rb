@@ -18,7 +18,6 @@ class StarStoriesCsvExporter
           sanitize_for_excel(story.result),
           sanitize_for_excel(story.skills&.join(", ")),
           sanitize_for_excel(story.category&.titleize),
-          sanitize_for_excel(story.outcome&.titleize),
           sanitize_for_excel(story.notes)
         ]
       end
@@ -48,7 +47,6 @@ class StarStoriesCsvExporter
       "Result",
       "Skills",
       "Category",
-      "Outcome",
       "Notes"
     ]
   end

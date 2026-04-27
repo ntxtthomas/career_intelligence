@@ -47,11 +47,6 @@
     <%= form.select :category, StarStory.categories.keys.map { |k| [k.titleize, k] }, { prompt: "Select a category" }, { class: "form-select" } %>
   </div>
 
-  <div class="form-group">
-    <%= form.label :outcome, class: "form-label" %>
-    <%= form.select :outcome, StarStory.outcomes.keys.map { |k| [k.titleize, k] }, { prompt: "Select an outcome" }, { class: "form-select" } %>
-  </div>
-
   <div class="form-group score-width-field">
     <%= form.label :strength_score, "Strength Score (1-10)", class: "form-label" %>
     <%= form.number_field :strength_score, min: 1, max: 10, class: "form-input" %>

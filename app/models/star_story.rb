@@ -26,13 +26,6 @@ class StarStory < ApplicationRecord
     innovation: "innovation"
   }, prefix: true
 
-  enum :outcome, {
-    advanced: "advanced",
-    rejected: "rejected",
-    offer: "offer",
-    unknown: "unknown"
-  }, prefix: true
-
   # Validations
   validates :title, presence: true
   validates :strength_score, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 10 }, allow_nil: true
@@ -42,8 +35,6 @@ class StarStory < ApplicationRecord
   scope :top_rated, -> { where("strength_score >= ?", 4).order(strength_score: :desc) }
   scope :frequently_used, -> { where("times_used > ?", 2).order(times_used: :desc) }
   scope :by_category, ->(category) { where(category: category) }
-  scope :successful, -> { where(outcome: [ :advanced, :offer ]) }
-
   # Methods
   def mark_as_used!
     increment!(:times_used)

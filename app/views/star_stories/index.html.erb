@@ -24,7 +24,6 @@
         <th>Result</th>
         <th class="hidden md:table-cell">Skills</th>
         <th class="hidden md:table-cell">Category</th>
-        <th class="hidden md:table-cell">Outcome</th>
         <th class="hidden md:table-cell">Notes</th>
       </tr>
     </thead>
@@ -41,7 +40,6 @@
           <td class="table-cell-wrap"><%= truncate(star_story.result, length: 200) %></td>
           <td class="hidden md:table-cell"><%= star_story.skills&.join(", ") %></td>
           <td class="hidden md:table-cell"><%= star_story.category&.titleize %></td>
-          <td class="hidden md:table-cell"><%= star_story.outcome&.titleize %></td>
           <td class="hidden md:table-cell table-cell-wrap"><%= truncate(star_story.notes, length: 200) %></td>
         </tr>
       <% end %>
