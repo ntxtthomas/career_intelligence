@@ -48,7 +48,6 @@ RSpec.describe StarStory, type: :model do
         expect(StarStory.frequently_used).not_to include(rare_story)
       end
     end
-
   end
 
   describe '#mark_as_used!' do
