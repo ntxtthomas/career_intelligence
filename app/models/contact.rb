@@ -1,6 +1,9 @@
 class Contact < ApplicationRecord
   belongs_to :company
 
+  has_rich_text :about
+  has_rich_text :notes
+
   before_save :shorten_urls
 
   validates :name, presence: true

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_04_13_130042) do
+ActiveRecord::Schema[8.0].define(version: 2026_04_27_000002) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -194,7 +194,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_13_130042) do
   create_table "resource_guide_questions", force: :cascade do |t|
     t.string "guide_type", null: false
     t.string "section_title"
-    t.text "question", null: false
+    t.text "question"
     t.text "meaning"
     t.text "response_approach"
     t.text "example_response"
@@ -247,7 +247,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_13_130042) do
     t.integer "strength_score"
     t.integer "times_used", default: 0
     t.date "last_used_at"
-    t.string "outcome"
     t.text "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

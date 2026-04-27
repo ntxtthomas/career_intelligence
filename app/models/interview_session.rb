@@ -2,6 +2,10 @@ class InterviewSession < ApplicationRecord
   belongs_to :opportunity
   belongs_to :contact, optional: true
   has_rich_text :notes
+  has_rich_text :questions_they_asked
+  has_rich_text :questions_i_asked
+  has_rich_text :follow_ups
+  has_rich_text :next_steps
 
   enum :stage, {
     recruiter: "recruiter",

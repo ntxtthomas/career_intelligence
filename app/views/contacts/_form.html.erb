@@ -38,12 +38,12 @@
 
   <div class="form-group full-width-field">
     <%= form.label :about, style: "display: block" %>
-    <%= form.text_area :about, rows: 4, style: "width: 250px; padding: 8px; border: 1px solid #ddd; border-radius: 4px;" %>
+      <%= form.rich_text_area :about %>
   </div>
 
   <div class="form-group full-width-field">
     <%= form.label :notes, style: "display: block" %>
-    <%= form.text_area :notes, rows: 4, style: "width: 250px; padding: 8px; border: 1px solid #ddd; border-radius: 4px;" %>
+      <%= form.rich_text_area :notes %>
   </div>
 
   <div class="form-group">

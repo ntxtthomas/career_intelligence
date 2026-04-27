@@ -24,7 +24,6 @@
         <th>Result</th>
         <th class="hidden md:table-cell">Skills</th>
         <th class="hidden md:table-cell">Category</th>
-        <th class="hidden md:table-cell">Outcome</th>
         <th class="hidden md:table-cell">Notes</th>
       </tr>
     </thead>
@@ -35,14 +34,13 @@
             <input type="number" min="1" class="form-input star-story-order-input" aria-label="Temporary order for <%= star_story.title %>">
           </td>
           <td><%= star_story.title %></td>
-          <td class="table-cell-wrap"><%= truncate(star_story.situation, length: 200) %></td>
-          <td class="table-cell-wrap"><%= truncate(star_story.task, length: 200) %></td>
-          <td class="table-cell-wrap"><%= truncate(star_story.action, length: 200) %></td>
-          <td class="table-cell-wrap"><%= truncate(star_story.result, length: 200) %></td>
+          <td class="table-cell-wrap"><%= truncate(star_story.situation.to_plain_text, length: 200) %></td>
+          <td class="table-cell-wrap"><%= truncate(star_story.task.to_plain_text, length: 200) %></td>
+          <td class="table-cell-wrap"><%= truncate(star_story.action.to_plain_text, length: 200) %></td>
+          <td class="table-cell-wrap"><%= truncate(star_story.result.to_plain_text, length: 200) %></td>
           <td class="hidden md:table-cell"><%= star_story.skills&.join(", ") %></td>
           <td class="hidden md:table-cell"><%= star_story.category&.titleize %></td>
-          <td class="hidden md:table-cell"><%= star_story.outcome&.titleize %></td>
-          <td class="hidden md:table-cell table-cell-wrap"><%= truncate(star_story.notes, length: 200) %></td>
+          <td class="hidden md:table-cell table-cell-wrap"><%= truncate(star_story.notes.to_plain_text, length: 200) %></td>
         </tr>
       <% end %>
     </tbody>

@@ -2,7 +2,16 @@ class ResourceSheet < ApplicationRecord
   belongs_to :user
   belongs_to :company, optional: true
   belongs_to :opportunity, optional: true
-
+  has_rich_text :about_me_content
+  has_rich_text :about_me_bullets
+  has_rich_text :why_company_content
+  has_rich_text :why_company_bullets
+  has_rich_text :why_me_content
+  has_rich_text :why_me_bullets
+  has_rich_text :salary_content
+  has_rich_text :salary_bullets
+  has_rich_text :notes_content
+  has_rich_text :notes_bullets
   RESOURCE_TYPES = {
     interview_prep: "Interview Prep"
   }.freeze

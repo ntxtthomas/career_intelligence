@@ -62,7 +62,7 @@ class StarStoriesController < ApplicationController
 
   def star_story_params
     params.require(:star_story).permit(
-      :title, :situation, :task, :action, :result, :category, :outcome,
+      :title, :situation, :task, :action, :result, :category,
       :strength_score, :notes, :skills, opportunity_ids: []
     )
   end
