@@ -12,13 +12,13 @@ class StarStoriesCsvExporter
       @star_stories.each do |story|
         csv << [
           sanitize_for_excel(story.title),
-          sanitize_for_excel(story.situation),
-          sanitize_for_excel(story.task),
-          sanitize_for_excel(story.action),
-          sanitize_for_excel(story.result),
+          sanitize_for_excel(story.situation.to_plain_text),
+          sanitize_for_excel(story.task.to_plain_text),
+          sanitize_for_excel(story.action.to_plain_text),
+          sanitize_for_excel(story.result.to_plain_text),
           sanitize_for_excel(story.skills&.join(", ")),
           sanitize_for_excel(story.category&.titleize),
-          sanitize_for_excel(story.notes)
+          sanitize_for_excel(story.notes.to_plain_text)
         ]
       end
     end
