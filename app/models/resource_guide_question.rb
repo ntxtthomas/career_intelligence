@@ -1,6 +1,13 @@
 class ResourceGuideQuestion < ApplicationRecord
   belongs_to :user
 
+  has_rich_text :question
+  has_rich_text :meaning
+  has_rich_text :response_approach
+  has_rich_text :example_response
+  has_rich_text :pitfall
+  has_rich_text :why_this_is_strong
+
   enum :guide_type, {
     behavioral: "behavioral",
     technical: "technical",

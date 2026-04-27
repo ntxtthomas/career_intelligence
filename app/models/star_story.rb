@@ -5,6 +5,12 @@ class StarStory < ApplicationRecord
   has_many :star_story_opportunities, dependent: :destroy
   has_many :opportunities, through: :star_story_opportunities
 
+  has_rich_text :situation
+  has_rich_text :task
+  has_rich_text :action
+  has_rich_text :result
+  has_rich_text :notes
+
   # Enums
   enum :category, {
     incident: "incident",

@@ -9,6 +9,10 @@ class Opportunity < ApplicationRecord
   include RoleTypes::Other
 
   belongs_to :company
+
+  has_rich_text :other_tech_stack
+  has_rich_text :notes
+
   has_many :opportunity_technologies, dependent: :destroy
   has_many :technologies, through: :opportunity_technologies
   has_many :interview_sessions, dependent: :destroy

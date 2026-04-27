@@ -96,7 +96,7 @@
 
     <div class="form-group full-width-field">
       <%= form.label :other_tech_stack, "Other Technologies (not listed above)", style: "display: block; margin-top: 10px;" %>
-      <%= form.text_area :other_tech_stack, rows: 2, placeholder: "e.g., Custom framework, proprietary tools...", style: "display: block; width: 100%;" %>
+        <%= form.rich_text_area :other_tech_stack, placeholder: "e.g., Custom framework, proprietary tools..." %>
     </div>
   </div>
 
@@ -156,7 +156,7 @@
 
 <div class="form-group full-width-field">
   <%= form.label :notes, style: "display: block" %>
-  <%= form.text_area :notes, rows: 12, style: "display: block; width: 100%;" %>
+    <%= form.rich_text_area :notes %>
 </div>
 
 <div class="form-group fifteen-width-field">

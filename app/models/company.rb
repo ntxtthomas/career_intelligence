@@ -1,6 +1,9 @@
 class Company < ApplicationRecord
   belongs_to :user
 
+  has_rich_text :primary_product
+  has_rich_text :market_size_estimate
+
   has_many :contacts, dependent: :destroy
   has_many :opportunities, dependent: :destroy
   has_many :resource_sheets, dependent: :nullify
