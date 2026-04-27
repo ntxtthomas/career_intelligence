@@ -42,7 +42,7 @@
   <td class="hidden md:table-cell">
     <% tech_sources = opportunity.technologies.map { |t| { name: t.name, category: t.category, source: :opportunity } } %>
     <% if opportunity.other_tech_stack.present? %>
-      <% tech_sources << { name: opportunity.other_tech_stack.truncate(20), category: "Other", source: :other } %>
+      <% tech_sources << { name: opportunity.other_tech_stack.to_plain_text.truncate(20), category: "Other", source: :other } %>
     <% end %>
     
     <% if tech_sources.any? %>

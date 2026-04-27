@@ -41,10 +41,10 @@
     <p>
       <strong>About:</strong>
     </p>
-    <div style="margin-top: 8px; margin-bottom: 15px; padding: 10px; background-color: var(--bg-secondary, #f8f9fa); border-radius: 4px; white-space: pre-line; word-wrap: break-word;">
-      <span style="text-align: left !important; display: block !important;">
-        <%= contact.about.strip %>
-      </span>
+    <div style="margin-top: 8px; margin-bottom: 15px; padding: 10px; background-color: var(--bg-secondary, #f8f9fa); border-radius: 4px; word-wrap: break-word;">
+      <div class="trix-content">
+        <%= contact.about %>
+      </div>
     </div>
     <% end %>
 
@@ -52,10 +52,10 @@
     <p>
       <strong>Notes:</strong>
     </p>
-    <div style="margin-top: 8px; margin-bottom: 15px; padding: 10px; background-color: var(--bg-secondary, #f8f9fa); border-radius: 4px; white-space: pre-line; word-wrap: break-word;">
-      <span style="text-align: left !important; display: block !important;">
-        <%= contact.notes.strip %>
-      </span>
+    <div style="margin-top: 8px; margin-bottom: 15px; padding: 10px; background-color: var(--bg-secondary, #f8f9fa); border-radius: 4px; word-wrap: break-word;">
+      <div class="trix-content">
+        <%= contact.notes %>
+      </div>
     </div>
     <% end %>
   </div>
