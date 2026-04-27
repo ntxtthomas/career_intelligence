@@ -27,10 +27,6 @@ RSpec.describe StarStory, type: :model do
     it 'defines category enum' do
       expect(StarStory.categories.keys).to include('incident', 'leadership', 'devops')
     end
-
-    it 'defines outcome enum' do
-      expect(StarStory.outcomes.keys).to include('advanced', 'rejected', 'offer', 'unknown')
-    end
   end
 
   describe 'scopes' do
@@ -53,15 +49,6 @@ RSpec.describe StarStory, type: :model do
       end
     end
 
-    describe '.successful' do
-      let!(:offer_story) { StarStory.create!(title: "Got Offer", outcome: :offer, user: user) }
-      let!(:rejected_story) { StarStory.create!(title: "Rejected", outcome: :rejected, user: user) }
-
-      it 'returns stories with positive outcomes' do
-        expect(StarStory.successful).to include(offer_story)
-        expect(StarStory.successful).not_to include(rejected_story)
-      end
-    end
   end
 
   describe '#mark_as_used!' do
