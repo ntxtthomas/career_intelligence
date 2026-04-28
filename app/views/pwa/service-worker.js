@@ -1,7 +1,7 @@
 // Minimal service worker to enable PWA installability.
 // Caches static assets for faster repeat loads.
 
-const CACHE_NAME = "career-intelligence-v1";
+const CACHE_NAME = "career-intelligence-v2";
 const STATIC_ASSETS = [
   "/icon.png",
   "/icon-192.png",
