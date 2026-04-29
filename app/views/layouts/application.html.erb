@@ -33,16 +33,15 @@
     (function() {
       var isStandalone = window.navigator.standalone === true ||
                          window.matchMedia('(display-mode: standalone)').matches;
-      if (isStandalone) {
+      if (isStandalone && !sessionStorage.getItem('splashShown')) {
+        sessionStorage.setItem('splashShown', '1');
         var splash = document.getElementById('pwa-splash');
         splash.style.display = 'flex';
         splash.style.opacity = '1';
-        window.addEventListener('load', function() {
-          setTimeout(function() {
-            splash.style.opacity = '0';
-            setTimeout(function() { splash.style.display = 'none'; }, 500);
-          }, 1200);
-        });
+        setTimeout(function() {
+          splash.style.opacity = '0';
+          setTimeout(function() { splash.style.display = 'none'; }, 500);
+        }, 1500);
       }
     })();
   </script>
