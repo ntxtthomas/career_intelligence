@@ -26,6 +26,26 @@
 </head>
 
 <body>
+  <div id="pwa-splash" style="display:none; position:fixed; inset:0; z-index:9999; background:#1a1a2e; align-items:center; justify-content:center; flex-direction:column; transition:opacity 0.5s ease;">
+    <img src="/splash.png" style="width:100%; height:100%; object-fit:cover;">
+  </div>
+  <script>
+    (function() {
+      var isStandalone = window.navigator.standalone === true ||
+                         window.matchMedia('(display-mode: standalone)').matches;
+      if (isStandalone) {
+        var splash = document.getElementById('pwa-splash');
+        splash.style.display = 'flex';
+        splash.style.opacity = '1';
+        window.addEventListener('load', function() {
+          setTimeout(function() {
+            splash.style.opacity = '0';
+            setTimeout(function() { splash.style.display = 'none'; }, 500);
+          }, 1200);
+        });
+      }
+    })();
+  </script>
   <% unless controller_name == "sessions" && action_name == "new" %>
   <nav class="bg-[var(--bg-secondary)] border-b border-[var(--border-color)] sticky top-0 z-50" data-controller="nav">
     <div class="max-w-7xl mx-auto px-4">
