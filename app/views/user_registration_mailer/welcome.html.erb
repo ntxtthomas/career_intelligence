@@ -1,0 +1,18 @@
+<%= image_tag "icon.png", 
+    alt: "Career Intelligence banner",
+    style: "display:block; 
+            width:100%; 
+            max-width:600px; 
+            height:auto; 
+            margin:10px; 
+            border:10px; 
+            outline:none; 
+            text-decoration:none;"
+%>
+<h1>Welcome, <%= @user.respond_to?(:first_name) && @user.first_name.present? ? @user.first_name : @user.email %>!</h1>
+
+<p>Thank you for signing up. Good luck in your career stewarding!</p>
+
+<p>
+    <%= link_to "View your dashboard", dashboard_url %>
+</p>
