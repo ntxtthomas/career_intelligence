@@ -52,6 +52,12 @@ gem "dotenv-rails", "~> 3.2"
 # Tailwind CSS integration for Rails [https://github.com/rails/tailwindcss-rails]
 gem "tailwindcss-rails", "~> 4.4"
 
+# sentry-rails provides Rails integration for the Sentry error logger
+gem "sentry-rails", "~> 6.5"
+
+# appsignal
+gem "appsignal", "~> 4.8", ">= 4.8.4"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
@@ -67,6 +73,9 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  # Bullet to help to kill N+1 queries and unused eager loading
+  gem "bullet", "~> 8.1", ">= 8.1.1"
 
   # Improved console experience
   gem "hirb"
