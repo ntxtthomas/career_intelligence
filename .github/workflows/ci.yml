@@ -142,6 +142,7 @@ jobs:
           DATABASE_PASSWORD: ${{ secrets.PRODUCTION_DATABASE_PASSWORD }}
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
           APPSIGNAL_PUSH_API_KEY: ${{ secrets.APPSIGNAL_PUSH_API_KEY }}
+          HONEYBADGER_API_KEY: ${{ secrets.HONEYBADGER_API_KEY }}
           APPSIGNAL_APP_ENV: ${{ vars.APPSIGNAL_APP_ENV }}
           APPSIGNAL_APP_NAME: ${{ vars.APPSIGNAL_APP_NAME }}
           SENTRY_ENVIRONMENT: ${{ vars.SENTRY_ENVIRONMENT }}
@@ -158,6 +159,7 @@ jobs:
           appsignal_push_api_key = os.environ["APPSIGNAL_PUSH_API_KEY"]
           appsignal_app_name = os.environ["APPSIGNAL_APP_NAME"]
           appsignal_app_env = os.environ["APPSIGNAL_APP_ENV"]
+          honeybadger_api_key = os.environ["HONEYBADGER_API_KEY"]
 
           env_lines = [
               "RAILS_ENV=production",
@@ -168,11 +170,12 @@ jobs:
               "DATABASE_USER=career_intel",
               "DATABASE_PASSWORD=" + pw,
               "PGSSLMODE=require",
-                "SENTRY_DSN=" + sentry_dsn,
-                "SENTRY_ENVIRONMENT=" + sentry_environment,
-                "APPSIGNAL_PUSH_API_KEY=" + appsignal_push_api_key,
-                "APPSIGNAL_APP_NAME=" + appsignal_app_name,
-                "APPSIGNAL_APP_ENV=" + appsignal_app_env,
+              "SENTRY_DSN=" + sentry_dsn,
+              "SENTRY_ENVIRONMENT=" + sentry_environment,
+              "APPSIGNAL_PUSH_API_KEY=" + appsignal_push_api_key,
+              "APPSIGNAL_APP_NAME=" + appsignal_app_name,
+              "APPSIGNAL_APP_ENV=" + appsignal_app_env,
+              "HONEYBADGER_API_KEY=" + honeybadger_api_key,
           ]
 
           script_lines = [

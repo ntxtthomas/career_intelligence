@@ -47,6 +47,7 @@ A Rails 8 application for tracking, analyzing, and strategizing a job search. Bu
 | Security        | Brakeman                                              |
 | Linting         | RuboCop (Rails Omakase)                               |
 | Error Tracking  | Sentry (sentry-rails)                                 |
+| Error Tracking  | Honeybadger                                           |
 | Observability   | AppSignal (performance monitoring)                    |
 | N+1 Detection   | Bullet (development only)                             |
 | Deployment      | Docker, AWS (EC2, RDS, ALB, ECR, Route 53, ACM, SSM)  |
