@@ -58,8 +58,8 @@ gem "sentry-rails", "~> 6.5"
 # appsignal
 gem "appsignal", "~> 4.8", ">= 4.8.4"
 
-# honeybadger 
-gem 'honeybadger', '~> 6.6'
+# honeybadger
+gem "honeybadger", "~> 6.6"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
