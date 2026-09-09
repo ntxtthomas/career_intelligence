@@ -28,4 +28,24 @@ RSpec.describe Company, type: :model do
       expect(company.name).to eq("New Co")
     end
   end
+
+  describe "#suggested_domain_match" do
+    it "returns the mapped value for a known industry, case- and whitespace-insensitively" do
+      company = Company.new(industry: "  PropTech  ")
+
+      expect(company.suggested_domain_match).to eq("deep")
+    end
+
+    it "returns nil for an unrecognized industry" do
+      company = Company.new(industry: "Widgets")
+
+      expect(company.suggested_domain_match).to be_nil
+    end
+
+    it "returns nil when industry is blank" do
+      company = Company.new(industry: nil)
+
+      expect(company.suggested_domain_match).to be_nil
+    end
+  end
 end

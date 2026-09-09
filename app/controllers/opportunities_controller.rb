@@ -122,6 +122,7 @@ class OpportunitiesController < ApplicationController
         :company_id, :position_title, :application_date, :status, :notes, :remote,
         :tech_stack, :other_tech_stack, :source, :salary_range, :bus_factor, :listing_url,
         :chatgpt_match, :jobright_match, :linkedin_match, :role_type,
+        :acquisition_channel, :domain_match, :fit_map_used, :response_type,
         technology_ids: [],
         role_metadata: {}
       ])

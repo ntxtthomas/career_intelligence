@@ -26,6 +26,49 @@ class Company < ApplicationRecord
 
   scope :preferred, -> { where(preferred: true) }
 
+  DOMAIN_MATCH_BY_INDUSTRY = {
+    "proptech"                     => "deep",
+    "real estate"                  => "deep",
+    "real estate fintech"          => "deep",
+    "edtech"                       => "deep",
+    "3d/haptics"                   => "deep",
+    "education benefits"           => "adjacent",
+    "developer tools"              => "adjacent",
+    "infrastructure/observability" => "adjacent",
+    "generic saas"                 => "none",
+    "e-commerce"                   => "none",
+    "healthtech"                   => "none",
+    "fintech"                      => "none",
+    "govtech/federal"              => "none",
+    "govtech"                      => "none",
+    "cloud infrastructure"         => "none",
+    "cybersecurity"                => "none",
+    "software development"         => "none",
+    "saas"                         => "none",
+    "technology"                   => "none",
+    "technology consulting"        => "none",
+    "foodtech"                     => "none",
+    "hrtech"                       => "none",
+    "publicsafetytech"             => "none",
+    "hospitalitytech"              => "none",
+    "lawtech"                      => "none",
+    "insurancetech"                => "none",
+    "business intelligence"        => "none",
+    "entertainment"                => "none",
+    "sanitation"                   => "none",
+    "mapping"                      => "none",
+    "construction tech"            => "none",
+    "contractor tech"              => "none",
+    "devops / platform engineering" => "none",
+    "non-profit church"            => "none",
+    "non-profit training"          => "none"
+  }.freeze
+
+  def suggested_domain_match
+    return nil if industry.blank?
+    DOMAIN_MATCH_BY_INDUSTRY[industry.to_s.strip.downcase]
+  end
+
   def tech_stack_summary
     opportunities
       .joins(:technologies)

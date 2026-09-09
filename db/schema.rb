@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_09_02_120000) do
+ActiveRecord::Schema[8.0].define(version: 2026_09_09_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -184,9 +184,16 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_02_120000) do
     t.integer "trajectory_score"
     t.integer "strategic_value"
     t.integer "bus_factor"
+    t.string "acquisition_channel", default: "unknown", null: false
+    t.string "domain_match", default: "unknown", null: false
+    t.boolean "fit_map_used", default: false, null: false
+    t.string "response_type", default: "unknown", null: false
+    t.index ["acquisition_channel"], name: "index_opportunities_on_acquisition_channel"
     t.index ["company_id"], name: "index_opportunities_on_company_id"
+    t.index ["domain_match"], name: "index_opportunities_on_domain_match"
     t.index ["fit_score"], name: "index_opportunities_on_fit_score"
     t.index ["remote_type"], name: "index_opportunities_on_remote_type"
+    t.index ["response_type"], name: "index_opportunities_on_response_type"
     t.index ["risk_level"], name: "index_opportunities_on_risk_level"
     t.index ["role_metadata"], name: "index_opportunities_on_role_metadata", using: :gin
     t.index ["role_type"], name: "index_opportunities_on_role_type"

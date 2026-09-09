@@ -165,6 +165,45 @@
       { style: "display: block; width: 250px; height: 30px;" } %>
 </div>
 
+<div class="form-group fifteen-width-field">
+  <%= form.label :acquisition_channel, "Acquisition Channel", style: "display: block" %>
+  <%= form.select :acquisition_channel,
+      options_for_select(
+        Opportunity.acquisition_channels.keys.map { |k| [k.humanize, k] },
+        opportunity.acquisition_channel
+      ),
+      { prompt: "Select channel" },
+      { style: "display: block; width: 250px; height: 30px;" } %>
+</div>
+
+<div class="form-group fifteen-width-field">
+  <%= form.label :domain_match, "Domain Match", style: "display: block" %>
+  <small style="color: #666; display: block; margin-top: 4px;">Suggested from company industry — editable.</small>
+  <%= form.select :domain_match,
+      options_for_select(
+        Opportunity.domain_matches.keys.map { |k| [k.humanize, k] },
+        opportunity.domain_match
+      ),
+      { prompt: "Select domain match" },
+      { style: "display: block; width: 250px; height: 30px;" } %>
+</div>
+
+<div class="form-group">
+  <%= form.label :fit_map_used, "Fit Map Used", style: "display: block" %>
+  <%= form.check_box :fit_map_used %>
+</div>
+
+<div class="form-group fifteen-width-field">
+  <%= form.label :response_type, "Response Type", style: "display: block" %>
+  <%= form.select :response_type,
+      options_for_select(
+        Opportunity.response_types.keys.map { |k| [k.humanize, k] },
+        opportunity.response_type
+      ),
+      { prompt: "Select response type" },
+      { style: "display: block; width: 250px; height: 30px;" } %>
+</div>
+
 <div class="form-group full-width-field">
   <%= form.label :notes, style: "display: block" %>
     <%= form.rich_text_area :notes %>

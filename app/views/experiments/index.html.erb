@@ -1,0 +1,80 @@
+<% content_for :title, "Experiments" %>
+
+<h1 style="padding-top: 1.5rem;">Job Search Experiments</h1>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+  <div class="card">
+    <div class="card-header justify-between">
+      <h3>Conversion by Acquisition Channel</h3>
+      <div class="card-icon">📡</div>
+    </div>
+    <div class="card-body text-left">
+      <% @conversion_by_channel.each do |channel, data| %>
+        <% next if data[:count].zero? %>
+        <div class="mb-3 pb-3 border-b border-[var(--border-color)]">
+          <div class="font-semibold text-sm text-[var(--text-primary)]"><%= channel.to_s.humanize %></div>
+          <div class="text-xs text-[var(--text-secondary)]">
+            <%= data[:interviewed] %>/<%= data[:count] %> — <%= data[:rate] %>%
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header justify-between">
+      <h3>Conversion by Domain Match</h3>
+      <div class="card-icon">🎯</div>
+    </div>
+    <div class="card-body text-left">
+      <% @conversion_by_domain_match.each do |domain_match, data| %>
+        <% next if data[:count].zero? %>
+        <div class="mb-3 pb-3 border-b border-[var(--border-color)]">
+          <div class="font-semibold text-sm text-[var(--text-primary)]"><%= domain_match.to_s.humanize %></div>
+          <div class="text-xs text-[var(--text-secondary)]">
+            <%= data[:interviewed] %>/<%= data[:count] %> — <%= data[:rate] %>%
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header justify-between">
+      <h3>Conversion by Fit Map Usage</h3>
+      <div class="card-icon">🗺️</div>
+    </div>
+    <div class="card-body text-left">
+      <% @conversion_by_fit_map.each do |fit_map_used, data| %>
+        <% next if data[:count].zero? %>
+        <div class="mb-3 pb-3 border-b border-[var(--border-color)]">
+          <div class="font-semibold text-sm text-[var(--text-primary)]"><%= fit_map_used ? "Fit map used" : "No fit map" %></div>
+          <div class="text-xs text-[var(--text-secondary)]">
+            <%= data[:interviewed] %>/<%= data[:count] %> — <%= data[:rate] %>%
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header justify-between">
+      <h3>Response Rate Breakdown</h3>
+      <div class="card-icon">✉️</div>
+    </div>
+    <div class="card-body text-left">
+      <div class="mb-3 pb-3 border-b border-[var(--border-color)]">
+        <div class="font-semibold text-sm text-[var(--text-primary)]">Raw Response Rate</div>
+        <div class="text-xs text-[var(--text-secondary)]">
+          <%= @response_rate_breakdown[:raw_response][:count] %>/<%= @response_rate_breakdown[:raw_response][:denominator] %> — <%= @response_rate_breakdown[:raw_response][:rate] %>%
+        </div>
+      </div>
+      <div class="mb-3 pb-3 border-b border-[var(--border-color)]">
+        <div class="font-semibold text-sm text-[var(--text-primary)]">Human Response Rate</div>
+        <div class="text-xs text-[var(--text-secondary)]">
+          <%= @response_rate_breakdown[:human_response][:count] %>/<%= @response_rate_breakdown[:human_response][:denominator] %> — <%= @response_rate_breakdown[:human_response][:rate] %>%
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   devise_for :users
   get "dashboard" => "dashboard#index"
   resources :opportunities
+  resources :experiments, only: [ :index ]
   resources :interview_sessions
   resources :resource_sheets do
     collection do
