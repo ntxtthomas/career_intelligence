@@ -56,10 +56,37 @@ class Opportunity < ApplicationRecord
     high: "high"
   }, prefix: :risk
 
+  enum :acquisition_channel, {
+    cold_application: "cold_application",
+    recruiter_inbound: "recruiter_inbound",
+    referral: "referral",
+    direct_outreach: "direct_outreach",
+    network: "network",
+    other: "other",
+    unknown: "unknown"
+  }, prefix: :channel
+
+  enum :domain_match, {
+    none: "none",
+    adjacent: "adjacent",
+    direct: "direct",
+    deep: "deep",
+    unknown: "unknown"
+  }, prefix: :domain
+
+  enum :response_type, {
+    human: "human",
+    automated: "automated",
+    no_response: "no_response",
+    unknown: "unknown"
+  }, prefix: :response
+
   validates :role_type, presence: true, inclusion: { in: ROLE_TYPES.keys }
   validates :fit_score, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 10 }, allow_nil: true
   validates :trajectory_score, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 10 }, allow_nil: true
   validates :strategic_value, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 10 }, allow_nil: true
+
+  before_validation :default_domain_match_from_company, on: :create
 
   before_save :shorten_urls
   before_save :standardize_salary_range
@@ -108,6 +135,11 @@ class Opportunity < ApplicationRecord
   end
 
   private
+
+  def default_domain_match_from_company
+    return if domain_match.present? && domain_match != "unknown"
+    self.domain_match = company&.suggested_domain_match || "unknown"
+  end
 
   def shorten_urls
     if listing_url_changed? && listing_url.present? && !listing_url.include?("is.gd")
