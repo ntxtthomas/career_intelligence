@@ -3,7 +3,7 @@ class OpportunitiesController < ApplicationController
 
   # GET /opportunities or /opportunities.json
   def index
-    @opportunities = current_or_demo_user.opportunities.includes(:company, :technologies, :rich_text_other_tech_stack)
+    @opportunities = current_or_demo_user.opportunities.includes(:company, :technologies)
 
     if params[:company_query].present?
       company_query = "%#{params[:company_query].strip}%"
@@ -120,7 +120,7 @@ class OpportunitiesController < ApplicationController
     def opportunity_params
       params.expect(opportunity: [
         :company_id, :position_title, :application_date, :status, :notes, :remote,
-        :tech_stack, :other_tech_stack, :source, :salary_range, :bus_factor, :listing_url,
+        :tech_stack, :source, :salary_range, :bus_factor, :listing_url,
         :chatgpt_match, :jobright_match, :linkedin_match, :role_type,
         :acquisition_channel, :domain_match, :fit_map_used, :response_type,
         technology_ids: [],

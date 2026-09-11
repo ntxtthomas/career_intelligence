@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_09_09_120000) do
+ActiveRecord::Schema[8.0].define(version: 2026_09_10_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -74,18 +74,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_09_120000) do
     t.string "company_type"
     t.string "size"
     t.text "primary_product"
-    t.string "revenue_model"
-    t.string "funding_stage"
-    t.string "estimated_revenue"
-    t.integer "estimated_employees"
-    t.string "growth_signal"
-    t.integer "product_maturity"
-    t.integer "engineering_maturity"
-    t.integer "process_maturity"
-    t.string "market_position"
-    t.string "competitor_tier"
-    t.integer "brand_signal_strength"
-    t.text "market_size_estimate"
     t.string "market_growth_rate"
     t.string "regulatory_environment"
     t.string "switching_costs"
@@ -96,8 +84,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_09_120000) do
     t.bigint "user_id", null: false
     t.boolean "preferred", default: false, null: false
     t.index "lower((name)::text)", name: "index_companies_on_lower_name", unique: true
-    t.index ["funding_stage"], name: "index_companies_on_funding_stage"
-    t.index ["growth_signal"], name: "index_companies_on_growth_signal"
     t.index ["industry"], name: "index_companies_on_industry"
     t.index ["user_id"], name: "index_companies_on_user_id"
   end
@@ -171,7 +157,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_09_120000) do
     t.string "jobright_match"
     t.string "linkedin_match"
     t.string "listing_url"
-    t.text "other_tech_stack"
     t.string "role_type", default: "software_engineer", null: false
     t.jsonb "role_metadata", default: {}, null: false
     t.decimal "fit_score", precision: 3, scale: 2

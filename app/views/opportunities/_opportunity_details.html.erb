@@ -118,7 +118,7 @@
       </div>
     </div>
 
-    <% if opportunity.technologies.any? || opportunity.other_tech_stack.present? %>
+    <% if opportunity.technologies.any? %>
     <div class="card" style="margin-bottom: 1.5rem;">
       <div class="detail-label" style="margin-bottom: 0.75rem;">Technologies</div>
       <% Technology::CATEGORIES.each do |category| %>
@@ -132,13 +132,6 @@
             <% end %>
           </div>
         </div>
-      <% end %>
-
-      <% if opportunity.other_tech_stack.present? %>
-      <div>
-        <strong style="font-size: 14px; color: var(--text-secondary, #666);">Other:</strong>
-        <%= opportunity.other_tech_stack %>
-      </div>
       <% end %>
     </div>
     <% end %>
