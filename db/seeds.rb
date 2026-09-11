@@ -154,7 +154,6 @@ acme = Company.find_or_create_by!(name: "Acme Cloud Solutions", user: demo_user)
   c.company_type = "Product"
   c.size = "501-1000"
   c.primary_product = "Cloud orchestration platform"
-  c.funding_stage = "Series C"
   puts "  Created demo company: #{c.name}"
 end
 
@@ -164,7 +163,6 @@ brightpath = Company.find_or_create_by!(name: "BrightPath Analytics", user: demo
   c.company_type = "Product"
   c.size = "51-200"
   c.primary_product = "Self-service BI dashboard"
-  c.funding_stage = "Series B"
   puts "  Created demo company: #{c.name}"
 end
 
@@ -182,7 +180,6 @@ corestack = Company.find_or_create_by!(name: "CoreStack Technologies", user: dem
   c.company_type = "Product"
   c.size = "1001-5000"
   c.primary_product = "Internal developer platform"
-  c.funding_stage = "Series D"
   puts "  Created demo company: #{c.name}"
 end
 

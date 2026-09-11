@@ -63,19 +63,11 @@ namespace :opportunities do
             puts "  ID #{opportunity.id}: Added '#{tech.name}'"
           end
         else
-          # Add to other_tech_stack for manual review
+          # No matching Technology record - flag for manual review
           unless not_found.include?(tech_name)
             not_found << tech_name
           end
-
-          # Append to other_tech_stack field
-          if opportunity.other_tech_stack.present?
-            opportunity.other_tech_stack += ", #{tech_name}" unless opportunity.other_tech_stack.include?(tech_name)
-          else
-            opportunity.other_tech_stack = tech_name
-          end
-          opportunity.save
-          puts "  ID #{opportunity.id}: '#{tech_name}' not found - added to other_tech_stack"
+          puts "  ID #{opportunity.id}: '#{tech_name}' not found - flagged for manual review"
         end
       end
 
@@ -86,7 +78,7 @@ namespace :opportunities do
 
     puts "\n\nMigration completed!"
     puts "Migrated: #{migrated_count} opportunities"
-    puts "Technologies not found (added to other_tech_stack): #{not_found.uniq.join(', ')}" if not_found.any?
-    puts "\nNote: Review opportunities with other_tech_stack and create missing technologies if needed."
+    puts "Technologies not found (flagged for manual review): #{not_found.uniq.join(', ')}" if not_found.any?
+    puts "\nNote: Review flagged technologies and create missing Technology records if needed."
   end
 end

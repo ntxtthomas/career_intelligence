@@ -41,63 +41,11 @@
     <% end %>
 
     <!-- Company Intelligence Section -->
-    <% if company.primary_product.present? || company.revenue_model.present? || company.funding_stage.present? || company.product_maturity.present? %>
+    <% if company.primary_product.present? %>
       <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #ddd;">
         <h3 style="margin-bottom: 15px;">Company Intelligence</h3>
         
-        <% if company.primary_product.present? %>
-          <p><strong>Primary Product:</strong> <%= company.primary_product %></p>
-        <% end %>
-        
-        <% if company.revenue_model.present? %>
-          <p><strong>Revenue Model:</strong> <%= company.revenue_model %></p>
-        <% end %>
-        
-        <% if company.funding_stage.present? %>
-          <p><strong>Funding Stage:</strong> <%= company.funding_stage %></p>
-        <% end %>
-        
-        <% if company.estimated_revenue.present? %>
-          <p><strong>Estimated Revenue:</strong> <%= company.estimated_revenue %></p>
-        <% end %>
-        
-        <% if company.estimated_employees.present? %>
-          <p><strong>Estimated Employees:</strong> <%= company.estimated_employees %></p>
-        <% end %>
-        
-        <% if company.growth_signal.present? %>
-          <p><strong>Growth Signal:</strong> <%= company.growth_signal %></p>
-        <% end %>
-        
-        <div style="display: flex; gap: 30px; margin-top: 15px;">
-          <% if company.product_maturity.present? %>
-            <p><strong>Product Maturity:</strong> <%= company.product_maturity %>/10</p>
-          <% end %>
-          
-          <% if company.engineering_maturity.present? %>
-            <p><strong>Engineering Maturity:</strong> <%= company.engineering_maturity %>/10</p>
-          <% end %>
-          
-          <% if company.process_maturity.present? %>
-            <p><strong>Process Maturity:</strong> <%= company.process_maturity %>/10</p>
-          <% end %>
-        </div>
-        
-        <% if company.market_position.present? %>
-          <p><strong>Market Position:</strong> <%= company.market_position %></p>
-        <% end %>
-        
-        <% if company.competitor_tier.present? %>
-          <p><strong>Competitor Tier:</strong> <%= company.competitor_tier %></p>
-        <% end %>
-        
-        <% if company.brand_signal_strength.present? %>
-          <p><strong>Brand Signal Strength:</strong> <%= company.brand_signal_strength %>/10</p>
-        <% end %>
-        
-        <% if company.market_size_estimate.present? %>
-          <p><strong>Market Size:</strong> <%= company.market_size_estimate %></p>
-        <% end %>
+        <p><strong>Primary Product:</strong> <%= company.primary_product %></p>
       </div>
     <% end %>
 

@@ -10,7 +10,6 @@ class Opportunity < ApplicationRecord
 
   belongs_to :company
 
-  has_rich_text :other_tech_stack
   has_rich_text :notes
 
   has_many :opportunity_technologies, dependent: :destroy
