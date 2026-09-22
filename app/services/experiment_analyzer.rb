@@ -44,8 +44,10 @@ class ExperimentAnalyzer
   # Response/interview rate cross-tabbed by industry x company size, dropping combos below min_sample
   def response_interview_by_industry_and_size(min_sample: 3)
     scope = @opportunities.joins(:company)
+    industry_column = Company.arel_table[:industry]
+    size_column = Company.arel_table[:size]
 
-    scope.group("companies.industry", "companies.size").count.each_with_object({}) do |(key, count), result|
+    scope.group(industry_column, size_column).count.each_with_object({}) do |(key, count), result|
       next if count < min_sample
 
       industry, size = key
@@ -71,7 +73,7 @@ class ExperimentAnalyzer
   def grouped_response_interview_stats(company_column)
     scope = @opportunities.joins(:company)
 
-    scope.group("companies.#{company_column}").count.each_with_object({}) do |(value, count), result|
+    scope.group(Company.arel_table[company_column]).count.each_with_object({}) do |(value, count), result|
       filtered = scope.where(companies: { company_column => value })
       result[value] = response_interview_stats(filtered, count)
     end
