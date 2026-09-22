@@ -37,26 +37,34 @@ class DashboardController < ApplicationController
                               .sort_by { |_, count| -count }
                               .to_h
 
-    # Industry breakdown (opportunities vs. applications)
-    @opportunities_by_industry = opportunities.joins(:company)
+    # Industry breakdown (opportunities vs. applications), capped so the pie chart legend stays readable
+    opportunities_by_industry = opportunities.joins(:company)
                               .where.not(companies: { industry: [ nil, "" ] })
                               .group("companies.industry")
                               .count
-                              .sort_by { |_, count| -count }
-                              .to_h
+    @opportunities_by_industry = top_industries_with_other(opportunities_by_industry)
 
-    @applications_by_industry = submitted_opportunities.joins(:company)
+    applications_by_industry = submitted_opportunities.joins(:company)
                               .where.not(companies: { industry: [ nil, "" ] })
                               .group("companies.industry")
                               .count
-                              .sort_by { |_, count| -count }
-                              .to_h
+    @applications_by_industry = top_industries_with_other(applications_by_industry)
 
     # Applications by week (last 4 weeks)
     @weekly_data = calculate_weekly_applications
   end
 
   private
+
+  # Keeps the pie chart legend readable by collapsing the long tail into "Other"
+  def top_industries_with_other(counts, limit: 8)
+    sorted = counts.sort_by { |_, count| -count }
+    return sorted.to_h if sorted.size <= limit
+
+    top = sorted.first(limit)
+    other_count = sorted.drop(limit).sum { |_, count| count }
+    (top + [ [ "Other", other_count ] ]).to_h
+  end
 
   def calculate_weekly_applications
     today = Date.today
