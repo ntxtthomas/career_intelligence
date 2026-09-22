@@ -37,6 +37,21 @@ class DashboardController < ApplicationController
                               .sort_by { |_, count| -count }
                               .to_h
 
+    # Industry breakdown (opportunities vs. applications)
+    @opportunities_by_industry = opportunities.joins(:company)
+                              .where.not(companies: { industry: [ nil, "" ] })
+                              .group("companies.industry")
+                              .count
+                              .sort_by { |_, count| -count }
+                              .to_h
+
+    @applications_by_industry = submitted_opportunities.joins(:company)
+                              .where.not(companies: { industry: [ nil, "" ] })
+                              .group("companies.industry")
+                              .count
+                              .sort_by { |_, count| -count }
+                              .to_h
+
     # Applications by week (last 4 weeks)
     @weekly_data = calculate_weekly_applications
   end
