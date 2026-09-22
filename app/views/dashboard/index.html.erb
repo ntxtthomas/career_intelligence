@@ -86,7 +86,32 @@
     </div>
   <% end %>
 </div>
+<!-- Row 4: Industry Distribution -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+  <% if @opportunities_by_industry.any? %>
+    <div class="card">
+      <div class="card-header justify-between">
+        <h3>Opportunities by Industry</h3>
+        <div class="card-icon">🏭</div>
+      </div>
+      <div class="card-body">
+        <%= pie_chart_svg(@opportunities_by_industry, size: 220) %>
+      </div>
+    </div>
+  <% end %>
 
+  <% if @applications_by_industry.any? %>
+    <div class="card">
+      <div class="card-header justify-between">
+        <h3>Applications by Industry</h3>
+        <div class="card-icon">📨</div>
+      </div>
+      <div class="card-body">
+        <%= pie_chart_svg(@applications_by_industry, size: 220) %>
+      </div>
+    </div>
+  <% end %>
+</div>
 <!-- Lower Section: Individual Role Focus Widgets -->
 <% if @all_role_insights.any? %>
   <%

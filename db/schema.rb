@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_09_10_120000) do
+ActiveRecord::Schema[8.0].define(version: 2026_09_15_000000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -169,7 +169,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_10_120000) do
     t.integer "trajectory_score"
     t.integer "strategic_value"
     t.integer "bus_factor"
-    t.string "acquisition_channel", default: "unknown", null: false
+    t.string "acquisition_channel", default: "cold_application", null: false
     t.string "domain_match", default: "unknown", null: false
     t.boolean "fit_map_used", default: false, null: false
     t.string "response_type", default: "unknown", null: false

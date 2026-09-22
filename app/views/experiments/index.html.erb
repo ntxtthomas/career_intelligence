@@ -78,3 +78,68 @@
     </div>
   </div>
 </div>
+
+<h1 class="mt-12 mb-6 text-[var(--text-primary)]">Response Quality: Is It the Materials, or the Market?</h1>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+  <div class="card">
+    <div class="card-header justify-between">
+      <h3>Response/Interview Rate by Industry</h3>
+      <div class="card-icon">🏭</div>
+    </div>
+    <div class="card-body text-left">
+      <% @response_interview_by_industry.sort_by { |_, data| -data[:count] }.each do |industry, data| %>
+        <% next if data[:count].zero? %>
+        <div class="mb-3 pb-3 border-b border-[var(--border-color)]">
+          <div class="font-semibold text-sm text-[var(--text-primary)]"><%= (industry || "Unknown").to_s.humanize %></div>
+          <div class="text-xs text-[var(--text-secondary)]">
+            n=<%= data[:count] %> — response <%= data[:response_rate] %>% — interview <%= data[:interview_rate] %>%
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header justify-between">
+      <h3>Response/Interview Rate by Employee Range</h3>
+      <div class="card-icon">👥</div>
+    </div>
+    <div class="card-body text-left">
+      <% @response_interview_by_company_size.sort_by { |_, data| -data[:count] }.each do |size, data| %>
+        <% next if data[:count].zero? %>
+        <div class="mb-3 pb-3 border-b border-[var(--border-color)]">
+          <div class="font-semibold text-sm text-[var(--text-primary)]"><%= size.presence || "Unknown" %></div>
+          <div class="text-xs text-[var(--text-secondary)]">
+            n=<%= data[:count] %> — response <%= data[:response_rate] %>% — interview <%= data[:interview_rate] %>%
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="card lg:col-span-2">
+    <div class="card-header justify-between">
+      <h3>Response/Interview Rate by Industry × Employee Range</h3>
+      <div class="card-icon">🔀</div>
+    </div>
+    <div class="card-body text-left">
+      <% if @response_interview_by_industry_and_size.any? %>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6">
+          <% @response_interview_by_industry_and_size.sort_by { |_, data| -data[:count] }.each do |(industry, size), data| %>
+            <div class="mb-3 pb-3 border-b border-[var(--border-color)]">
+              <div class="font-semibold text-sm text-[var(--text-primary)]">
+                <%= (industry || "Unknown").to_s.humanize %> · <%= size.presence || "Unknown" %>
+              </div>
+              <div class="text-xs text-[var(--text-secondary)]">
+                n=<%= data[:count] %> — response <%= data[:response_rate] %>% — interview <%= data[:interview_rate] %>%
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-xs text-[var(--text-secondary)]">Not enough applications per industry/size combination yet to report this breakdown.</p>
+      <% end %>
+    </div>
+  </div>
+</div>
+
