@@ -22,7 +22,7 @@ class ExperimentAnalyzer
   def response_rate_breakdown
     total = @opportunities.count
 
-    responded_count = @opportunities.where(response_type: ["human", "automated"]).count
+    responded_count = @opportunities.where(response_type: [ "human", "automated" ]).count
     human_count = @opportunities.where(response_type: "human").count
 
     {
