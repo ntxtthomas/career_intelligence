@@ -5,6 +5,16 @@ class ContactsController < ApplicationController
   def index
     @contacts = current_or_demo_user.contacts.includes(:company)
 
+    if params[:name_query].present?
+      name_query = "%#{params[:name_query].strip}%"
+      @contacts = @contacts.where("contacts.name ILIKE ?", name_query)
+    end
+
+    if params[:company_query].present?
+      company_query = "%#{params[:company_query].strip}%"
+      @contacts = @contacts.joins(:company).where("companies.name ILIKE ?", company_query)
+    end
+
     # Handle sorting
     if params[:sort].present?
       sort_column = params[:sort]
