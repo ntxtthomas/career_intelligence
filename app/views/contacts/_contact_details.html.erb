@@ -9,6 +9,13 @@
     </p>
     <% end %>
 
+    <% if contact.company %>
+    <p>
+      <strong>Company:</strong>
+      <%= link_to contact.company.name, contact.company %>
+    </p>
+    <% end %>
+
     <% if contact.email.present? %>
     <p>
       <strong>Email:</strong>
@@ -27,13 +34,6 @@
     <p>
       <strong>LinkedIn:</strong>
       <%= link_to contact.linkedin, contact.linkedin, target: "_blank", rel: "noopener noreferrer" %>
-    </p>
-    <% end %>
-
-    <% if contact.company %>
-    <p>
-      <strong>Company:</strong>
-      <%= link_to contact.company.name, contact.company %>
     </p>
     <% end %>
 
