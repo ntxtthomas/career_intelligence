@@ -3,7 +3,32 @@
 <div class="page-header" style="padding-top: 1.5rem;">
   <div class="page-header-content">
     <h1 class="page-title">Contacts</h1>
-    <div class="page-actions">
+  </div>
+</div>
+
+<div class="card opportunities-filters-card">
+  <div class="opportunities-toolbar">
+    <div class="opportunities-filter-group">
+      <%= form_with url: contacts_path, method: :get, local: true, class: "opportunities-filter-form" do |f| %>
+        <%= hidden_field_tag :company_query, params[:company_query] %>
+        <%= f.text_field :name_query, value: params[:name_query], placeholder: "Search name", class: "form-input opportunities-company-input" %>
+        <%= f.submit "Search", class: "btn btn-primary" %>
+        <% if params[:name_query].present? %>
+          <%= link_to "Clear", contacts_path(company_query: params[:company_query]), class: "btn btn-secondary" %>
+        <% end %>
+      <% end %>
+      |
+      <%= form_with url: contacts_path, method: :get, local: true, class: "opportunities-filter-form" do |f| %>
+        <%= hidden_field_tag :name_query, params[:name_query] %>
+        <%= f.text_field :company_query, value: params[:company_query], placeholder: "Search company", class: "form-input opportunities-company-input" %>
+        <%= f.submit "Search", class: "btn btn-primary" %>
+        <% if params[:company_query].present? %>
+          <%= link_to "Clear", contacts_path(name_query: params[:name_query]), class: "btn btn-secondary" %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="opportunities-actions">
       <%= link_to "+", new_contact_path, class: "btn btn-primary btn-lg" %>
     </div>
   </div>
