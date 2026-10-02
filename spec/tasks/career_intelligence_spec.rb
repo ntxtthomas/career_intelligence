@@ -13,8 +13,8 @@ RSpec.describe "career_intelligence:backfill_domain_match" do
   end
 
   it "backfills matched industries, leaves unmatched as unknown, and skips already-set opportunities" do
-    matched_company = Company.create!(name: "Matched Co #{SecureRandom.hex(4)}", industry: "PropTech", company_type: "Product", user: user)
-    unmatched_company = Company.create!(name: "Unmatched Co #{SecureRandom.hex(4)}", industry: "Widgets", company_type: "Product", user: user)
+    matched_company = Company.create!(name: "Matched Co #{SecureRandom.hex(4)}", industry: create(:industry, domain_match: "deep"), company_type: "Product", user: user)
+    unmatched_company = Company.create!(name: "Unmatched Co #{SecureRandom.hex(4)}", industry: create(:industry), company_type: "Product", user: user)
 
     to_backfill = Opportunity.create!(company: matched_company, role_type: "software_engineer")
     to_backfill.update_column(:domain_match, "unknown")
@@ -33,7 +33,7 @@ RSpec.describe "career_intelligence:backfill_domain_match" do
   end
 
   it "uses update_column so it does not re-trigger unrelated save callbacks" do
-    matched_company = Company.create!(name: "Callback Co #{SecureRandom.hex(4)}", industry: "PropTech", company_type: "Product", user: user)
+    matched_company = Company.create!(name: "Callback Co #{SecureRandom.hex(4)}", industry: create(:industry, domain_match: "deep"), company_type: "Product", user: user)
     opportunity = Opportunity.create!(company: matched_company, role_type: "software_engineer", salary_range: "$110k-$125k")
     opportunity.update_column(:domain_match, "unknown")
 

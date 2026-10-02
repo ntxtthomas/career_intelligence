@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_09_15_000000) do
+ActiveRecord::Schema[8.0].define(version: 2026_10_02_140000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -64,7 +64,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_15_000000) do
 
   create_table "companies", force: :cascade do |t|
     t.string "name"
-    t.string "industry"
+    t.string "legacy_industry"
     t.string "location"
     t.string "website"
     t.datetime "created_at", null: false
@@ -83,8 +83,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_15_000000) do
     t.integer "career_risk_score"
     t.bigint "user_id", null: false
     t.boolean "preferred", default: false, null: false
+    t.bigint "industry_id"
     t.index "lower((name)::text)", name: "index_companies_on_lower_name", unique: true
-    t.index ["industry"], name: "index_companies_on_industry"
+    t.index ["industry_id"], name: "index_companies_on_industry_id"
+    t.index ["legacy_industry"], name: "index_companies_on_legacy_industry"
     t.index ["user_id"], name: "index_companies_on_user_id"
   end
 
@@ -114,6 +116,16 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_15_000000) do
     t.index ["narrative_type", "role_target"], name: "index_core_narratives_on_narrative_type_and_role_target"
     t.index ["narrative_type"], name: "index_core_narratives_on_narrative_type"
     t.index ["user_id"], name: "index_core_narratives_on_user_id"
+  end
+
+  create_table "industries", force: :cascade do |t|
+    t.string "name", null: false
+    t.bigint "parent_id"
+    t.string "domain_match"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index "lower((name)::text), COALESCE(parent_id, (0)::bigint)", name: "index_industries_on_lower_name_and_parent", unique: true
+    t.index ["parent_id"], name: "index_industries_on_parent_id"
   end
 
   create_table "interview_sessions", force: :cascade do |t|
@@ -294,9 +306,11 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_15_000000) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "companies", "industries"
   add_foreign_key "companies", "users"
   add_foreign_key "contacts", "companies"
   add_foreign_key "core_narratives", "users"
+  add_foreign_key "industries", "industries", column: "parent_id"
   add_foreign_key "interview_sessions", "contacts"
   add_foreign_key "interview_sessions", "opportunities"
   add_foreign_key "opportunities", "companies"

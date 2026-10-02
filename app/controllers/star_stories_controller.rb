@@ -2,7 +2,9 @@ class StarStoriesController < ApplicationController
   before_action :set_star_story, only: [ :show, :edit, :update, :destroy ]
 
   def index
-    @star_stories = current_or_demo_user.star_stories.order(created_at: :desc)
+    @star_stories = current_or_demo_user.star_stories
+                                        .includes(:rich_text_situation, :rich_text_task, :rich_text_action, :rich_text_result, :rich_text_notes)
+                                        .order(created_at: :desc)
 
     respond_to do |format|
       format.html

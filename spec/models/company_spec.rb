@@ -30,14 +30,28 @@ RSpec.describe Company, type: :model do
   end
 
   describe "#suggested_domain_match" do
-    it "returns the mapped value for a known industry, case- and whitespace-insensitively" do
-      company = Company.new(industry: "  PropTech  ")
+    it "returns the industry's domain match" do
+      company = Company.new(industry: build(:industry, domain_match: "deep"))
 
       expect(company.suggested_domain_match).to eq("deep")
     end
 
-    it "returns nil for an unrecognized industry" do
-      company = Company.new(industry: "Widgets")
+    it "falls back to the parent industry when a segment has no match of its own" do
+      parent = create(:industry, domain_match: "deep")
+      company = Company.new(industry: create(:segment, parent: parent))
+
+      expect(company.suggested_domain_match).to eq("deep")
+    end
+
+    it "prefers a segment's own domain match over its parent's" do
+      parent = create(:industry, domain_match: "deep")
+      company = Company.new(industry: create(:segment, parent: parent, domain_match: "adjacent"))
+
+      expect(company.suggested_domain_match).to eq("adjacent")
+    end
+
+    it "returns nil when the industry has no domain match" do
+      company = Company.new(industry: build(:industry))
 
       expect(company.suggested_domain_match).to be_nil
     end
@@ -46,6 +60,24 @@ RSpec.describe Company, type: :model do
       company = Company.new(industry: nil)
 
       expect(company.suggested_domain_match).to be_nil
+    end
+  end
+
+  describe ".in_industry" do
+    let(:edtech) { create(:industry, name: "EdTech") }
+    let(:family_engagement) { create(:segment, name: "Family Engagement", parent: edtech) }
+    let(:k12) { create(:segment, name: "K-12", parent: edtech) }
+    let!(:root_company) { Company.create!(name: "Root Co", company_type: "Product", user: user, industry: edtech) }
+    let!(:family_company) { Company.create!(name: "Family Co", company_type: "Product", user: user, industry: family_engagement) }
+    let!(:k12_company) { Company.create!(name: "K12 Co", company_type: "Product", user: user, industry: k12) }
+    let!(:unrelated_company) { Company.create!(name: "Other Co", company_type: "Product", user: user, industry: create(:industry)) }
+
+    it "matches a top-level industry and all of its segments" do
+      expect(Company.in_industry(edtech)).to contain_exactly(root_company, family_company, k12_company)
+    end
+
+    it "matches only the segment when a segment is given" do
+      expect(Company.in_industry(family_engagement)).to contain_exactly(family_company)
     end
   end
 end

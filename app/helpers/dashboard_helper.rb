@@ -66,7 +66,7 @@ module DashboardHelper
     svg_data.each do |slice|
       legend_html += "<div style='margin-bottom: 8px; font-size: 13px;'>"
       legend_html += "<span style='display: inline-block; width: 12px; height: 12px; background-color: #{slice[:color]}; margin-right: 6px; border-radius: 2px;'></span>"
-      legend_html += "<strong>#{slice[:label].to_s.humanize}</strong>: #{slice[:value]} (#{slice[:percentage]}%)"
+      legend_html += "<strong>#{ERB::Util.html_escape(slice[:label])}</strong>: #{slice[:value]} (#{slice[:percentage]}%)"
       legend_html += "</div>"
     end
     legend_html += "</div>"

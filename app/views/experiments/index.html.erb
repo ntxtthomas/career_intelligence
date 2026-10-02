@@ -90,7 +90,7 @@
       <% @response_interview_by_industry.sort_by { |_, data| -data[:count] }.each do |industry, data| %>
         <% next if data[:count].zero? %>
         <div class="mb-3 pb-3 border-b border-[var(--border-color)]">
-          <div class="font-semibold text-sm text-[var(--text-primary)]"><%= (industry || "Unknown").to_s.humanize %></div>
+          <div class="font-semibold text-sm text-[var(--text-primary)]"><%= industry || "Unknown" %></div>
           <div class="text-xs text-[var(--text-secondary)]">
             n=<%= data[:count] %> — response <%= data[:response_rate] %>% — interview <%= data[:interview_rate] %>%
           </div>
@@ -128,7 +128,7 @@
           <% @response_interview_by_industry_and_size.sort_by { |_, data| -data[:count] }.each do |(industry, size), data| %>
             <div class="mb-3 pb-3 border-b border-[var(--border-color)]">
               <div class="font-semibold text-sm text-[var(--text-primary)]">
-                <%= (industry || "Unknown").to_s.humanize %> · <%= size.presence || "Unknown" %>
+                <%= industry || "Unknown" %> · <%= size.presence || "Unknown" %>
               </div>
               <div class="text-xs text-[var(--text-secondary)]">
                 n=<%= data[:count] %> — response <%= data[:response_rate] %>% — interview <%= data[:interview_rate] %>%
@@ -141,5 +141,26 @@
       <% end %>
     </div>
   </div>
+
+  <% if @response_interview_by_segment.any? %>
+    <div class="card lg:col-span-2">
+      <div class="card-header justify-between">
+        <h3>Response/Interview Rate by Segment</h3>
+        <div class="card-icon">🎯</div>
+      </div>
+      <div class="card-body text-left">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6">
+          <% @response_interview_by_segment.sort_by { |_, data| -data[:count] }.each do |(industry, segment), data| %>
+            <div class="mb-3 pb-3 border-b border-[var(--border-color)]">
+              <div class="font-semibold text-sm text-[var(--text-primary)]"><%= industry %>: <%= segment %></div>
+              <div class="text-xs text-[var(--text-secondary)]">
+                n=<%= data[:count] %> — response <%= data[:response_rate] %>% — interview <%= data[:interview_rate] %>%
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
 </div>
 

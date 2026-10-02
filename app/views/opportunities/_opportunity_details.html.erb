@@ -115,6 +115,18 @@
           <span class="detail-value" style="margin-bottom: 0;"><%= opportunity.linkedin_match %></span>
         </div>
         <% end %>
+
+        <% if opportunity.company&.industry %>
+        <div style="display: flex; gap: 0.4rem; align-items: baseline;">
+          <span class="detail-label" style="margin-bottom: 0;">Industry:</span>
+          <span class="detail-value" style="margin-bottom: 0;"><%= opportunity.company.industry.full_name %></span>
+        </div>
+        <% end %>
+
+        <div style="display: flex; gap: 0.4rem; align-items: baseline;">
+          <span class="detail-label" style="margin-bottom: 0;">Domain Match:</span>
+          <span class="detail-value" style="margin-bottom: 0;"><%= opportunity.domain_match.humanize %></span>
+        </div>
       </div>
     </div>
 

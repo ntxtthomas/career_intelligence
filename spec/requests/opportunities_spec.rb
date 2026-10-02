@@ -8,7 +8,7 @@ RSpec.describe "Opportunities", type: :request do
   let!(:company) do
     Company.create!(
       name: "FilterCo",
-      industry: "Technology",
+      industry: create(:industry, name: "Technology"),
       location: "Remote",
       website: "https://filterco.example",
       company_type: "Product",
@@ -87,7 +87,7 @@ RSpec.describe "Opportunities", type: :request do
     it "sorts opportunities by company industry" do
       retail_company = Company.create!(
         name: "RetailCo",
-        industry: "Retail",
+        industry: create(:industry, name: "Retail"),
         company_type: "Product",
         user: user
       )

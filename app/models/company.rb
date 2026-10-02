@@ -1,5 +1,6 @@
 class Company < ApplicationRecord
   belongs_to :user
+  belongs_to :industry, optional: true
 
   has_rich_text :primary_product
 
@@ -25,79 +26,10 @@ class Company < ApplicationRecord
 
   scope :preferred, -> { where(preferred: true) }
 
-  DOMAIN_MATCH_BY_INDUSTRY = {
-    "3d/haptics"                   => "deep",
-    "adtech"                       => "none",
-    "apparel"                      => "none",
-    "business intelligence"        => "none",
-    "cannabis"                     => "none",
-    "childcaretech"                => "none",
-    "cloud infrastructure"         => "none",
-    "construction tech"            => "none",
-    "contractor tech"              => "none",
-    "cybersecurity"                => "none",
-    "defense & space"              => "none",
-    "developer tools"              => "adjacent",
-    "devops / platform engineering"  => "none",
-    "e-commerce"                   => "none",
-    "e-learning"                   => "adjacent",
-    "ecommerce"                    => "none",
-    "edtech"                       => "deep",
-    "education benefits"           => "adjacent",
-    "energytech"                   => "none",
-    "entertainment"                => "none",
-    "equine"                       => "none",
-    "fintech"                      => "none",
-    "foodtech"                     => "none",
-    "freight"                      => "none",
-    "generic saas"                 => "none",
-    "govtech"                      => "none",
-    "govtech/federal"              => "none",
-    "healthtech"                   => "none",
-    "hospitalitytech"              => "none",
-    "hrtech"                       => "none",
-    "infrastructure/observability" => "adjacent",
-    "insurancetech"                => "none",
-    "lawtech"                      => "none",
-    "lifesciencestech"             => "none",
-    "logistics"                    => "none",
-    "mapping"                      => "none",
-    "marketing services"           => "none",
-    "mediatech"                    => "none",
-    "music equipment"              => "none",
-    "non-profit church"            => "none",
-    "non-profit training"          => "none",
-    "pettech"                      => "none",
-    "photography"                  => "none",
-    "postech"                      => "none",
-    "proptech"                     => "deep",
-    "publicsafetytech"             => "none",
-    "real estate fintech"          => "deep",
-    "real estate"                  => "deep",
-    "recruiter"                    => "none",
-    "recruiting"                   => "none",
-    "recruitment"                  => "none",
-    "renewable energy"             => "none",
-    "restaurant supply"            => "none",
-    "retailtech"                   => "none",
-    "saas"                         => "none",
-    "sanitation"                   => "none",
-    "security"                     => "none",
-    "securitytech"                 => "none",
-    "social impact technology"     => "none",
-    "social"                       => "none",
-    "socialtech"                   => "none",
-    "software development"         => "none",
-    "staffing"                     => "none",
-    "technical staffing"           => "none",
-    "technology consulting"        => "none",
-    "technology"                   => "none",
-    "traveltech"                   => "none"
-  }.freeze
+  scope :in_industry, ->(industry) { where(industry_id: industry.self_and_child_ids) }
 
   def suggested_domain_match
-    return nil if industry.blank?
-    DOMAIN_MATCH_BY_INDUSTRY[industry.to_s.strip.downcase]
+    industry&.effective_domain_match
   end
 
   def tech_stack_summary

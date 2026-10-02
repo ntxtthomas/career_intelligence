@@ -136,6 +136,12 @@ def role_metadata_for(role_type)
   end
 end
 
+IndustryCatalog.seed!
+industries = Industry.where(
+  name: [ "Technology", "Cloud Infrastructure", "Developer Tools", "Cybersecurity", "E-commerce", "FinTech", "HealthTech" ],
+  parent_id: nil
+).to_a
+
 created = 0
 company_cache = []
 
@@ -148,15 +154,7 @@ count.times do |i|
     company = Company.create!(
       user: user,
       name: company_name,
-      industry: [
-        "SaaS",
-        "Cloud Infrastructure",
-        "Developer Tools",
-        "Cybersecurity",
-        "E-commerce",
-        "Fintech",
-        "Healthtech"
-      ].sample,
+      industry: industries.sample,
       location: company_locations.sample,
       company_type: company_types.sample,
       size: [ "11-50", "51-200", "201-500", "501-1000", "1001-5000" ].sample

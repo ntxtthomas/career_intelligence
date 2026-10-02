@@ -3,7 +3,7 @@ class OpportunitiesController < ApplicationController
 
   # GET /opportunities or /opportunities.json
   def index
-    @opportunities = current_or_demo_user.opportunities.includes(:company, :technologies)
+    @opportunities = current_or_demo_user.opportunities.includes({ company: { industry: :parent } }, :technologies)
 
     if params[:company_query].present?
       company_query = "%#{params[:company_query].strip}%"
@@ -38,7 +38,8 @@ class OpportunitiesController < ApplicationController
       elsif sort_column == "company"
         @opportunities = @opportunities.joins(:company).order("companies.name #{sort_direction}")
       elsif sort_column == "industry"
-        @opportunities = @opportunities.joins(:company).order("companies.industry #{sort_direction}")
+        @opportunities = @opportunities.with_industry_rollup
+                                       .order(Arel.sql("#{Industry::ROOT_NAME_SQL} #{sort_direction}, industries.name #{sort_direction}"))
       end
     else
       @opportunities = @opportunities.order(:application_date).reverse_order

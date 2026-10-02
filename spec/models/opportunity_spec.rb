@@ -32,7 +32,7 @@ RSpec.describe Opportunity, type: :model do
 
   describe "#default_domain_match_from_company" do
     it "defaults domain_match from the company's suggested_domain_match on create when unset" do
-      company = Company.create!(name: "Proptech Co #{SecureRandom.hex(4)}", industry: "PropTech", company_type: "Product", user: user)
+      company = Company.create!(name: "Proptech Co #{SecureRandom.hex(4)}", industry: create(:industry, domain_match: "deep"), company_type: "Product", user: user)
 
       opportunity = Opportunity.create!(company: company, role_type: "software_engineer")
 
@@ -40,7 +40,7 @@ RSpec.describe Opportunity, type: :model do
     end
 
     it "falls back to unknown when the company has no suggested match" do
-      company = Company.create!(name: "Mystery Co #{SecureRandom.hex(4)}", industry: "Widgets", company_type: "Product", user: user)
+      company = Company.create!(name: "Mystery Co #{SecureRandom.hex(4)}", industry: create(:industry), company_type: "Product", user: user)
 
       opportunity = Opportunity.create!(company: company, role_type: "software_engineer")
 
@@ -48,7 +48,7 @@ RSpec.describe Opportunity, type: :model do
     end
 
     it "does not override an explicitly-set domain_match on create" do
-      company = Company.create!(name: "Fintech Co #{SecureRandom.hex(4)}", industry: "FinTech", company_type: "Product", user: user)
+      company = Company.create!(name: "Fintech Co #{SecureRandom.hex(4)}", industry: create(:industry, domain_match: "none"), company_type: "Product", user: user)
 
       opportunity = Opportunity.create!(company: company, role_type: "software_engineer", domain_match: "direct")
 
@@ -56,8 +56,8 @@ RSpec.describe Opportunity, type: :model do
     end
 
     it "does not run on update" do
-      company = Company.create!(name: "Edtech Co #{SecureRandom.hex(4)}", industry: "EdTech", company_type: "Product", user: user)
-      other_company = Company.create!(name: "Generic Co #{SecureRandom.hex(4)}", industry: "Generic SaaS", company_type: "Product", user: user)
+      company = Company.create!(name: "Edtech Co #{SecureRandom.hex(4)}", industry: create(:industry, domain_match: "deep"), company_type: "Product", user: user)
+      other_company = Company.create!(name: "Generic Co #{SecureRandom.hex(4)}", industry: create(:industry, domain_match: "none"), company_type: "Product", user: user)
       opportunity = Opportunity.create!(company: company, role_type: "software_engineer")
       expect(opportunity.domain_match).to eq("deep")
 

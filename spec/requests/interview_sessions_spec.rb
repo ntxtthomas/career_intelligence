@@ -5,7 +5,7 @@ RSpec.describe "InterviewSessions", type: :request do
 
   before { sign_in user }
 
-  let!(:company) { Company.create!(name: "Interview Co #{SecureRandom.hex(4)}", industry: "Technology", location: "Remote", website: "https://example.com", company_type: "Product", user: user) }
+  let!(:company) { Company.create!(name: "Interview Co #{SecureRandom.hex(4)}", industry: create(:industry), location: "Remote", website: "https://example.com", company_type: "Product", user: user) }
   let!(:opportunity) { Opportunity.create!(company: company, position_title: "Senior Engineer", role_type: "software_engineer") }
   let!(:contact) { Contact.create!(company: company, name: "Taylor Recruiter", email: "taylor@example.com") }
 

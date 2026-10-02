@@ -87,6 +87,8 @@ class Opportunity < ApplicationRecord
 
   before_validation :default_domain_match_from_company, on: :create
 
+  scope :with_industry_rollup, -> { joins(:company).joins(Industry::JOINS_SQL) }
+
   before_save :shorten_urls
   before_save :standardize_salary_range
 

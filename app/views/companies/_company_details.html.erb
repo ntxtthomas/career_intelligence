@@ -4,7 +4,7 @@
   <div class="company-details">
     <p>
       <strong>Industry:</strong>
-      <%= company.industry %>
+      <%= company.industry&.full_name %>
     </p>
 
     <% if company.company_type.present? %>

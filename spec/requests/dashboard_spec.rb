@@ -8,7 +8,7 @@ RSpec.describe "Dashboard", type: :request do
   let!(:company) do
     Company.create!(
       name: "Metrics Co",
-      industry: "Technology",
+      industry: create(:industry, name: "Technology"),
       location: "Remote",
       website: "https://metrics.example",
       company_type: "Product",
@@ -98,6 +98,19 @@ RSpec.describe "Dashboard", type: :request do
 
       expect(response).to have_http_status(:ok)
       expect(response.body).to include("Top 4 Tech Skills to Focus On")
+    end
+
+    it "rolls industry segments up into their top-level industry in the industry charts" do
+      edtech = create(:industry, name: "EdTech")
+      segment = create(:segment, name: "Family Engagement", parent: edtech)
+      segment_company = Company.create!(name: "Segment Co", company_type: "Product", user: user, industry: segment)
+      Opportunity.create!(company: segment_company, position_title: "Segment Role", role_type: "software_engineer", application_date: Date.current)
+
+      get dashboard_path
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include("<strong>EdTech</strong>: 1")
+      expect(response.body).not_to include("Family Engagement")
     end
   end
 end
