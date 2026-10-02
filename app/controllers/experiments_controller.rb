@@ -7,6 +7,7 @@ class ExperimentsController < ApplicationController
     @conversion_by_fit_map = analyzer.conversion_by_fit_map
     @response_rate_breakdown = analyzer.response_rate_breakdown
     @response_interview_by_industry = analyzer.response_interview_by_industry
+    @response_interview_by_segment = analyzer.response_interview_by_segment
     @response_interview_by_company_size = analyzer.response_interview_by_company_size
     @response_interview_by_industry_and_size = analyzer.response_interview_by_industry_and_size
   end

@@ -46,4 +46,13 @@ class InterviewSession < ApplicationRecord
   validates :duration_minutes, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
 
   scope :recent, -> { order(scheduled_at: :desc) }
+
+  after_create :mark_opportunity_as_human_response
+
+  private
+
+  # update_column avoids re-running Opportunity's save callbacks (URL shortening, salary formatting).
+  def mark_opportunity_as_human_response
+    opportunity.update_column(:response_type, "human") unless opportunity.response_human?
+  end
 end

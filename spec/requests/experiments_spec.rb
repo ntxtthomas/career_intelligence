@@ -5,7 +5,8 @@ RSpec.describe "Experiments", type: :request do
 
   before { sign_in user }
 
-  let!(:company) { Company.create!(name: "Experiments Co", industry: "Technology", company_type: "Product", user: user) }
+  let!(:industry) { create(:industry, name: "Technology") }
+  let!(:company) { Company.create!(name: "Experiments Co", industry: industry, company_type: "Product", user: user) }
 
   let!(:opportunity) do
     Opportunity.create!(

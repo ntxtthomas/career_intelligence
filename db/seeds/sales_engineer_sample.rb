@@ -3,8 +3,10 @@
 
 puts "Creating sample Sales Engineer opportunity..."
 
+IndustryCatalog.seed!
+
 company = Company.find_or_create_by!(name: "PropertyWare (Sample)") do |c|
-  c.industry = "Property Management SaaS"
+  c.industry = Industry.find_by!(name: "PropTech", parent_id: nil)
   c.location = "San Diego, CA"
   c.website = "https://propertyware.com"
   c.company_type = "Product"

@@ -37,16 +37,16 @@ class DashboardController < ApplicationController
                               .sort_by { |_, count| -count }
                               .to_h
 
-    # Industry breakdown (opportunities vs. applications), capped so the pie chart legend stays readable
-    opportunities_by_industry = opportunities.joins(:company)
-                              .where.not(companies: { industry: [ nil, "" ] })
-                              .group("companies.industry")
+    # Industry breakdown (opportunities vs. applications), rolled up to top-level industries and capped so the pie chart legend stays readable
+    opportunities_by_industry = opportunities.with_industry_rollup
+                              .where.not(companies: { industry_id: nil })
+                              .group(Arel.sql(Industry::ROOT_NAME_SQL))
                               .count
     @opportunities_by_industry = top_industries_with_other(opportunities_by_industry)
 
-    applications_by_industry = submitted_opportunities.joins(:company)
-                              .where.not(companies: { industry: [ nil, "" ] })
-                              .group("companies.industry")
+    applications_by_industry = submitted_opportunities.with_industry_rollup
+                              .where.not(companies: { industry_id: nil })
+                              .group(Arel.sql(Industry::ROOT_NAME_SQL))
                               .count
     @applications_by_industry = top_industries_with_other(applications_by_industry)
 

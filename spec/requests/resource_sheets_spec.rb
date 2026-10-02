@@ -8,7 +8,7 @@ RSpec.describe "ResourceSheets", type: :request do
   let!(:company) do
     Company.create!(
       name: "Prep Corp",
-      industry: "Technology",
+      industry: create(:industry),
       location: "Remote",
       website: "https://prep.example",
       company_type: "Product",

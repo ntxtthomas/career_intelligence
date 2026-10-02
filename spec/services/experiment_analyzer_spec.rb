@@ -65,4 +65,66 @@ RSpec.describe ExperimentAnalyzer do
       expect(result[:human_response]).to eq(count: 1, denominator: 4, rate: 25.0)
     end
   end
+
+  describe "industry breakdowns" do
+    let(:edtech) { create(:industry, name: "EdTech") }
+    let(:family_engagement) { create(:segment, name: "Family Engagement", parent: edtech) }
+    let(:k12) { create(:segment, name: "K-12", parent: edtech) }
+    let(:fintech) { create(:industry, name: "FinTech") }
+
+    def company_in(industry, size: "11-50")
+      Company.create!(name: "Co #{SecureRandom.hex(4)}", company_type: "Product", user: user, industry: industry, size: size)
+    end
+
+    def opportunity_for(company, response_type: "no_response", interviewed: false)
+      opportunity = Opportunity.create!(company: company, role_type: "software_engineer", response_type: response_type)
+      if interviewed
+        InterviewSession.create!(opportunity: opportunity, stage: "recruiter", scheduled_at: Time.current, format: "phone", status: "completed")
+      end
+      opportunity
+    end
+
+    let!(:opportunities) do
+      [
+        opportunity_for(company_in(edtech), response_type: "human", interviewed: true),
+        opportunity_for(company_in(family_engagement), response_type: "human"),
+        opportunity_for(company_in(family_engagement)),
+        opportunity_for(company_in(k12)),
+        opportunity_for(company_in(fintech)),
+        opportunity_for(Company.create!(name: "No Industry #{SecureRandom.hex(4)}", company_type: "Product", user: user))
+      ]
+    end
+
+    let(:analyzer) { described_class.new(Opportunity.where(id: opportunities.map(&:id))) }
+
+    describe "#response_interview_by_industry" do
+      it "rolls segments up into their top-level industry and keeps companies without one as nil" do
+        result = analyzer.response_interview_by_industry
+
+        expect(result["EdTech"]).to include(count: 4, responded: 2, interviewed: 1)
+        expect(result["FinTech"]).to include(count: 1, responded: 0, interviewed: 0, response_rate: 0.0)
+        expect(result[nil]).to include(count: 1)
+        expect(result.keys).not_to include("Family Engagement", "K-12")
+      end
+    end
+
+    describe "#response_interview_by_segment" do
+      it "drills down to segments keyed by [industry, segment] and ignores companies tagged at the top level" do
+        result = analyzer.response_interview_by_segment
+
+        expect(result.keys).to contain_exactly([ "EdTech", "Family Engagement" ], [ "EdTech", "K-12" ])
+        expect(result[[ "EdTech", "Family Engagement" ]]).to include(count: 2, responded: 1, response_rate: 50.0)
+        expect(result[[ "EdTech", "K-12" ]]).to include(count: 1, responded: 0, response_rate: 0.0)
+      end
+    end
+
+    describe "#response_interview_by_industry_and_size" do
+      it "cross-tabs by top-level industry and drops combinations below min_sample" do
+        result = analyzer.response_interview_by_industry_and_size(min_sample: 3)
+
+        expect(result.keys).to eq([ [ "EdTech", "11-50" ] ])
+        expect(result[[ "EdTech", "11-50" ]]).to include(count: 4)
+      end
+    end
+  end
 end

@@ -35,7 +35,7 @@
     </span>
   </td>
   <td><%= opportunity.company.name if opportunity.company %></td>
-  <td><%= opportunity.company&.industry if opportunity.company %></td>
+  <td><%= opportunity.company&.industry&.full_name %></td>
   <td><%= opportunity.position_title %></td>
   <td><%= opportunity.application_date %></td>
   <td><%= opportunity.status.present? && opportunity.status != "select" ? opportunity.status : "" %></td>

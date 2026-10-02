@@ -23,12 +23,12 @@ class ContactsController < ApplicationController
       # Validate sort column to prevent SQL injection
       allowed_columns = %w[name title email phone created_at]
       if allowed_columns.include?(sort_column)
-        @contacts = @contacts.order("#{sort_column} #{sort_direction}")
+        @contacts = @contacts.order("contacts.#{sort_column} #{sort_direction}")
       elsif sort_column == "company"
         @contacts = @contacts.joins(:company).order("companies.name #{sort_direction}")
       end
     else
-      @contacts = @contacts.order(:name)
+      @contacts = @contacts.order("contacts.name")
     end
   end
 

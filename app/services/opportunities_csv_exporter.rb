@@ -20,7 +20,7 @@ class OpportunitiesCsvExporter
         csv << [
           opportunity.role_type,
           opportunity.company.name,
-          opportunity.company.industry,
+          opportunity.company.industry&.full_name,
           opportunity.position_title,
           opportunity.application_date,
           opportunity.status,

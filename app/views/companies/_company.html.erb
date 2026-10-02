@@ -1,6 +1,6 @@
 <tr id="<%= dom_id company %>" class="clickable-row" data-href="<%= company_path(company) %>">
   <td><%= company.name %></td>
-  <td><%= company.industry %></td>
+  <td><%= company.industry&.full_name %></td>
   <td><%= company.company_type || "—" %></td>
   <td><%= company.location %></td>
   <td><%= company.size.present? ? company.size : "—" %></td>

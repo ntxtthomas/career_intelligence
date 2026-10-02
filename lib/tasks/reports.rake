@@ -23,7 +23,7 @@ namespace :reports do
 
   desc "Opportunity and application count/percentage by industry. Optional USER_ID=<id> to scope to a user."
   task counts_by_industry: :environment do
-    opportunities = ReportScope.opportunities.joins(:company)
+    opportunities = ReportScope.opportunities.with_industry_rollup
     applications = opportunities.where.not(application_date: nil)
 
     total_opportunities = opportunities.count
@@ -31,25 +31,25 @@ namespace :reports do
 
     puts "== Opportunities by industry (n=#{total_opportunities}) =="
     puts "Industry,Count,Percentage"
-    opportunities.group("companies.industry").count.sort_by { |_, count| -count }.each do |industry, count|
+    opportunities.group(Arel.sql(Industry::ROOT_NAME_SQL)).count.sort_by { |_, count| -count }.each do |industry, count|
       puts "#{industry || '(none)'},#{count},#{ReportScope.percentage(count, total_opportunities)}"
     end
 
     puts "\n== Applications by industry (n=#{total_applications}) =="
     puts "Industry,Count,Percentage"
-    applications.group("companies.industry").count.sort_by { |_, count| -count }.each do |industry, count|
+    applications.group(Arel.sql(Industry::ROOT_NAME_SQL)).count.sort_by { |_, count| -count }.each do |industry, count|
       puts "#{industry || '(none)'},#{count},#{ReportScope.percentage(count, total_applications)}"
     end
   end
 
   desc "Response/interview rate by industry, by company size, and cross-tabbed. Optional USER_ID=<id> to scope to a user."
   task response_interview_rates: :environment do
-    applications = ReportScope.opportunities.where.not(application_date: nil).joins(:company)
+    applications = ReportScope.opportunities.where.not(application_date: nil).with_industry_rollup
 
     puts "== Response / interview rate by industry =="
     puts "Industry,Applications,Response Rate,Interview Rate"
-    applications.group("companies.industry").count.sort_by { |_, count| -count }.each do |industry, total|
-      scope = applications.where(companies: { industry: industry })
+    applications.group(Arel.sql(Industry::ROOT_NAME_SQL)).count.sort_by { |_, count| -count }.each do |industry, total|
+      scope = applications.where("#{Industry::ROOT_NAME_SQL} IS NOT DISTINCT FROM ?", industry)
       puts "#{industry || '(none)'},#{total},#{ReportScope.response_rate(scope, total)},#{ReportScope.interview_rate(scope, total)}"
     end
 
@@ -62,8 +62,8 @@ namespace :reports do
 
     puts "\n== Response / interview rate by industry x company size =="
     puts "Industry,Size,Applications,Response Rate,Interview Rate"
-    applications.group("companies.industry", "companies.size").count.sort_by { |_, count| -count }.each do |(industry, size), total|
-      scope = applications.where(companies: { industry: industry, size: size })
+    applications.group(Arel.sql(Industry::ROOT_NAME_SQL), "companies.size").count.sort_by { |_, count| -count }.each do |(industry, size), total|
+      scope = applications.where("#{Industry::ROOT_NAME_SQL} IS NOT DISTINCT FROM ?", industry).where(companies: { size: size })
       puts "#{industry || '(none)'},#{size || '(none)'},#{total},#{ReportScope.response_rate(scope, total)},#{ReportScope.interview_rate(scope, total)}"
     end
   end

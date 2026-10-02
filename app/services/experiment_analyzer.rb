@@ -1,4 +1,6 @@
 class ExperimentAnalyzer
+  ROOT_NAME = Arel.sql(Industry::ROOT_NAME_SQL)
+
   def initialize(opportunities)
     @opportunities = opportunities
   end
@@ -31,9 +33,24 @@ class ExperimentAnalyzer
     }
   end
 
-  # Response/interview rate grouped by company industry
+  # Response/interview rate grouped by top-level industry (segments roll up into their parent)
   def response_interview_by_industry
-    grouped_response_interview_stats(:industry)
+    scope = @opportunities.with_industry_rollup
+
+    scope.group(ROOT_NAME).count.each_with_object({}) do |(root, count), result|
+      filtered = scope.where("#{Industry::ROOT_NAME_SQL} IS NOT DISTINCT FROM ?", root)
+      result[root] = response_interview_stats(filtered, count)
+    end
+  end
+
+  # Response/interview rate drilled down to segments, keyed by [top-level industry, segment]
+  def response_interview_by_segment
+    scope = @opportunities.with_industry_rollup.where.not(industries: { parent_id: nil })
+
+    scope.group(ROOT_NAME, "industries.name").count.each_with_object({}) do |((root, segment), count), result|
+      filtered = scope.where("#{Industry::ROOT_NAME_SQL} = ? AND industries.name = ?", root, segment)
+      result[[ root, segment ]] = response_interview_stats(filtered, count)
+    end
   end
 
   # Response/interview rate grouped by company size (employee range)
@@ -41,17 +58,16 @@ class ExperimentAnalyzer
     grouped_response_interview_stats(:size)
   end
 
-  # Response/interview rate cross-tabbed by industry x company size, dropping combos below min_sample
+  # Response/interview rate cross-tabbed by top-level industry x company size, dropping combos below min_sample
   def response_interview_by_industry_and_size(min_sample: 3)
-    scope = @opportunities.joins(:company)
-    industry_column = Company.arel_table[:industry]
-    size_column = Company.arel_table[:size]
+    scope = @opportunities.with_industry_rollup
 
-    scope.group(industry_column, size_column).count.each_with_object({}) do |(key, count), result|
+    scope.group(ROOT_NAME, "companies.size").count.each_with_object({}) do |(key, count), result|
       next if count < min_sample
 
       industry, size = key
-      filtered = scope.where(companies: { industry: industry, size: size })
+      filtered = scope.where("#{Industry::ROOT_NAME_SQL} IS NOT DISTINCT FROM ?", industry)
+                      .where(companies: { size: size })
       result[[ industry, size ]] = response_interview_stats(filtered, count)
     end
   end

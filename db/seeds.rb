@@ -21,6 +21,9 @@ end
 
 puts "Users seeded! (Owner: #{owner.email}, Demo: #{demo_user.email})"
 
+IndustryCatalog.seed!
+puts "Industries seeded! (#{Industry.count})"
+
 # Seed Technologies
 technologies_data = {
   "Backend" => [

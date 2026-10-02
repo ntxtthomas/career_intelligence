@@ -3,8 +3,9 @@ class CompaniesController < ApplicationController
 
   # GET /companies or /companies.json
   def index
-    @companies = current_or_demo_user.companies
+    @companies = current_or_demo_user.companies.includes(industry: :parent)
     @technologies = Technology.order(:name)
+    @industries = Industry.for_select
 
     # Filter by company name search
     if params[:company_query].present?
@@ -16,10 +17,16 @@ class CompaniesController < ApplicationController
     if params[:technology].present?
       tech = Technology.find_by(name: params[:technology])
       if tech
-        @companies = @companies.joins(opportunities: :technologies)
-                              .where(technologies: { id: tech.id }).distinct
+        @companies = @companies.where(id: Company.joins(opportunities: :technologies)
+                                                 .where(technologies: { id: tech.id }).select(:id))
       end
       @selected_technology = params[:technology]
+    end
+
+    # Filtering on a top-level industry also matches its segments
+    if params[:industry_id].present?
+      industry = Industry.find_by(id: params[:industry_id])
+      @companies = @companies.in_industry(industry) if industry
     end
 
     # Filter by preferred status if provided
@@ -27,10 +34,13 @@ class CompaniesController < ApplicationController
       @companies = @companies.where(preferred: params[:preferred] == "true")
     end
 
-    # Skip sorting for tech_stack since it's aggregated data, but allow other columns
-    if params[:sort].present? && params[:sort] != "tech_stack"
-      direction = params[:direction] == "desc" ? "desc" : "asc"
-      @companies = @companies.order("#{params[:sort]} #{direction}")
+    sort_direction = params[:direction] == "desc" ? "desc" : "asc"
+    allowed_columns = %w[name company_type location size preferred website linkedin]
+    if params[:sort] == "industry"
+      @companies = @companies.joins(Industry::JOINS_SQL)
+                             .order(Arel.sql("#{Industry::ROOT_NAME_SQL} #{sort_direction}, industries.name #{sort_direction}"))
+    elsif allowed_columns.include?(params[:sort])
+      @companies = @companies.order("companies.#{params[:sort]} #{sort_direction}")
     else
       @companies = @companies.order(:name)
     end
@@ -108,7 +118,7 @@ class CompaniesController < ApplicationController
     # Only allow a list of trusted parameters through.
     def company_params
       params.expect(company: [
-        :name, :industry, :company_type, :location, :size, :website, :linkedin, :known_tech_stack, :preferred,
+        :name, :industry_id, :company_type, :location, :size, :website, :linkedin, :known_tech_stack, :preferred,
         :primary_product
       ])
     end
