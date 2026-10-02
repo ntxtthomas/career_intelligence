@@ -30,6 +30,14 @@ RSpec.describe "Admin::Industries", type: :request do
   describe "as an admin" do
     before { sign_in admin_user }
 
+    it "links to Industries from both the desktop and the mobile menu" do
+      get dashboard_path
+
+      expect(response.body.scan(%(href="#{admin_industries_path}")).size).to eq(2)
+      mobile_menu = response.body[/data-nav-target="menu".*?<\/nav>/m]
+      expect(mobile_menu).to include(%(href="#{admin_industries_path}"))
+    end
+
     it "lists industries with their segments, inherited domain match and company counts" do
       Company.create!(name: "Kid Co", company_type: "Product", user: admin_user, industry: k12)
 
