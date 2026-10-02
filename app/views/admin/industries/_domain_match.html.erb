@@ -1,0 +1,7 @@
+<% if industry.domain_match.present? %>
+  <%= industry.domain_match.humanize %>
+<% elsif industry.effective_domain_match.present? %>
+  <span style="color: var(--text-secondary, #666);"><%= industry.effective_domain_match.humanize %> (inherited)</span>
+<% else %>
+  &mdash;
+<% end %>

@@ -1,0 +1,22 @@
+<tr id="<%= dom_id industry %>" class="clickable-row" data-href="<%= admin_industry_path(industry) %>"
+    <% unless root %>data-industry-group-target="segment" hidden<% end %>>
+  <td style="<%= "padding-left: 2rem;" unless root %>">
+    <% if root %>
+      <% if segments.any? %>
+        <button type="button" data-industry-group-target="toggle" data-action="industry-group#toggle" aria-expanded="false"
+                aria-label="Show or hide segments of <%= industry.name %>"
+                style="background: none; border: 0; cursor: pointer; padding: 0 0.5rem 0 0; color: inherit;">&#9656;</button>
+      <% else %>
+        <span style="display: inline-block; width: 1.25rem;"></span>
+      <% end %>
+      <strong><%= industry.name %></strong>
+      <% if segments.any? %>
+        <span style="color: var(--text-secondary, #666);">(<%= pluralize(segments.size, "segment") %>)</span>
+      <% end %>
+    <% else %>
+      &#8627; <%= industry.name %>
+    <% end %>
+  </td>
+  <td><%= render "domain_match", industry: industry %></td>
+  <td><%= company_count %></td>
+</tr>

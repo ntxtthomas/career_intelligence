@@ -1,0 +1,41 @@
+<% content_for :title, @industry.full_name %>
+
+<div id="<%= dom_id @industry %>">
+  <h1 style="padding-top: 1.5rem;"><%= @industry.name %></h1>
+
+  <div class="company-details">
+    <% if @industry.parent %>
+    <p>
+      <strong>Parent industry:</strong>
+      <%= link_to @industry.parent.name, admin_industry_path(@industry.parent) %>
+    </p>
+    <% end %>
+
+    <p>
+      <strong>Domain match:</strong>
+      <%= render "domain_match", industry: @industry %>
+    </p>
+
+    <p>
+      <strong>Companies:</strong>
+      <%= link_to Company.in_industry(@industry).count, companies_path(industry_id: @industry.id) %>
+    </p>
+
+    <% if @industry.children.any? %>
+    <p>
+      <strong>Segments:</strong>
+      <%= safe_join(@industry.children.sort_by { |segment| segment.name.downcase }.map { |segment| link_to(segment.name, admin_industry_path(segment)) }, ", ") %>
+    </p>
+    <% end %>
+  </div>
+</div>
+
+<div class="form-actions">
+  <%= link_to "Edit this industry", edit_admin_industry_path(@industry), class: "btn btn-primary" %>
+  <% unless @industry.parent %>
+    <%= link_to "Add segment", new_admin_industry_path(parent_id: @industry.id), class: "btn btn-secondary" %>
+  <% end %>
+  <%= link_to "Back to industries", admin_industries_path, class: "btn btn-secondary" %>
+  <%= button_to "Destroy this industry", admin_industry_path(@industry), method: :delete, class: "btn btn-danger",
+        form: { data: { turbo_confirm: "Are you sure?" } } %>
+</div>

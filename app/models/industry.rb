@@ -10,6 +10,9 @@ class Industry < ApplicationRecord
   has_many :children, class_name: "Industry", foreign_key: :parent_id, inverse_of: :parent, dependent: :restrict_with_error
   has_many :companies, dependent: :restrict_with_error
 
+  normalizes :name, with: ->(name) { name.squish }
+  normalizes :domain_match, with: ->(value) { value.presence }
+
   validates :name, presence: true, uniqueness: { scope: :parent_id, case_sensitive: false }
   validates :domain_match, inclusion: { in: DOMAIN_MATCHES }, allow_blank: true
   validate :hierarchy_is_one_level_deep
