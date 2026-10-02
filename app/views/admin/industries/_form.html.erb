@@ -1,0 +1,34 @@
+<%= form_with(model: [ :admin, industry ]) do |form| %>
+  <% if industry.errors.any? %>
+    <div class="alert">
+      <h2><%= pluralize(industry.errors.count, "error") %> prohibited this industry from being saved:</h2>
+
+      <ul>
+        <% industry.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :name, class: "form-label" %>
+    <%= form.text_field :name, class: "form-input" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :parent_id, "Parent industry", class: "form-label" %>
+    <%= form.collection_select :parent_id, Industry.roots.where.not(id: industry.id).order(:name), :id, :name,
+          { include_blank: "None (top-level industry)" }, { class: "form-select" } %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :domain_match, "Domain match", class: "form-label" %>
+    <%= form.select :domain_match, Industry::DOMAIN_MATCHES.map { |value| [ value.humanize, value ] },
+          { include_blank: "Not set (segments inherit from their parent)" }, { class: "form-select" } %>
+  </div>
+
+  <div class="form-actions">
+    <%= form.submit class: "btn btn-primary" %>
+  </div>
+<% end %>

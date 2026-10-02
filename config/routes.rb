@@ -27,6 +27,7 @@ Rails.application.routes.draw do
   resources :community_pulse_votes, only: :create
   namespace :admin do
     get "community-pulse", to: "community_pulse_stats#index", as: :community_pulse_stats
+    resources :industries
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

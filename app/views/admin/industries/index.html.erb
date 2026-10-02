@@ -1,0 +1,31 @@
+<% content_for :title, "Industries" %>
+
+<div class="page-header" style="padding-top: 1.5rem;">
+  <div class="page-header-content">
+    <h1 class="page-title">Industries</h1>
+    <div class="page-actions">
+      <%= link_to "+", new_admin_industry_path, class: "btn btn-primary btn-lg" %>
+    </div>
+  </div>
+</div>
+
+<div id="industries" class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th><%= sortable_link :name, "Name" %></th>
+        <th><%= sortable_link :domain_match, "Domain Match" %></th>
+        <th><%= sortable_link :companies, "Companies" %></th>
+      </tr>
+    </thead>
+    <% @industries.each do |industry| %>
+      <% segments = industry.children.sort_by { |segment| segment.name.downcase } %>
+      <tbody data-controller="industry-group">
+        <%= render "industry_row", industry: industry, segments: segments, company_count: @root_totals[industry.id], root: true %>
+        <% segments.each do |segment| %>
+          <%= render "industry_row", industry: segment, segments: [], company_count: @company_counts[segment.id].to_i, root: false %>
+        <% end %>
+      </tbody>
+    <% end %>
+  </table>
+</div>
