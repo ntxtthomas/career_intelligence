@@ -60,7 +60,7 @@ module Admin
     end
 
     def industry_params
-      params.expect(industry: [ :name, :parent_id, :domain_match ])
+      params.expect(industry: [ :name, :parent_id, :domain_match, :definition ])
     end
 
     # Only top-level industries are sortable; segments always stay under their parent, ordered by name.
