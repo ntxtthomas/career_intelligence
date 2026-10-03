@@ -115,19 +115,22 @@ RSpec.describe "Admin::Industries", type: :request do
     describe "GET /admin/industries/:id" do
       it "shows a top-level industry with its segments and action buttons" do
         Company.create!(name: "Kid Co", company_type: "Product", user: admin_user, industry: k12)
+        edtech.update!(definition: "Software and services that support teaching and learning.")
 
         get admin_industry_path(edtech)
 
         expect(response).to have_http_status(:ok)
-        expect(response.body).to include("EdTech", "K-12", "Deep")
+        expect(response.body).to include("EdTech", "K-12", "Deep", "Software and services that support teaching and learning.")
         expect(response.body).to include("Edit this industry", "Add segment", "Back to industries", "Destroy this industry")
         expect(response.body).to include(companies_path(industry_id: edtech.id))
       end
 
       it "shows a segment with a link to its parent and no Add segment button" do
+        k12.update!(definition: "Products and services for kindergarten through grade 12.")
+
         get admin_industry_path(k12)
 
-        expect(response.body).to include("Parent industry", admin_industry_path(edtech))
+        expect(response.body).to include("Parent industry", admin_industry_path(edtech), "Products and services for kindergarten through grade 12.")
         expect(response.body).not_to include("Add segment")
       end
     end
@@ -145,8 +148,10 @@ RSpec.describe "Admin::Industries", type: :request do
 
     it "creates a segment under a parent" do
       expect {
-        post admin_industries_path, params: { industry: { name: "Special Education", parent_id: edtech.id } }
+        post admin_industries_path, params: { industry: { name: "Special Education", parent_id: edtech.id, definition: "Education services for students with additional learning needs." } }
       }.to change(edtech.children, :count).by(1)
+
+      expect(Industry.find_by!(name: "Special Education").definition).to eq("Education services for students with additional learning needs.")
     end
 
     it "pre-selects the parent on the new segment form" do
@@ -170,9 +175,9 @@ RSpec.describe "Admin::Industries", type: :request do
     end
 
     it "updates an industry" do
-      patch admin_industry_path(k12), params: { industry: { name: "K-12 Schools", domain_match: "adjacent" } }
+      patch admin_industry_path(k12), params: { industry: { name: "K-12 Schools", domain_match: "adjacent", definition: "Schooling from kindergarten through grade 12." } }
 
-      expect(k12.reload).to have_attributes(name: "K-12 Schools", domain_match: "adjacent")
+      expect(k12.reload).to have_attributes(name: "K-12 Schools", domain_match: "adjacent", definition: "Schooling from kindergarten through grade 12.")
       expect(response).to redirect_to(admin_industry_path(k12))
     end
 

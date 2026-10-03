@@ -16,6 +16,13 @@
       <%= render "domain_match", industry: @industry %>
     </p>
 
+    <% if @industry.definition.present? %>
+    <p>
+      <strong>Definition:</strong>
+      <%= simple_format(@industry.definition) %>
+    </p>
+    <% end %>
+
     <p>
       <strong>Companies:</strong>
       <%= link_to Company.in_industry(@industry).count, companies_path(industry_id: @industry.id) %>

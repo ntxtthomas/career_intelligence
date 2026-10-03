@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_10_02_140000) do
+ActiveRecord::Schema[8.0].define(version: 2026_10_03_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -124,6 +124,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_10_02_140000) do
     t.string "domain_match"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "definition"
     t.index "lower((name)::text), COALESCE(parent_id, (0)::bigint)", name: "index_industries_on_lower_name_and_parent", unique: true
     t.index ["parent_id"], name: "index_industries_on_parent_id"
   end
