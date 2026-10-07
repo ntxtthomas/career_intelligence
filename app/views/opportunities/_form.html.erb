@@ -174,13 +174,23 @@
 <div class="form-group fifteen-width-field">
   <%= form.label :domain_match, "Domain Match", style: "display: block" %>
   <small style="color: #666; display: block; margin-top: 4px;">Suggested from company industry — editable.</small>
-  <%= form.select :domain_match,
-      options_for_select(
-        Opportunity.domain_matches.keys.map { |k| [k.humanize, k] },
-        opportunity.domain_match
-      ),
-      { prompt: "Select domain match" },
-      { style: "display: block; width: 250px; height: 30px;" } %>
+  <% if opportunity.new_record? %>
+    <%= form.select :domain_match,
+        options_for_select(
+          [["Auto (segment, else industry)", ""]] + Opportunity.domain_matches.keys.without("unknown").map { |k| [k.humanize, k] },
+          opportunity.domain_match == "unknown" ? "" : opportunity.domain_match
+        ),
+        {},
+        { style: "display: block; width: 250px; height: 30px;" } %>
+  <% else %>
+    <%= form.select :domain_match,
+        options_for_select(
+          Opportunity.domain_matches.keys.map { |k| [k.humanize, k] },
+          opportunity.domain_match
+        ),
+        { prompt: "Select domain match" },
+        { style: "display: block; width: 250px; height: 30px;" } %>
+  <% end %>
 </div>
 
 <div class="form-group">
