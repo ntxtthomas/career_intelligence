@@ -49,6 +49,59 @@ RSpec.describe "ResourceSheets", type: :request do
       expect(response).to have_http_status(:ok)
       expect(response.body).to include("Resources")
     end
+
+    it "renders the Interview Hub sub-nav with Prep Sheets active" do
+      get resource_sheets_path
+
+      expect(response.body).to include(%(href="#{guides_path}"))
+      expect(response.body[/<a[^>]*href="#{resource_sheets_path}"[^>]*>Prep Sheets<\/a>/]).to include('aria-current="page"')
+    end
+
+    it "no longer renders the Interview Prep Guides section at the bottom of the page" do
+      get resource_sheets_path
+
+      expect(response.body).not_to include("Interview Prep Guides")
+      expect(response.body).not_to include("resource-guide-cards")
+    end
+  end
+
+  describe "GET /resources/guides" do
+    it "lists all four guides with links to the existing guide views" do
+      get guides_path
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include("Behavioral Prep Guide")
+      expect(response.body).to include("Technical Prep Guide")
+      expect(response.body).to include("Questions for Interviewers")
+      expect(response.body).to include("Acquired Questions")
+      expect(response.body).to include(%(href="#{behavioral_guide_path}"))
+      expect(response.body).to include(%(href="#{technical_guide_path}"))
+      expect(response.body).to include(%(href="#{interviewer_questions_guide_path}"))
+      expect(response.body).to include(%(href="#{acquired_questions_guide_path}"))
+    end
+
+    it "renders the Interview Hub sub-nav with Guides active" do
+      get guides_path
+
+      expect(response.body[/<a[^>]*href="#{guides_path}"[^>]*>Guides<\/a>/]).to include('aria-current="page"')
+    end
+  end
+
+  describe "guide pages' back link" do
+    {
+      behavioral: "Behavioral",
+      technical: "Technical",
+      interviewer_questions: "Interviewer Questions",
+      acquired_questions: "Acquired Questions"
+    }.each do |path_helper, label|
+      it "links back to the guides index on the #{label} guide" do
+        get send(:"#{path_helper}_guide_path")
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body[/<a[^>]*href="#{guides_path}"[^>]*>Back to Guides<\/a>/]).to be_present
+        expect(response.body).not_to include("Back to Resources")
+      end
+    end
   end
 
   describe "GET /show" do
