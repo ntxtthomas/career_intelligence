@@ -62,7 +62,7 @@ class ResourceGuideQuestionsController < ApplicationController
     when "acquired_questions"
       acquired_questions_guide_path
     else
-      resource_sheets_path
+      guides_path
     end
   end
 end

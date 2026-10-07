@@ -87,6 +87,23 @@ RSpec.describe "ResourceSheets", type: :request do
     end
   end
 
+  describe "guide pages' back link" do
+    {
+      behavioral: "Behavioral",
+      technical: "Technical",
+      interviewer_questions: "Interviewer Questions",
+      acquired_questions: "Acquired Questions"
+    }.each do |path_helper, label|
+      it "links back to the guides index on the #{label} guide" do
+        get send(:"#{path_helper}_guide_path")
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body[/<a[^>]*href="#{guides_path}"[^>]*>Back to Guides<\/a>/]).to be_present
+        expect(response.body).not_to include("Back to Resources")
+      end
+    end
+  end
+
   describe "GET /show" do
     it "returns success" do
       get resource_sheet_path(resource_sheet)
