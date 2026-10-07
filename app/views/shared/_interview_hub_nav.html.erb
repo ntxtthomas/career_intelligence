@@ -1,0 +1,10 @@
+<%# Shared sub-nav for the four Interview Hub sections. Pass `active:` as the tab key
+    (:sessions, :prep_sheets, :star_stories, :guides). Tabs themselves come from
+    InterviewHubHelper::INTERVIEW_HUB_TABS, so a future tab is a one-line addition there. %>
+<nav class="flex gap-1 overflow-x-auto border-b border-[var(--border-color)] mb-4" aria-label="Interview Hub">
+  <% interview_hub_tabs.each do |tab| %>
+    <%= link_to tab[:label], tab[:path],
+          class: interview_hub_tab_classes(tab[:key] == active),
+          "aria-current": (tab[:key] == active ? "page" : nil) %>
+  <% end %>
+</nav>

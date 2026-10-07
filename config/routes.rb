@@ -16,6 +16,7 @@ Rails.application.routes.draw do
     end
   end
 
+  get "resources/guides" => "resource_sheets#guides", as: :guides
   get "resources/guides/behavioral" => "resource_sheets#behavioral_guide", as: :behavioral_guide
   get "resources/guides/technical" => "resource_sheets#technical_guide", as: :technical_guide
   get "resources/guides/interviewer-questions" => "resource_sheets#interviewer_questions_guide", as: :interviewer_questions_guide

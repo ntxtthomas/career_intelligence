@@ -41,6 +41,15 @@ RSpec.describe "InterviewSessions", type: :request do
       expect(response.body).to include("Company")
       expect(response.body).to include("Opportunity")
     end
+
+    it "renders the Interview Hub sub-nav with Sessions active" do
+      get interview_sessions_path
+
+      expect(response.body).to include(%(href="#{resource_sheets_path}"))
+      expect(response.body).to include(%(href="#{star_stories_path}"))
+      expect(response.body).to include(%(href="#{guides_path}"))
+      expect(response.body[/<a[^>]*href="#{interview_sessions_path}"[^>]*>Sessions<\/a>/]).to include('aria-current="page"')
+    end
   end
 
   describe "GET /new" do

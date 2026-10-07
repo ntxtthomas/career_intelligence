@@ -94,6 +94,9 @@ class ResourceSheetsController < ApplicationController
     @additional_questions = current_or_demo_user.resource_guide_questions.for_guide(:acquired_questions).ordered
   end
 
+  def guides
+  end
+
   private
 
   def set_resource_sheet
