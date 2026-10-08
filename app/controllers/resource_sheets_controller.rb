@@ -79,25 +79,32 @@ class ResourceSheetsController < ApplicationController
   end
 
   def behavioral_guide
-    @additional_questions = current_or_demo_user.resource_guide_questions.for_guide(:behavioral).ordered
+    load_guide_questions(:behavioral)
   end
 
   def technical_guide
-    @additional_questions = current_or_demo_user.resource_guide_questions.for_guide(:technical).ordered
+    load_guide_questions(:technical)
   end
 
   def interviewer_questions_guide
-    @additional_questions = current_or_demo_user.resource_guide_questions.for_guide(:interviewer_questions).ordered
+    load_guide_questions(:interviewer_questions)
   end
 
   def acquired_questions_guide
-    @additional_questions = current_or_demo_user.resource_guide_questions.for_guide(:acquired_questions).ordered
+    load_guide_questions(:acquired_questions)
   end
 
   def guides
   end
 
   private
+
+  def load_guide_questions(guide_type)
+    @additional_questions = current_or_demo_user.resource_guide_questions.for_guide(guide_type).ordered
+    @additional_questions_by_section = @additional_questions.group_by { |entry| entry.section_title.presence || "General" }
+    @standard_sections = ResourceGuideQuestion::GUIDE_SECTIONS.fetch(guide_type.to_s, [])
+    @custom_questions_by_section = @additional_questions_by_section.except(*@standard_sections)
+  end
 
   def set_resource_sheet
     @resource_sheet = current_or_demo_user.resource_sheets.find(params.expect(:id))

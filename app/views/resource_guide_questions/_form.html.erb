@@ -14,7 +14,10 @@
 
   <div class="form-group">
     <%= form.label :section_title, "Section", class: "form-label" %>
-    <%= form.text_field :section_title, class: "form-input", placeholder: "e.g., Debugging & Reliability" %>
+    <%= form.select :section_title, @section_options, { include_blank: "Select an existing section" }, class: "form-select" %>
+    <%= label_tag "resource_guide_question_new_section_title", "Or create a new section", class: "form-label" %>
+    <%= text_field_tag "resource_guide_question[new_section_title]", params.dig(:resource_guide_question, :new_section_title), id: "resource_guide_question_new_section_title", class: "form-input", placeholder: "e.g., Debugging & Reliability" %>
+    <small class="form-hint">A new section title takes precedence over the selected section.</small>
   </div>
 
   <div class="form-group full-width-field">

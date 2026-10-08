@@ -15,6 +15,15 @@ class ResourceGuideQuestion < ApplicationRecord
     acquired_questions: "acquired_questions"
   }, prefix: true
 
+  GUIDE_SECTIONS = {
+    "behavioral" => [ "Leadership & Ownership", "Conflict & Collaboration", "Adaptability & Impact" ],
+    "technical" => [ "Architecture & Design", "Debugging & Reliability", "Tradeoffs & Communication" ],
+    "interviewer_questions" => [ "Recruiter / Intro Screen", "Hiring Manager", "Panel / Cross-Functional", "Final Round / Close" ],
+    "acquired_questions" => []
+  }.freeze
+
+  normalizes :section_title, with: ->(section_title) { section_title.squish.presence }
+
   validates :guide_type, presence: true
   validates :question, presence: true
 

@@ -39,7 +39,8 @@ technologies_data = {
     "Elixir",
     "Phoenix",
     "FastAPI",
-    "Sidekiq"
+    "Sidekiq",
+    ".NET"
   ],
   "Frontend" => [
     "React",
@@ -53,7 +54,8 @@ technologies_data = {
     "Hotwire",
     "Turbo",
     "Next.js",
-    "HTML/CSS"
+    "HTML/CSS",
+    "Svelte"
   ],
   "Database" => [
     "PostgreSQL",
@@ -102,13 +104,10 @@ technologies_data = {
     "Webhooks"
   ],
   "AI/LLM" => [
-    "LLM API",
-    "RAG",
-    "Vector Databases",
-    "Agentic AI",
-    "MCP",
-    "Prompt Engineering"
+    *Technology::AI_CAPABILITIES
   ],
+  "AI Engineering Expectations" => Technology::AI_EXPECTATIONS,
+  "AI Tools" => Technology::AI_TOOLS,
   "Observability" => [
     "AWS CloudWatch",
     "New Relic",

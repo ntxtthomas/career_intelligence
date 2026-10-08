@@ -89,12 +89,16 @@ class TechStackAnalyzer
 
   # Returns most common individual technologies
   # e.g., { "Ruby on Rails" => 20, "React" => 18, ... }
-  def top_technologies(limit: 10)
+  def top_technologies(limit: 10, exclude_categories: [])
     tech_counts = Hash.new(0)
 
-    Technology
+    technologies = Technology
       .joins(:opportunity_technologies)
       .where(opportunity_technologies: { opportunity_id: @opportunities.pluck(:id) })
+
+    technologies = technologies.where.not(category: exclude_categories) if exclude_categories.any?
+
+    technologies
       .group(:name, :category)
       .count
       .sort_by { |_tech, count| -count }
@@ -131,7 +135,7 @@ class TechStackAnalyzer
 
   # Identify skill gaps - technologies appearing in many jobs but user may want to learn
   def learning_priorities(min_count: 3)
-    top_technologies(limit: 20)
+    top_technologies(limit: 20, exclude_categories: [ "AI Engineering Expectations" ])
       .select { |_tech, count| count >= min_count }
       .keys
   end
@@ -142,7 +146,7 @@ class TechStackAnalyzer
     total_opps = @opportunities.count
     return [] if total_opps.zero?
 
-    tech_data = top_technologies(limit: 20)
+    tech_data = top_technologies(limit: 20, exclude_categories: [ "AI Engineering Expectations" ])
     insights = []
 
     tech_data.each do |tech_name, count|

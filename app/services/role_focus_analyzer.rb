@@ -136,7 +136,7 @@ class RoleFocusAnalyzer
     analyzer = TechStackAnalyzer.new(opportunities_with_tech)
     total_opps = opportunities_with_tech.count
 
-    tech_data = analyzer.top_technologies(limit: 20)
+    tech_data = analyzer.top_technologies(limit: 20, exclude_categories: [ "AI Engineering Expectations" ])
     insights = []
 
     tech_data.each do |tech_name, count|

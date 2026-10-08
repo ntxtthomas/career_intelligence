@@ -60,7 +60,7 @@
   <%= form.url_field :linkedin, placeholder: "https://linkedin.com/...", class: "form-input" %>
 </div>
 
-<div class="form-group full-width-field" data-controller="technology-picker">
+<div class="form-group full-width-field" data-controller="technology-picker" data-technology-picker-aliases-value="<%= Technology::PASTE_ALIASES.to_json %>">
   <%= form.label :known_tech_stack, "Known Technologies", class: "form-label" %>
   <p class="form-hint">
     Technologies this company uses (from research, website, job postings, etc.)

@@ -1,0 +1,8 @@
+<% questions_by_section.each do |section_title, entries| %>
+  <section class="guide-section">
+    <h2><%= section_title.presence || "General" %></h2>
+    <% entries.each do |entry| %>
+      <%= render "custom_guide_question", entry: entry %>
+    <% end %>
+  </section>
+<% end %>

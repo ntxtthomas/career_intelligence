@@ -3,6 +3,7 @@ class ResourceGuideQuestionsController < ApplicationController
 
   def new
     @resource_guide_question = current_or_demo_user.resource_guide_questions.new(guide_type: params[:guide_type])
+    load_section_options
   end
 
   def create
@@ -11,17 +12,20 @@ class ResourceGuideQuestionsController < ApplicationController
     if @resource_guide_question.save
       redirect_to guide_path_for(@resource_guide_question.guide_type), notice: "Guide question was successfully created."
     else
+      load_section_options
       render :new, status: :unprocessable_entity
     end
   end
 
   def edit
+    load_section_options
   end
 
   def update
     if @resource_guide_question.update(resource_guide_question_params)
       redirect_to guide_path_for(@resource_guide_question.guide_type), notice: "Guide question was successfully updated."
     else
+      load_section_options
       render :edit, status: :unprocessable_entity
     end
   end
@@ -39,9 +43,10 @@ class ResourceGuideQuestionsController < ApplicationController
   end
 
   def resource_guide_question_params
-    params.expect(resource_guide_question: [
+    attributes = params.expect(resource_guide_question: [
       :guide_type,
       :section_title,
+      :new_section_title,
       :question,
       :meaning,
       :response_approach,
@@ -49,6 +54,22 @@ class ResourceGuideQuestionsController < ApplicationController
       :pitfall,
       :why_this_is_strong
     ])
+
+    attributes[:section_title] = attributes[:new_section_title].presence || attributes[:section_title]
+    attributes.except(:new_section_title)
+  end
+
+  def load_section_options
+    guide_type = @resource_guide_question.guide_type
+    standard_sections = ResourceGuideQuestion::GUIDE_SECTIONS.fetch(guide_type, [])
+    existing_sections = current_or_demo_user.resource_guide_questions
+      .for_guide(guide_type)
+      .where.not(section_title: [ nil, "" ])
+      .distinct
+      .order(:section_title)
+      .pluck(:section_title)
+
+    @section_options = (standard_sections + existing_sections).uniq
   end
 
   def guide_path_for(guide_type)
