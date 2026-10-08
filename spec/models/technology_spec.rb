@@ -29,4 +29,17 @@ RSpec.describe Technology, type: :model do
     expect(described_class::PASTE_ALIASES.fetch("AI Coding Agents")).to include("Claude Code", "Cursor", "GitHub Copilot")
     expect(described_class::PASTE_ALIASES.fetch("AI-Assisted Development")).to include("AI coding agents")
   end
+
+  it "seeds exactly 27 AI taxonomy records idempotently" do
+    2.times { described_class.seed_ai_catalog! }
+
+    described_class::AI_CATALOG.each do |category, expected_names|
+      actual_names = described_class.where(category: category).pluck(:name)
+
+      expect(actual_names).to match_array(expected_names)
+      expect(actual_names.uniq.size).to eq(expected_names.size)
+    end
+
+    expect(described_class.where(category: described_class::AI_CATALOG.keys).count).to eq(27)
+  end
 end

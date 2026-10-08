@@ -57,6 +57,22 @@ class Technology < ApplicationRecord
     "Gemini API"
   ].freeze
 
+  AI_CATALOG = {
+    "AI/LLM" => AI_CAPABILITIES,
+    "AI Engineering Expectations" => AI_EXPECTATIONS,
+    "AI Tools" => AI_TOOLS
+  }.freeze
+
+  def self.seed_ai_catalog!
+    AI_CATALOG.each do |category, names|
+      names.each do |name|
+        technology = find_or_initialize_by(name: name)
+        technology.category = category
+        technology.save! if technology.new_record? || technology.category_changed?
+      end
+    end
+  end
+
   PASTE_ALIASES = {
     "AI-Assisted Development" => [ "AI-assisted coding", "AI-native development", "AI-enabled SDLC", "LLM-assisted development", "daily use of AI coding agents", "AI coding agents" ],
     "AI Coding Agents" => [ "AI coding agents", "coding assistants", "AI pair programming", "agentic coding assistants", "daily use of AI coding agents", "Claude Code", "Cursor", "GitHub Copilot" ],

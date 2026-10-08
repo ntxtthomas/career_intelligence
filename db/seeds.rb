@@ -103,11 +103,6 @@ technologies_data = {
     "Twilio",
     "Webhooks"
   ],
-  "AI/LLM" => [
-    *Technology::AI_CAPABILITIES
-  ],
-  "AI Engineering Expectations" => Technology::AI_EXPECTATIONS,
-  "AI Tools" => Technology::AI_TOOLS,
   "Observability" => [
     "AWS CloudWatch",
     "New Relic",
@@ -135,6 +130,8 @@ technologies_data.each do |category, tech_names|
     end
   end
 end
+
+Technology.seed_ai_catalog!
 
 puts "Technology seeding completed!"
 puts "Total technologies: #{Technology.count}"
