@@ -71,7 +71,7 @@
 <div id="role-specific-fields">
   <!-- Software Engineer Fields -->
   <div data-role-type-target="section" data-role="software_engineer" style="<%= opportunity.role_type == 'software_engineer' || opportunity.role_type.blank? ? '' : 'display: none;' %>">
-    <div class="form-group full-width-field" data-controller="technology-picker">
+    <div class="form-group full-width-field" data-controller="technology-picker" data-technology-picker-aliases-value="<%= Technology::PASTE_ALIASES.to_json %>">
       <%= form.label "Technologies" %>
       <label for="opportunity_technology_paste" class="form-label">Paste Tech Stack</label>
       <div style="display: flex; gap: 0.5rem; align-items: flex-start; margin-bottom: 0.5rem;">

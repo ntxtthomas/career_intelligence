@@ -39,7 +39,8 @@ technologies_data = {
     "Elixir",
     "Phoenix",
     "FastAPI",
-    "Sidekiq"
+    "Sidekiq",
+    ".NET"
   ],
   "Frontend" => [
     "React",
@@ -53,7 +54,8 @@ technologies_data = {
     "Hotwire",
     "Turbo",
     "Next.js",
-    "HTML/CSS"
+    "HTML/CSS",
+    "Svelte"
   ],
   "Database" => [
     "PostgreSQL",
@@ -101,14 +103,6 @@ technologies_data = {
     "Twilio",
     "Webhooks"
   ],
-  "AI/LLM" => [
-    "LLM API",
-    "RAG",
-    "Vector Databases",
-    "Agentic AI",
-    "MCP",
-    "Prompt Engineering"
-  ],
   "Observability" => [
     "AWS CloudWatch",
     "New Relic",
@@ -136,6 +130,8 @@ technologies_data.each do |category, tech_names|
     end
   end
 end
+
+Technology.seed_ai_catalog!
 
 puts "Technology seeding completed!"
 puts "Total technologies: #{Technology.count}"

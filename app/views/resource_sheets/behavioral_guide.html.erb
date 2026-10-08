@@ -39,6 +39,9 @@
       <p><strong>Pitfall to avoid:</strong> Framing influence as pressure instead of partnership.</p>
     </div>
   </details>
+  <% @additional_questions_by_section.fetch("Leadership & Ownership", []).each do |entry| %>
+    <%= render "custom_guide_question", entry: entry %>
+  <% end %>
 </section>
 
 <section class="guide-section">
@@ -67,6 +70,9 @@
       <p><strong>Pitfall to avoid:</strong> Being vague about behavior or outcomes.</p>
     </div>
   </details>
+  <% @additional_questions_by_section.fetch("Conflict & Collaboration", []).each do |entry| %>
+    <%= render "custom_guide_question", entry: entry %>
+  <% end %>
 </section>
 
 <section class="guide-section">
@@ -95,6 +101,9 @@
       <p><strong>Pitfall to avoid:</strong> Picking a win with no clear impact.</p>
     </div>
   </details>
+  <% @additional_questions_by_section.fetch("Adaptability & Impact", []).each do |entry| %>
+    <%= render "custom_guide_question", entry: entry %>
+  <% end %>
 
   <details class="guide-item guide-question-toggle">
     <summary class="guide-question-summary">
@@ -150,49 +159,4 @@
   </details>
 </section>
 
-<% if @additional_questions.any? %>
-  <section class="guide-section">
-    <h2>Added Questions</h2>
-    <% @additional_questions.each do |entry| %>
-      <details class="guide-item guide-question-toggle">
-        <summary class="guide-question-summary">
-          <span class="guide-question-title"><%= entry.question %></span>
-        </summary>
-        <div class="guide-question-body">
-          <% if entry.section_title.present? %>
-            <p class="guide-section-subtitle"><strong>Section:</strong> <%= entry.section_title %></p>
-          <% end %>
-          <% if entry.meaning.present? %>
-            <div class="guide-rich-field">
-              <p class="guide-rich-label">What it means</p>
-              <div class="guide-rich-content"><%= simple_format(entry.meaning) %></div>
-            </div>
-          <% end %>
-          <% if entry.response_approach.present? %>
-            <div class="guide-rich-field">
-              <p class="guide-rich-label">Strong response approach</p>
-              <div class="guide-rich-content"><%= simple_format(entry.response_approach) %></div>
-            </div>
-          <% end %>
-          <% if entry.example_response.present? %>
-            <div class="guide-rich-field">
-              <p class="guide-rich-label">Good response pattern</p>
-              <div class="guide-rich-content"><%= simple_format(entry.example_response) %></div>
-            </div>
-          <% end %>
-          <% if entry.pitfall.present? %>
-            <div class="guide-rich-field">
-              <p class="guide-rich-label">Pitfall to avoid</p>
-              <div class="guide-rich-content"><%= simple_format(entry.pitfall) %></div>
-            </div>
-          <% end %>
-
-          <div class="form-actions guide-entry-actions">
-            <%= link_to "Edit", edit_resource_guide_question_path(entry), class: "btn btn-secondary btn-sm" %>
-            <%= button_to "Delete", resource_guide_question_path(entry), method: :delete, class: "btn btn-danger btn-sm", data: { confirm: "Delete this guide question?" } %>
-          </div>
-        </div>
-      </details>
-    <% end %>
-  </section>
-<% end %>
+<%= render "custom_guide_sections", questions_by_section: @custom_questions_by_section %>

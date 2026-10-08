@@ -64,6 +64,26 @@ RSpec.describe "Companies", type: :request do
       expect(response).to have_http_status(:ok)
       expect(response.body.scan("Family Co").size).to eq(1)
     end
+    it "renders the AI taxonomy and aliases in the technology picker" do
+      Technology.create!(name: ".NET", category: "Backend")
+      Technology.create!(name: "Svelte", category: "Frontend")
+      (Technology::AI_CAPABILITIES + Technology::AI_EXPECTATIONS + Technology::AI_TOOLS).each do |name|
+        category = if Technology::AI_CAPABILITIES.include?(name)
+          "AI/LLM"
+        elsif Technology::AI_EXPECTATIONS.include?(name)
+          "AI Engineering Expectations"
+        else
+          "AI Tools"
+        end
+        Technology.create!(name: name, category: category)
+      end
+
+      get new_company_path
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include(".NET", "Svelte", "AI Engineering Expectations", "AI Tools", "AI-Assisted Development")
+      expect(response.body).to include("AI-assisted coding", "AI coding agents")
+    end
   end
 
   describe "PATCH /companies/:id" do

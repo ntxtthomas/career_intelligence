@@ -123,12 +123,27 @@ RSpec.describe "Opportunities", type: :request do
     end
 
     it "renders the paste tech stack control" do
+      Technology.create!(name: ".NET", category: "Backend")
+      Technology.create!(name: "Svelte", category: "Frontend")
+      (Technology::AI_CAPABILITIES + Technology::AI_EXPECTATIONS + Technology::AI_TOOLS).each do |name|
+        category = if Technology::AI_CAPABILITIES.include?(name)
+          "AI/LLM"
+        elsif Technology::AI_EXPECTATIONS.include?(name)
+          "AI Engineering Expectations"
+        else
+          "AI Tools"
+        end
+        Technology.create!(name: name, category: category)
+      end
+
       get new_opportunity_path
 
       expect(response).to have_http_status(:ok)
       expect(response.body).to include("Paste Tech Stack")
       expect(response.body).to include("data-controller=\"technology-picker\"")
       expect(response.body).to include("data-action=\"technology-picker#apply\"")
+      expect(response.body).to include(".NET", "Svelte", "AI Engineering Expectations", "AI Tools", "AI-Assisted Development")
+      expect(response.body).to include("AI-assisted coding", "AI coding agents")
     end
 
     it "offers an auto-resolve option instead of unknown on the domain match select" do
